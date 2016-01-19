@@ -122,29 +122,28 @@ export default {
           self.addYear()
         })
       },
-      showOne(type){
-        switch(type)
-        {
-        case 'year':
-          this.showInfo.day = false
-          this.showInfo.year = true
-          this.showInfo.month = false
-          break;
-        case 'month':
-          this.showInfo.day = false
-          this.showInfo.year = false
-          this.showInfo.month = true
-          break;
-        case 'day':
-          this.showInfo.day = true
-          this.showInfo.year = false
-          this.showInfo.month = false
-          break;
-        default:
-          this.showInfo.day = true
-          this.showInfo.year = false
-          this.showInfo.month = false
-          
+      showOne(type) {
+        switch (type) {
+          case 'year':
+            this.showInfo.day = false
+            this.showInfo.year = true
+            this.showInfo.month = false
+            break;
+          case 'month':
+            this.showInfo.day = false
+            this.showInfo.year = false
+            this.showInfo.month = true
+            break;
+          case 'day':
+            this.showInfo.day = true
+            this.showInfo.year = false
+            this.showInfo.month = false
+            break;
+          default:
+            this.showInfo.day = true
+            this.showInfo.year = false
+            this.showInfo.month = false
+
         }
       },
       showMonth() {
@@ -170,15 +169,15 @@ export default {
         this.showDay(this.checked.currentMoment)
       },
       setMonth(month) {
-        let mo = (this.library.month.indexOf(month)+1);
-        if(mo<10){
-          mo = '0'+''+mo
+        let mo = (this.library.month.indexOf(month) + 1);
+        if (mo < 10) {
+          mo = '0' + '' + mo
         }
         this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
         this.showDay(this.checked.currentMoment)
       },
       showCheck() {
-        this.showDay()
+        this.time=='' ? this.showDay() : this.showDay(this.time) 
         this.showInfo.check = true;
       }
 
@@ -203,6 +202,7 @@ export default {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .cov-picker-box {
@@ -216,6 +216,7 @@ export default {
   -ms-box-sizing: border-box !important;
   width: 400px;
   height: 280px;
+  text-align: start!important;
 }
 
 .cov-picker-box td {
@@ -373,6 +374,7 @@ table {
   text-align: center;
   font-size: 20px;
   padding: 10px 0;
+  cursor: pointer;
 }
 
 .year-item:hover {
@@ -394,6 +396,12 @@ table {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   font-family: 'Roboto';
+  color: #5F5F5F;
+}
+
+.cov-vue-date {
+  display: inline-block;
+  color: #5D5D5D;
 }
 </style>
 <template>
@@ -427,7 +435,7 @@ table {
         </div>
       </div>
       <div class="cov-date-box year-box" v-if="showInfo.month">
-        <div class="cov-picker-box year-list" >
+        <div class="cov-picker-box year-list">
           <div class="year-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
         </div>
       </div>
