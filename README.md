@@ -3,7 +3,7 @@ calendar and datepicker component with material design for Vue.js
 
 # Demo
 
-The demo page is [HERE]().
+The demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).
 
 ![Screenshot](screenshot.png)
 
