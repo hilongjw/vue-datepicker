@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>斩家实验室-百词斩</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <meta name="author" content="Longjw, hilongjw@gmail.com">
+    <style>
+    html{
+        font-size:100%; 
+    }
+    .app-loading {
+        border: 0.2rem solid #A0BCD6;
+        height: 0.6rem;
+        max-width: 60%;
+        margin: 0 auto;
+        border-radius: 1rem;
+        position: absolute;
+        bottom: 2rem;
+        width: 60%;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+    }
+    .animated {
+        -webkit-animation-duration: 10s;
+        animation-duration: 10s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+    }
+    
+    @-webkit-keyframes loading {
+        0% {
+            -webkit-transform: translate(0px, -500px) rotate(-45deg);
+            transform: translate(0px, -500px) rotate(-45deg);
+        }
+        100% {
+            -webkit-transform: translate(500px, -500px) rotate(-45deg);
+            transform: translate(500px, -500px) rotate(-45deg);
+        }
+    }
+    
+    @keyframes loading {
+        0% {
+            -webkit-transform: translate(0px, -500px) rotate(-45deg);
+            transform: translate(0px, -500px) rotate(-45deg);
+        }
+        100% {
+            -webkit-transform: translate(500px, -500px) rotate(-45deg);
+            transform: translate(500px, -500px) rotate(-45deg);
+        }
+    }
+    
+    .app-loading .inbox {
+        background-image: linear-gradient(0deg, #c6e8f1 25%, rgb(117, 212, 237) 25%, rgb(134, 212, 231) 50%, #c6e8f1 50%, #c6e8f1 75%, rgb(121, 212, 235) 75%);
+        background-size: 2rem;
+        padding-top: 1000px;
+        padding-right: 1000px;
+        position: absolute;
+        -webkit-transform: translate3d(0px, -500px,0) rotate(-45deg);
+        transform: translate3d(0px, -500px,0) rotate(-45deg);
+        right: 200px;
+        -webkit-animation-name: loading;
+        animation-name: loading;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="app-loading">
+        <div class="inbox animated"></div>
+    </div>
+    <app></app>
+    <script src="dist/build.js"></script>
+</body>
+
+</html>
