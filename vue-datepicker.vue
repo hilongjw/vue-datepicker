@@ -33,6 +33,7 @@ export default {
         year: []
       },
       checked: {
+        oldtime: '',
         currentMoment: null,
         year: '',
         month: '',
@@ -45,15 +46,12 @@ export default {
     nextMonth(type) {
         let next = null;
 
-        if (type == 'next') {
-          next = moment(this.checked.currentMoment).add(1, 'M')
-        } else {
-          next = moment(this.checked.currentMoment).add(-1, 'M')
-        }
+        type == 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
 
         this.showDay(next)
       },
       showDay(time) {
+
         if (time === undefined) {
           this.checked.currentMoment = moment()
         } else {
@@ -72,14 +70,14 @@ export default {
         let currentMoment = time
         let firstDay = moment(currentMoment).date(1).day()
         let monthDays = moment(currentMoment).daysInMonth()
-
+        let oldtime = this.checked.oldtime;
         for (let i = 1; i <= monthDays; ++i) {
           days.push({
             value: i,
             inMonth: true,
             checked: false
           })
-          if (i == Math.ceil(moment(currentMoment).format("D")) && moment(currentMoment).month() == moment().month() && moment(currentMoment).year() == moment().year()) {
+          if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
             days[i - 1].checked = true
           }
         }
@@ -177,7 +175,13 @@ export default {
         this.showDay(this.checked.currentMoment)
       },
       showCheck() {
-        this.time=='' ? this.showDay() : this.showDay(this.time) 
+        if (this.time == '') {
+          this.showDay()
+        } else {
+          this.checked.oldtime = this.time
+          this.showDay(this.time)
+        }
+
         this.showInfo.check = true;
       }
 
@@ -403,6 +407,22 @@ table {
   display: inline-block;
   color: #5D5D5D;
 }
+
+.cancel {
+  background: #fff;
+  vertical-align: top;
+  height: 50px;
+  line-height: 50px;
+}
+
+.cancel span {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.cancel span:hover{
+  background: #E2E2E2;
+}
 </style>
 <template>
   <div class="cov-vue-date">
@@ -439,6 +459,7 @@ table {
           <div class="year-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
         </div>
       </div>
+      <div class="cancel"><span @click="showInfo.check=false">cancel</span></div>
     </div>
   </div>
 </template>
