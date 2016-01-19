@@ -1,6 +1,6 @@
 {
   "name": "vue-datepicker",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "description": "calendar and datepicker component with material design for Vue.js ",
   "main": "vue-datepicker.vue",
   "scripts": {
