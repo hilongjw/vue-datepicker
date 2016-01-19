@@ -1,0 +1,27 @@
+{
+  "name": "vue-datepicker",
+  "version": "0.1.0",
+  "description": "calendar and datepicker component with material design for Vue.js ",
+  "main": "vue-datepicker.vue",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hilongjw/vue-datepicker.git"
+  },
+  "keywords": [
+    "vue",
+    "datepicker",
+    "vue-datepicker"
+  ],
+  "author": "Awe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hilongjw/vue-datepicker/issues"
+  },
+  "homepage": "https://github.com/hilongjw/vue-datepicker#readme",
+  "dependencies": {
+    "moment": "^2.11.1"
+  }
+}
