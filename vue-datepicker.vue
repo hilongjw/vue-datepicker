@@ -15,10 +15,20 @@ export default {
           format:'YYYY-MM-DD'
         }
       }
+    },
+    limit: {
+      type: Object,
+      default: function() {
+        return null
+      }
     }
   },
   data() {
     return {
+      limition:{
+        from: '2016-01-10',
+          to: '2016-01-20'
+      },
       showInfo: {
         day: false,
         month: false,
@@ -76,14 +86,13 @@ export default {
           days.push({
             value: i,
             inMonth: true,
+            unavailable: false,
             checked: false
           })
           if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
             days[i - 1].checked = true
           }
         }
-
-
 
         for (let i = 0; i < firstDay - 1; i++) {
           days.unshift({
@@ -92,11 +101,28 @@ export default {
           })
         }
 
+        if(this.limit != null){
+          switch (this.limit.type) {
+            case 'fromto':
+              days = this.limitFromTo(days)
+              break;
+          }
+        }
 
         this.dayList = days
 
       },
+      limitFromTo(days){
+        let self = this
+        days.map(function(day){
+          if(!moment(self.checked.year +'-'+ self.checked.month +'-'+day.value).isBetween(self.limition.from, self.limition.to)){
+           day.unavailable = true
+          }
+        })
+        return days
+      },
       checkDay(obj) {
+        if(obj.unavailable){return false}
         this.dayList.map(x => x.checked = false)
         obj.checked = true
         this.checked.day = obj.value
@@ -282,6 +308,10 @@ table {
   color: #FFF !important;
   border-radius: 3px;
 }
+.unavailable {
+  color: #ccc;
+  cursor: not-allowed;
+}
 
 .cov-date-monthly {
   height: 150px;
@@ -326,6 +356,10 @@ table {
 
 .day:hover {
   background: #EAEAEA;
+}
+
+.unavailable:hover {
+  background: none;
 }
 
 .checked:hover {
@@ -452,7 +486,7 @@ table {
               <li v-for="weekie in library.week">{{weekie}}</li>
             </ul>
           </div>
-          <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked}">{{day.value}}</div>
+          <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable}">{{day.value}}</div>
         </div>
       </div>
       <div class="cov-date-box year-box" v-if="showInfo.year">

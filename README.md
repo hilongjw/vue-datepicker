@@ -35,6 +35,11 @@ export default {
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format:'YYYY-MM-DD'
+        },
+        limit: {
+          type:'fromto',
+          from:'2016-01-10',
+          to:'2016-01-30'
         }
       }
     },
@@ -63,7 +68,7 @@ export default {
   <div class="card">
     <div class="row">
       <span>Departure Date：</span>
-      <date-picker :time.sync="starttime" :option="option"></date-picker>
+      <date-picker :time.sync="starttime" :option="option" :limit="limit"></date-picker>
     </div>
     <div class="row">
       <span>Return Date：</span>
