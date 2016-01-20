@@ -11,7 +11,8 @@ export default {
       default: function() {
         return {
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          format:'YYYY-MM-DD'
         }
       }
     }
@@ -55,7 +56,7 @@ export default {
         if (time === undefined) {
           this.checked.currentMoment = moment()
         } else {
-          this.checked.currentMoment = moment(time)
+          this.checked.currentMoment = moment(time,this.option.format)
         }
         this.showOne('day')
 
@@ -99,7 +100,10 @@ export default {
         this.dayList.map(x => x.checked = false)
         obj.checked = true
         this.checked.day = obj.value
-        this.time = this.checked.year + '-' + this.checked.month + '-' + this.checked.day
+        this.checked.day.length < 2 ? this.checked.day = '0'+this.checked.day : this.checked.day
+        let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day
+        this.checked.currentMoment = moment(ctime, "YYYY-MM-DD")
+        this.time = moment(this.checked.currentMoment).format(this.option.format)
         this.showInfo.check = false
       },
       showYear() {
@@ -201,6 +205,7 @@ export default {
   position: fixed;
   display: block;
   width: 400px;
+  max-width: 100%;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -219,6 +224,7 @@ export default {
   -webkit-box-sizing: border-box !important;
   -ms-box-sizing: border-box !important;
   width: 400px;
+  max-width: 100%;
   height: 280px;
   text-align: start!important;
 }

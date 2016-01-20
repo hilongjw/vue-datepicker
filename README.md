@@ -29,13 +29,13 @@ import myDatepicker from 'vue-datepicker'
 export default {
   data() {
       return {
-      	time:{
-      		ourtime: '',
-	        option: {
-	          week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-	          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-	        }
-      	}
+        starttime: '',
+        endtime: '2016-01-19',
+        option: {
+          week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          format:'YYYY-MM-DD'
+        }
       }
     },
     components: {
@@ -43,12 +43,38 @@ export default {
     }
 }
 </script>
+<style>
+.card {
+  text-align: center;
+  background: #8E24AA;
+  margin-top: 200px;
+  padding: 50px;
+  color: #fff;
+}
 
+.row {
+  margin-bottom: 1rem;
+}
+.test{
+  text-align: center;
+}
+</style>
 <template>
-	<div class="someclass">
-		<date-picker :time.sync="time.ourtime" :option="time.option"></date-picker>
-	</div>
-  
+  <div class="card">
+    <div class="row">
+      <span>Departure Date：</span>
+      <date-picker :time.sync="starttime" :option="option"></date-picker>
+    </div>
+    <div class="row">
+      <span>Return Date：</span>
+      <date-picker :time.sync="endtime" :option="option"></date-picker>
+    </div>
+  </div>
+  <div class="test">
+    Departure Date:{{starttime}}
+    <br> 
+    Return Date：{{endtime}}
+  </div>
 </template>
 
 ```
