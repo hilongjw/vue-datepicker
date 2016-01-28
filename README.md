@@ -92,25 +92,31 @@ export default {
 *from sometime to sometime
 
 ```javascript
+
 limit: {
   type:'fromto',
   from:'2016-01-10',
   to:'2016-01-30'
 }
+
 ```
 *weekdays
 
 ```javascript
+
 limit:{
   type: 'weekday',
   available: [1, 2, 3, 4, 5] 
 }
-```javascript
+
+```
 
 prop
 
 ```html
+
 <date-picker :time.sync="starttime" :limit="limit"></date-picker>
+
 ```
 
 # License
