@@ -84,6 +84,32 @@ export default {
 
 ```
 
+# API
+
+
+ - limit
+
+from sometime to sometime
+
+limit: {
+  type:'fromto',
+  from:'2016-01-10',
+  to:'2016-01-30'
+}
+
+weekdays
+
+limit:{
+  type: 'weekday',
+  available: [1,2,3,4,5] 
+}
+
+
+prop
+
+<date-picker :time.sync="starttime" :limit="limit"></date-picker>
+
+
 # License
 
 [The MIT License](http://opensource.org/licenses/MIT)

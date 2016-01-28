@@ -25,10 +25,6 @@ export default {
   },
   data() {
     return {
-      limition:{
-        from: '2016-01-10',
-          to: '2016-01-20'
-      },
       showInfo: {
         day: false,
         month: false,
@@ -106,16 +102,30 @@ export default {
             case 'fromto':
               days = this.limitFromTo(days)
               break;
+            case 'weekday':
+              days = this.limitWeekDay(days)
+              break;
           }
         }
 
         this.dayList = days
 
       },
+      limitWeekDay(days){
+        days.map((day) => {
+          let tday
+          day.value < 10 ? tday = '0'+day.value : tday = day.value
+          
+          if(this.limit.available.indexOf(Math.floor(moment(this.checked.year +'-'+ this.checked.month +'-'+tday).format('d'))) == -1 ){
+           day.unavailable = true
+          }
+          
+        })
+        return days
+      },
       limitFromTo(days){
-        let self = this
-        days.map(function(day){
-          if(!moment(self.checked.year +'-'+ self.checked.month +'-'+day.value).isBetween(self.limition.from, self.limition.to)){
+        days.map((day) => {
+          if(!moment(this.checked.year +'-'+ this.checked.month +'-'+day.value).isBetween(this.limit.from, this.limit.to)){
            day.unavailable = true
           }
         })
@@ -132,6 +142,7 @@ export default {
         this.time = moment(this.checked.currentMoment).format(this.option.format)
         this.showInfo.check = false
       },
+
       showYear() {
         let year = moment(this.checked.currentMoment).year()
         this.library.year = []
