@@ -17,9 +17,9 @@ export default {
       }
     },
     limit: {
-      type: Object,
+      type: Array,
       default: function() {
-        return null
+        return []
       }
     }
   },
@@ -97,35 +97,37 @@ export default {
           })
         }
 
-        if(this.limit != null){
-          switch (this.limit.type) {
-            case 'fromto':
-              days = this.limitFromTo(days)
-              break;
-            case 'weekday':
-              days = this.limitWeekDay(days)
-              break;
+        if(this.limit.length > 0){
+          for(let li of this.limit){
+            switch (li.type) {
+              case 'fromto':
+                days = this.limitFromTo(li, days)
+                break;
+              case 'weekday':
+                days = this.limitWeekDay(li, days)
+                break;
+            }
           }
         }
 
         this.dayList = days
 
       },
-      limitWeekDay(days){
+      limitWeekDay(limit, days){
         days.map((day) => {
           let tday
           day.value < 10 ? tday = '0'+day.value : tday = day.value
           
-          if(this.limit.available.indexOf(Math.floor(moment(this.checked.year +'-'+ this.checked.month +'-'+tday).format('d'))) == -1 ){
+          if(limit.available.indexOf(Math.floor(moment(this.checked.year +'-'+ this.checked.month +'-'+tday).format('d'))) == -1 ){
            day.unavailable = true
           }
           
         })
         return days
       },
-      limitFromTo(days){
+      limitFromTo(limit, days){
         days.map((day) => {
-          if(!moment(this.checked.year +'-'+ this.checked.month +'-'+day.value).isBetween(this.limit.from, this.limit.to)){
+          if(!moment(this.checked.year +'-'+ this.checked.month +'-'+day.value).isBetween(limit.from, limit.to)){
            day.unavailable = true
           }
         })
