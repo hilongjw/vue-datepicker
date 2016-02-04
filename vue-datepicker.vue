@@ -10,6 +10,7 @@ export default {
       type: Object,
       default: function() {
         return {
+          type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format:'YYYY-MM-DD'
@@ -26,6 +27,7 @@ export default {
   data() {
     return {
       showInfo: {
+        hour: false,
         day: false,
         month: false,
         year: false,
@@ -49,6 +51,11 @@ export default {
       dayList: []
     }
   },
+  // computed:{
+  //   showType(){
+
+  //   }
+  // },
   methods: {
     nextMonth(type) {
         let next = null;
@@ -142,7 +149,13 @@ export default {
         let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day
         this.checked.currentMoment = moment(ctime, "YYYY-MM-DD")
         this.time = moment(this.checked.currentMoment).format(this.option.format)
-        this.showInfo.check = false
+        if(this.option.type == 'day'){
+          this.showInfo.check = false
+        }
+        if(this.option.type == 'hour'){
+          this.showOne('hour')
+        }
+        
       },
 
       showYear() {
@@ -166,17 +179,26 @@ export default {
       showOne(type) {
         switch (type) {
           case 'year':
+            this.showInfo.hour = false
             this.showInfo.day = false
             this.showInfo.year = true
             this.showInfo.month = false
             break;
           case 'month':
+            this.showInfo.hour = false
             this.showInfo.day = false
             this.showInfo.year = false
             this.showInfo.month = true
             break;
           case 'day':
+            this.showInfo.hour = false
             this.showInfo.day = true
+            this.showInfo.year = false
+            this.showInfo.month = false
+            break;
+          case 'hour':
+            this.showInfo.hour = true
+            this.showInfo.day = false
             this.showInfo.year = false
             this.showInfo.month = false
             break;
@@ -184,6 +206,8 @@ export default {
             this.showInfo.day = true
             this.showInfo.year = false
             this.showInfo.month = false
+            this.showInfo.hour = false
+
 
         }
       },
@@ -427,18 +451,18 @@ table {
   transform: rotate(-45deg);
 }
 
-.year-item {
+.date-item {
   text-align: center;
   font-size: 20px;
   padding: 10px 0;
   cursor: pointer;
 }
 
-.year-item:hover {
+.date-item:hover {
   background: #e0e0e0;
 }
 
-.year-list {
+.date-list {
   overflow: auto;
   vertical-align: top;
   padding: 0;
@@ -502,14 +526,19 @@ table {
           <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable}">{{day.value}}</div>
         </div>
       </div>
-      <div class="cov-date-box year-box" v-if="showInfo.year">
-        <div class="cov-picker-box year-list" id="yearList">
-          <div class="year-item" v-for="yearItem in library.year" track-by="$index" @click="setYear(yearItem)">{{yearItem}}</div>
+      <div class="cov-date-box list-box" v-if="showInfo.year">
+        <div class="cov-picker-box date-list" id="yearList">
+          <div class="date-item" v-for="yearItem in library.year" track-by="$index" @click="setYear(yearItem)">{{yearItem}}</div>
         </div>
       </div>
-      <div class="cov-date-box year-box" v-if="showInfo.month">
-        <div class="cov-picker-box year-list">
-          <div class="year-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
+      <div class="cov-date-box list-box" v-if="showInfo.month">
+        <div class="cov-picker-box date-list">
+          <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
+        </div>
+      </div>
+      <div class="cov-date-box list-box" v-if="showInfo.hour">
+        <div class="cov-picker-box date-list">
+          <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
         </div>
       </div>
       <div class="cancel"><span @click="showInfo.check=false">cancel</span></div>
