@@ -25,12 +25,13 @@ $ npm install vue-datepicker
 ```html
 <!-- your component -->
 <script>
-import myDatepicker from './covdata.vue'
+import myDatepicker from 'vue-datepicker'
 export default {
   data() {
       return {
         starttime: '',
         endtime: '2016-01-19',
+        testTime: '',
         option: {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -38,10 +39,10 @@ export default {
           format:'YYYY-MM-DD'
         },
         timeoption: {
-          type: 'hour',
+          type: 'min',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format:'YYYY-MM-DD'
+          format:"YYYY-MM-DD HH:mm"
         },
         limit:[{
             type: 'weekday',
@@ -59,22 +60,6 @@ export default {
     }
 }
 </script>
-<style>
-.card {
-  text-align: center;
-  background: #8E24AA;
-  margin-top: 200px;
-  padding: 50px;
-  color: #fff;
-}
-
-.row {
-  margin-bottom: 1rem;
-}
-.test{
-  text-align: center;
-}
-</style>
 <template>
   <div class="card">
     <div class="row">
@@ -87,15 +72,17 @@ export default {
     </div>
     <div class="row">
       <span>time：</span>
-      <date-picker :time.sync="endtime" :option="timeoption"></date-picker>
+      <date-picker :time.sync="testTime" :option="timeoption"></date-picker>
     </div>
   </div>
   <div class="test">
     Departure Date:{{starttime}}
     <br> Return Date：{{endtime}}
+    <br> test Date：{{testTime}}
   </div>
   <input type="time">
 </template>
+
 
 ```
 

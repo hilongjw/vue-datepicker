@@ -1,6 +1,17 @@
 <script>
-import moment from 'moment'
-export default {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+exports['default'] = {
   props: {
     time: {
       type: String,
@@ -8,24 +19,51 @@ export default {
     },
     option: {
       type: Object,
-      default: function() {
+      'default': function _default() {
         return {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format:'YYYY-MM-DD'
-        }
+          format: 'YYYY-MM-DD'
+        };
       }
     },
     limit: {
       type: Array,
-      default: function() {
-        return []
+      'default': function _default() {
+        return [];
       }
     }
   },
-  data() {
+  data: function data() {
+    function hours() {
+      var list = [];
+      var hour = 25;
+      while (hour > 1) {
+        hour--;
+
+        list.push({
+          checked: false,
+          value: hour < 10 ? '0' + hour : hour
+        });
+      }
+      return list;
+    }
+    function mins() {
+      var list = [];
+      var min = 61;
+      while (min > 1) {
+        min--;
+        list.push({
+          checked: false,
+          value: min < 10 ? '0' + min : min
+        });
+      }
+      return list;
+    }
     return {
+      hours: hours(),
+      mins: mins(),
       showInfo: {
         hour: false,
         day: false,
@@ -47,214 +85,265 @@ export default {
         year: '',
         month: '',
         day: '',
+        hour: '00',
+        min: '00'
       },
       dayList: []
-    }
+    };
   },
-  // computed:{
-  //   showType(){
-
-  //   }
-  // },
   methods: {
-    nextMonth(type) {
-        let next = null;
+    nextMonth: function nextMonth(type) {
+      var next = null;
 
-        type == 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
+      type == 'next' ? next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M');
 
-        this.showDay(next)
-      },
-      showDay(time) {
+      this.showDay(next);
+    },
+    showDay: function showDay(time) {
 
-        if (time === undefined) {
-          this.checked.currentMoment = moment()
-        } else {
-          this.checked.currentMoment = moment(time,this.option.format)
+      if (time === undefined) {
+        this.checked.currentMoment = (0, _moment2['default'])();
+      } else {
+        this.checked.currentMoment = (0, _moment2['default'])(time, this.option.format);
+      }
+      this.showOne('day');
+
+      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format("YYYY");
+      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format("MM");
+      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
+
+      this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];
+
+      var days = [];
+      var currentMoment = time;
+      var firstDay = (0, _moment2['default'])(currentMoment).date(1).day();
+      var monthDays = (0, _moment2['default'])(currentMoment).daysInMonth();
+      var oldtime = this.checked.oldtime;
+      for (var i = 1; i <= monthDays; ++i) {
+        days.push({
+          value: i,
+          inMonth: true,
+          unavailable: false,
+          checked: false
+        });
+        if (i == Math.ceil((0, _moment2['default'])(currentMoment).format("D")) && (0, _moment2['default'])(oldtime).year() == (0, _moment2['default'])(currentMoment).year() && (0, _moment2['default'])(oldtime).month() == (0, _moment2['default'])(currentMoment).month()) {
+          days[i - 1].checked = true;
         }
-        this.showOne('day')
+      }
 
+      for (var i = 0; i < firstDay - 1; i++) {
+        days.unshift({
+          value: '',
+          inMonth: false
+        });
+      }
 
-        this.checked.year = moment(this.checked.currentMoment).format("YYYY")
-        this.checked.month = moment(this.checked.currentMoment).format("MM")
-        this.checked.day = moment(this.checked.currentMoment).format("DD")
+      if (this.limit.length > 0) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-        this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
+        try {
+          for (var _iterator = this.limit[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var li = _step.value;
 
-        let days = []
-        let currentMoment = time
-        let firstDay = moment(currentMoment).date(1).day()
-        let monthDays = moment(currentMoment).daysInMonth()
-        let oldtime = this.checked.oldtime;
-        for (let i = 1; i <= monthDays; ++i) {
-          days.push({
-            value: i,
-            inMonth: true,
-            unavailable: false,
-            checked: false
-          })
-          if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
-            days[i - 1].checked = true
-          }
-        }
-
-        for (let i = 0; i < firstDay - 1; i++) {
-          days.unshift({
-            value: '',
-            inMonth: false
-          })
-        }
-
-        if(this.limit.length > 0){
-          for(let li of this.limit){
             switch (li.type) {
               case 'fromto':
-                days = this.limitFromTo(li, days)
+                days = this.limitFromTo(li, days);
                 break;
               case 'weekday':
-                days = this.limitWeekDay(li, days)
+                days = this.limitWeekDay(li, days);
                 break;
             }
           }
-        }
-
-        this.dayList = days
-
-      },
-      limitWeekDay(limit, days){
-        days.map((day) => {
-          let tday
-          day.value < 10 ? tday = '0'+day.value : tday = day.value
-          
-          if(limit.available.indexOf(Math.floor(moment(this.checked.year +'-'+ this.checked.month +'-'+tday).format('d'))) == -1 ){
-           day.unavailable = true
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator['return']) {
+              _iterator['return']();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
           }
-          
-        })
-        return days
-      },
-      limitFromTo(limit, days){
-        days.map((day) => {
-          if(!moment(this.checked.year +'-'+ this.checked.month +'-'+day.value).isBetween(limit.from, limit.to)){
-           day.unavailable = true
-          }
-        })
-        return days
-      },
-      checkDay(obj) {
-        if(obj.unavailable){return false}
-        this.dayList.map(x => x.checked = false)
-        obj.checked = true
-        this.checked.day = obj.value
-        this.checked.day.length < 2 ? this.checked.day = '0'+this.checked.day : this.checked.day
-        let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day
-        this.checked.currentMoment = moment(ctime, "YYYY-MM-DD")
-        this.time = moment(this.checked.currentMoment).format(this.option.format)
-        if(this.option.type == 'day'){
-          this.showInfo.check = false
         }
-        if(this.option.type == 'hour'){
-          this.showOne('hour')
-        }
-        
-      },
-
-      showYear() {
-        let year = moment(this.checked.currentMoment).year()
-        this.library.year = []
-        let yearTmp = []
-        for (let i = year - 100; i < year + 5; ++i) {
-          yearTmp.push(i)
-        }
-        this.library.year = yearTmp
-
-        this.showOne('year')
-
-        let self = this
-        this.$nextTick(function() {
-          let listDom = document.getElementById('yearList');
-          listDom.scrollTop = (listDom.scrollHeight - 100)
-          self.addYear()
-        })
-      },
-      showOne(type) {
-        switch (type) {
-          case 'year':
-            this.showInfo.hour = false
-            this.showInfo.day = false
-            this.showInfo.year = true
-            this.showInfo.month = false
-            break;
-          case 'month':
-            this.showInfo.hour = false
-            this.showInfo.day = false
-            this.showInfo.year = false
-            this.showInfo.month = true
-            break;
-          case 'day':
-            this.showInfo.hour = false
-            this.showInfo.day = true
-            this.showInfo.year = false
-            this.showInfo.month = false
-            break;
-          case 'hour':
-            this.showInfo.hour = true
-            this.showInfo.day = false
-            this.showInfo.year = false
-            this.showInfo.month = false
-            break;
-          default:
-            this.showInfo.day = true
-            this.showInfo.year = false
-            this.showInfo.month = false
-            this.showInfo.hour = false
-
-
-        }
-      },
-      showMonth() {
-        this.showOne('month')
-      },
-      addYear() {
-        let self = this;
-        let listDom = document.getElementById('yearList');
-        let tmp = 0;
-        listDom.addEventListener('scroll', function(e) {
-
-          if (listDom.scrollTop < listDom.scrollHeight - 100) {
-            let len = self.library.year.length
-            let lastYear = self.library.year[len - 1]
-            self.library.year.push(lastYear + 1)
-          }
-
-
-        }, false)
-      },
-      setYear(year) {
-        this.checked.currentMoment = moment(year + '-' + this.checked.month + '-' + this.checked.day)
-        this.showDay(this.checked.currentMoment)
-      },
-      setMonth(month) {
-        let mo = (this.library.month.indexOf(month) + 1);
-        if (mo < 10) {
-          mo = '0' + '' + mo
-        }
-        this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
-        this.showDay(this.checked.currentMoment)
-      },
-      showCheck() {
-        if (this.time == '') {
-          this.showDay()
-        } else {
-          this.checked.oldtime = this.time
-          this.showDay(this.time)
-        }
-
-        this.showInfo.check = true;
       }
 
+      this.dayList = days;
+    },
+    limitWeekDay: function limitWeekDay(limit, days) {
+      var _this = this;
+
+      days.map(function (day) {
+        var tday = undefined;
+        day.value < 10 ? tday = '0' + day.value : tday = day.value;
+
+        if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
+          day.unavailable = true;
+        }
+      });
+      return days;
+    },
+    limitFromTo: function limitFromTo(limit, days) {
+      var _this2 = this;
+
+      days.map(function (day) {
+        if (!(0, _moment2['default'])(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+          day.unavailable = true;
+        }
+      });
+      return days;
+    },
+    checkDay: function checkDay(obj) {
+      if (obj.unavailable) {
+        return false;
+      }
+      this.dayList.map(function (x) {
+        return x.checked = false;
+      });
+      obj.checked = true;
+      this.checked.day = obj.value;
+      this.checked.day.length < 2 ? this.checked.day = '0' + this.checked.day : this.checked.day;
+      if (this.option.type == 'day') {
+        this.picked();
+      } else {
+        this.showOne('hour');
+      }
+    },
+
+    showYear: function showYear() {
+      var year = (0, _moment2['default'])(this.checked.currentMoment).year();
+      this.library.year = [];
+      var yearTmp = [];
+      for (var i = year - 100; i < year + 5; ++i) {
+        yearTmp.push(i);
+      }
+      this.library.year = yearTmp;
+
+      this.showOne('year');
+
+      var self = this;
+      this.$nextTick(function () {
+        var listDom = document.getElementById('yearList');
+        listDom.scrollTop = listDom.scrollHeight - 100;
+        self.addYear();
+      });
+    },
+    showOne: function showOne(type) {
+      switch (type) {
+        case 'year':
+          this.showInfo.hour = false;
+          this.showInfo.day = false;
+          this.showInfo.year = true;
+          this.showInfo.month = false;
+          break;
+        case 'month':
+          this.showInfo.hour = false;
+          this.showInfo.day = false;
+          this.showInfo.year = false;
+          this.showInfo.month = true;
+          break;
+        case 'day':
+          this.showInfo.hour = false;
+          this.showInfo.day = true;
+          this.showInfo.year = false;
+          this.showInfo.month = false;
+          break;
+        case 'hour':
+          this.showInfo.hour = true;
+          this.showInfo.day = false;
+          this.showInfo.year = false;
+          this.showInfo.month = false;
+          break;
+        default:
+          this.showInfo.day = true;
+          this.showInfo.year = false;
+          this.showInfo.month = false;
+          this.showInfo.hour = false;
+
+      }
+    },
+    showMonth: function showMonth() {
+      this.showOne('month');
+    },
+    addYear: function addYear() {
+      var self = this;
+      var listDom = document.getElementById('yearList');
+      var tmp = 0;
+      listDom.addEventListener('scroll', function (e) {
+
+        if (listDom.scrollTop < listDom.scrollHeight - 100) {
+          var len = self.library.year.length;
+          var lastYear = self.library.year[len - 1];
+          self.library.year.push(lastYear + 1);
+        }
+      }, false);
+    },
+    setYear: function setYear(year) {
+      this.checked.currentMoment = (0, _moment2['default'])(year + '-' + this.checked.month + '-' + this.checked.day);
+      this.showDay(this.checked.currentMoment);
+    },
+    setMonth: function setMonth(month) {
+      var mo = this.library.month.indexOf(month) + 1;
+      if (mo < 10) {
+        mo = '0' + '' + mo;
+      }
+      this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + mo + '-' + this.checked.day);
+      this.showDay(this.checked.currentMoment);
+    },
+    showCheck: function showCheck() {
+      if (this.time == '') {
+        this.showDay();
+      } else {
+        this.checked.oldtime = this.time;
+        this.showDay(this.time);
+      }
+
+      this.showInfo.check = true;
+    },
+    setTime: function setTime(type, obj, list) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var item = _step2.value;
+
+          item.checked = false;
+          if (item.value == obj.value) {
+            item.checked = true;
+            this.checked[type] = item.value;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+            _iterator2['return']();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    },
+    picked: function picked() {
+      var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
+      this.checked.currentMoment = (0, _moment2['default'])(ctime, "YYYY-MM-DD HH:mm");
+      this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
+      this.showInfo.check = false;
+    }
 
   }
-}
+};
+module.exports = exports['default'];
 </script>
 <style scoped>
 .cov-date-body {
@@ -345,6 +434,7 @@ table {
   color: #FFF !important;
   border-radius: 3px;
 }
+
 .unavailable {
   color: #ccc;
   cursor: not-allowed;
@@ -485,20 +575,62 @@ table {
   color: #5D5D5D;
 }
 
-.cancel {
+.button-box {
   background: #fff;
   vertical-align: top;
   height: 50px;
   line-height: 50px;
+  text-align: right;
+  padding-right: 20px;
 }
 
-.cancel span {
+.button-box span {
   cursor: pointer;
   padding: 10px 20px;
 }
 
-.cancel span:hover{
-  background: #E2E2E2;
+.watch-box {
+  height: 100%;
+  overflow: hidden;
+}
+
+.hour-box,
+.min-box {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  height: 100%;
+  overflow: auto;
+  float: left;
+}
+.hour-box ul,
+.min-box ul{
+  list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hour-item, .min-item {
+  padding: 10px;
+  font-size: 36px;
+  cursor: pointer;
+}
+.hour-item:hover, .min-item:hover{
+  background: #E3E3E3;
+}
+.hour-box .active, .min-box .active{
+  background: #F50057;
+  color: #FFF !important;
+}
+::-webkit-scrollbar {
+    width: 2px;
+}
+::-webkit-scrollbar-track {
+    background: #E3E3E3;
+}
+::-webkit-scrollbar-thumb {
+    background: #C1C1C1;
+    border-radius: 2px;
 }
 </style>
 <template>
@@ -538,10 +670,35 @@ table {
       </div>
       <div class="cov-date-box list-box" v-if="showInfo.hour">
         <div class="cov-picker-box date-list">
-          <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
+          <!-- <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div> -->
+          <div class="watch-box">
+            <div class="hour-box">
+            <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+            <ul>
+              <li 
+              class="hour-item" 
+              v-for="hitem in hours" 
+              @click="setTime('hour', hitem, hours)"
+              :class="{'active':hitem.checked}"
+              >{{hitem.value}}</li>
+            </ul>
+            </div>
+            <div class="min-box">
+            <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+              <div 
+              class="min-item" 
+              v-for="mitem in mins" 
+              @click="setTime('min',mitem, mins)"
+              :class="{'active':mitem.checked}"
+              >{{mitem.value}}</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="cancel"><span @click="showInfo.check=false">cancel</span></div>
+      <div class="button-box">
+        <span @click="showInfo.check=false">Cancel</span>
+        <span @click="picked">OK</span>
+      </div>
     </div>
   </div>
 </template>
