@@ -359,10 +359,11 @@ table {
   line-height: 34px;
   color: #000;
   background: #fff;
+  vertical-align: middle;
 }
 
 .week ul {
-  margin: 0;
+  margin: 0 0 8px;
   padding: 0;
   list-style: none;
 }
@@ -602,7 +603,13 @@ table {
               <li v-for="weekie in library.week">{{weekie}}</li>
             </ul>
           </div>
-          <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable}">{{day.value}}</div>
+          <div
+          class="day"
+          v-for="day in dayList"
+          track-by="$index"
+          @click="checkDay(day)"
+          :class="{'checked':day.checked,'unavailable':day.unavailable}"
+          >{{day.value}}</div>
         </div>
       </div>
       <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -617,7 +624,6 @@ table {
       </div>
       <div class="cov-date-box list-box" v-if="showInfo.hour">
         <div class="cov-picker-box date-list">
-          <!-- <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div> -->
           <div class="watch-box">
             <div class="hour-box">
             <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
