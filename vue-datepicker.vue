@@ -58,8 +58,8 @@ exports['default'] = {
       var list = _temporalUndefined;
       var hour = _temporalUndefined;
       list = [];
-      hour = 25;
-      while ((_temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour) > 1) {
+      hour = 24;
+      while ((_temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour) > 0) {
         _temporalAssertDefined(hour, 'hour', _temporalUndefined), hour--;
 
         (_temporalAssertDefined(list, 'list', _temporalUndefined) && list).push({
@@ -73,8 +73,8 @@ exports['default'] = {
       var list = _temporalUndefined;
       var min = _temporalUndefined;
       list = [];
-      min = 61;
-      while ((_temporalAssertDefined(min, 'min', _temporalUndefined) && min) > 1) {
+      min = 60;
+      while ((_temporalAssertDefined(min, 'min', _temporalUndefined) && min) > 0) {
         _temporalAssertDefined(min, 'min', _temporalUndefined), min--;
         (_temporalAssertDefined(list, 'list', _temporalUndefined) && list).push({
           checked: false,

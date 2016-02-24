@@ -42,8 +42,8 @@ export default {
   data() {
     function hours() {
         let list = []
-        let hour = 25
-        while (hour > 1) {
+        let hour = 24
+        while (hour > 0) {
           hour--
 
           list.push({
@@ -55,8 +55,8 @@ export default {
       }
       function mins() {
         let list = []
-        let min = 61
-        while (min > 1) {
+        let min = 60
+        while (min > 0) {
           min--
           list.push({
             checked: false,
