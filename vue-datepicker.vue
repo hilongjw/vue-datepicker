@@ -27,7 +27,22 @@ exports['default'] = {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format: 'YYYY-MM-DD'
+          format: 'YYYY-MM-DD',
+          color: {
+            header: '#3f51b5',
+            headerText: '#fff'
+          },
+          inputStyle: {
+            'display': 'inline-block',
+            'padding': '6px',
+            'line-height': '22px',
+            'font-size': '16px',
+            'border': '2px solid #fff',
+            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+            'border-radius': '2px',
+            'color': '#5F5F5F'
+          },
+          placeholder: 'when?'
         };
       }
     },
@@ -115,7 +130,7 @@ exports['default'] = {
       var monthDays = _temporalUndefined;
       var oldtime = _temporalUndefined;
 
-      if (time === undefined) {
+      if (time === undefined || !Date.parse(time)) {
         this.checked.currentMoment = (0, _moment2['default'])();
       } else {
         this.checked.currentMoment = (0, _moment2['default'])(time, this.option.format);
@@ -127,7 +142,7 @@ exports['default'] = {
       this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
 
       this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];days = [];
-      currentMoment = time;
+      currentMoment = this.checked.currentMoment;
       firstDay = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).date(1).day();
       monthDays = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).daysInMonth();
       oldtime = this.checked.oldtime;
@@ -670,12 +685,22 @@ table {
 <template>
   <div class="cov-vue-date">
     <div class="datepickbox">
-      <input type="text" title="input date" class="cov-datepicker" placeholder="When?" v-model="time" @click="showCheck" />
+      <input 
+      type="text" 
+      title="input date" 
+      class="cov-datepicker" 
+      placeholder="{{option.placeholder}}" 
+      v-model="time" 
+      @click="showCheck" 
+      :style="option.inputStyle"/>
     </div>
-    <div class="cov-date-body" v-if="showInfo.check">
+    <div 
+    class="cov-date-body" 
+    :style="{'background-color': option.color ? option.color.header : '#3f51b5'}"
+    v-if="showInfo.check">
       <div class="cov-date-monthly">
         <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-        <div class="cov-date-caption">
+        <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
           <span @click="showYear"><small>{{checked.year}}</small></span>
           <br>
           <span @click="showMonth">{{displayInfo.month}}</span>

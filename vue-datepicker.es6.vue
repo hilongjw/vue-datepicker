@@ -8,18 +8,33 @@ export default {
     },
     option: {
       type: Object,
-      default: function() {
+      default() {
         return {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format: 'YYYY-MM-DD'
+          format: 'YYYY-MM-DD',
+          color: {
+            header: '#3f51b5',
+            headerText: '#fff'
+          },
+          inputStyle: {
+            'display': 'inline-block',
+            'padding': '6px',
+            'line-height': '22px',
+            'font-size': '16px',
+            'border': '2px solid #fff',
+            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+            'border-radius': '2px',
+            'color': '#5F5F5F'
+          },
+          placeholder: 'when?'
         }
       }
     },
     limit: {
       type: Array,
-      default: function() {
+      default() {
         return []
       }
     }
@@ -89,14 +104,12 @@ export default {
         this.showDay(next)
       },
       showDay(time) {
-
-        if (time === undefined) {
+        if (time === undefined||!Date.parse(time)) {
           this.checked.currentMoment = moment()
         } else {
-          this.checked.currentMoment = moment(time, this.option.format)
+            this.checked.currentMoment = moment(time, this.option.format)
         }
         this.showOne('day')
-
 
         this.checked.year = moment(this.checked.currentMoment).format("YYYY")
         this.checked.month = moment(this.checked.currentMoment).format("MM")
@@ -105,7 +118,7 @@ export default {
         this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
 
         let days = []
-        let currentMoment = time
+        let currentMoment = this.checked.currentMoment
         let firstDay = moment(currentMoment).date(1).day()
         let monthDays = moment(currentMoment).daysInMonth()
         let oldtime = this.checked.oldtime;
@@ -584,12 +597,22 @@ table {
 <template>
   <div class="cov-vue-date">
     <div class="datepickbox">
-      <input type="text" title="input date" class="cov-datepicker" placeholder="When?" v-model="time" @click="showCheck" />
+      <input 
+      type="text" 
+      title="input date" 
+      class="cov-datepicker" 
+      placeholder="{{option.placeholder}}" 
+      v-model="time" 
+      @click="showCheck" 
+      :style="option.inputStyle"/>
     </div>
-    <div class="cov-date-body" v-if="showInfo.check">
+    <div 
+    class="cov-date-body" 
+    :style="{'background-color': option.color ? option.color.header : '#3f51b5'}"
+    v-if="showInfo.check">
       <div class="cov-date-monthly">
         <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-        <div class="cov-date-caption">
+        <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
           <span @click="showYear"><small>{{checked.year}}</small></span>
           <br>
           <span @click="showMonth">{{displayInfo.month}}</span>
