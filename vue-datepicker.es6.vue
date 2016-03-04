@@ -26,7 +26,7 @@ export default {
             'border': '2px solid #fff',
             'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
             'border-radius': '2px',
-            'color': '#5F5F5F'
+            'color': '#5F5F5F',
           },
           placeholder: 'when?'
         }
@@ -324,6 +324,7 @@ export default {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  z-index : 999;
 }
 
 .cov-picker-box {
