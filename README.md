@@ -51,6 +51,10 @@ export default {
           color: {
             header: '#ccc',
             headerText: '#f00'
+          },
+          buttons : {
+            ok : 'Ok',
+            cancel : 'Cancel'
           }
         },
         timeoption: {
