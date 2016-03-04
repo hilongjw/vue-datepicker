@@ -178,7 +178,7 @@ export default {
         return days
       },
       checkDay(obj) {
-        if (obj.unavailable) {
+        if (obj.unavailable || obj.value == '') {
           return false
         }
         this.dayList.map(x => x.checked = false)
