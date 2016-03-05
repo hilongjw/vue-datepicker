@@ -144,9 +144,9 @@ exports['default'] = {
       }
       this.showOne('day');
 
-      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format("YYYY");
-      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format("MM");
-      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
+      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format('YYYY');
+      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format('MM');
+      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format('DD');
 
       this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];days = [];
       currentMoment = this.checked.currentMoment;
@@ -160,7 +160,7 @@ exports['default'] = {
           unavailable: false,
           checked: false
         });
-        if ((_temporalAssertDefined(i, 'i') && i) == Math.ceil((0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).format("D")) && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).year() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).year() && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).month() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).month()) {
+        if ((_temporalAssertDefined(i, 'i') && i) == Math.ceil((0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).format('D')) && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).year() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).year() && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).month() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).month()) {
           (_temporalAssertDefined(days, 'days') && days)[(_temporalAssertDefined(i, 'i') && i) - 1].checked = true;
         }
       }
@@ -381,7 +381,7 @@ exports['default'] = {
     },
     picked: function() {
       var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
-      this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime') && ctime, "YYYY-MM-DD HH:mm");
+      this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime') && ctime, 'YYYY-MM-DD HH:mm');
       this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
     }

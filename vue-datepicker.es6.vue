@@ -111,9 +111,9 @@ export default {
         }
         this.showOne('day')
 
-        this.checked.year = moment(this.checked.currentMoment).format("YYYY")
-        this.checked.month = moment(this.checked.currentMoment).format("MM")
-        this.checked.day = moment(this.checked.currentMoment).format("DD")
+        this.checked.year = moment(this.checked.currentMoment).format('YYYY')
+        this.checked.month = moment(this.checked.currentMoment).format('MM')
+        this.checked.day = moment(this.checked.currentMoment).format('DD')
 
         this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
 
@@ -129,7 +129,7 @@ export default {
             unavailable: false,
             checked: false
           })
-          if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
+          if (i == Math.ceil(moment(currentMoment).format('D')) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
             days[i - 1].checked = true
           }
         }
@@ -296,7 +296,7 @@ export default {
       },
       picked(){
         let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day+' '+this.checked.hour+':'+this.checked.min
-        this.checked.currentMoment = moment(ctime, "YYYY-MM-DD HH:mm")
+        this.checked.currentMoment = moment(ctime, 'YYYY-MM-DD HH:mm')
         this.time = moment(this.checked.currentMoment).format(this.option.format)
         this.showInfo.check=false
       }
