@@ -123,9 +123,8 @@ exports['default'] = {
   },
   methods: {
     nextMonth: function(type) {
-      var next = _temporalUndefined;
+      var next = null;
 
-      next = null;
       type == 'next' ? (_temporalAssertDefined(next, 'next'), next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M')) : (_temporalAssertDefined(next, 'next'), next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M'));
 
       this.showDay(_temporalAssertDefined(next, 'next') && next);
@@ -180,8 +179,7 @@ exports['default'] = {
 
         try {
           for (var _iterator = this.limit[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var li = _temporalUndefined;
-            li = _step.value;
+            var li = _step.value;
 
             switch ((_temporalAssertDefined(li, 'li') && li).type) {
               case 'fromto':
@@ -220,8 +218,7 @@ exports['default'] = {
       var _this = this;
 
       days.map(function (day) {
-        var tday = _temporalUndefined;
-        tday = undefined;
+        var tday = undefined;
         day.value < 10 ? (_temporalAssertDefined(tday, 'tday'), tday = '0' + day.value) : (_temporalAssertDefined(tday, 'tday'), tday = day.value);
 
         if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + (_temporalAssertDefined(tday, 'tday') && tday)).format('d'))) == -1) {
@@ -258,13 +255,13 @@ exports['default'] = {
     },
 
     showYear: function() {
-      var year = _temporalUndefined;
+      var year = (0, _moment2['default'])(this.checked.currentMoment).year();
 
-      var yearTmp = _temporalUndefined;
+      var yearTmp = [];
 
       var self = _temporalUndefined;
-      year = (0, _moment2['default'])(this.checked.currentMoment).year();
-      this.library.year = [];yearTmp = [];
+
+      this.library.year = [];
       for (var i = (_temporalAssertDefined(year, 'year') && year) - 100; i < (_temporalAssertDefined(year, 'year') && year) + 5; ++i) {
         (_temporalAssertDefined(yearTmp, 'yearTmp') && yearTmp).push(_temporalAssertDefined(i, 'i') && i);
       }
@@ -272,8 +269,7 @@ exports['default'] = {
 
       this.showOne('year');self = this;
       this.$nextTick(function () {
-        var listDom = _temporalUndefined;
-        listDom = document.getElementById('yearList');
+        var listDom = document.getElementById('yearList');
         (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollTop = (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollHeight - 100;
         (_temporalAssertDefined(self, 'self') && self).addYear();
       });
@@ -316,19 +312,14 @@ exports['default'] = {
       this.showOne('month');
     },
     addYear: function() {
-      var self = _temporalUndefined;
-      var listDom = _temporalUndefined;
-      var tmp = _temporalUndefined;
-      self = this;
-      listDom = document.getElementById('yearList');
-      tmp = 0;
+      var self = this;
+      var listDom = document.getElementById('yearList');
       (_temporalAssertDefined(listDom, 'listDom') && listDom).addEventListener('scroll', function (e) {
 
         if ((_temporalAssertDefined(listDom, 'listDom') && listDom).scrollTop < (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollHeight - 100) {
-          var len = _temporalUndefined;
-          var lastYear = _temporalUndefined;
-          len = (_temporalAssertDefined(self, 'self') && self).library.year.length;
-          lastYear = (_temporalAssertDefined(self, 'self') && self).library.year[(_temporalAssertDefined(len, 'len') && len) - 1];
+          var len = (_temporalAssertDefined(self, 'self') && self).library.year.length;
+          var lastYear = (_temporalAssertDefined(self, 'self') && self).library.year[(_temporalAssertDefined(len, 'len') && len) - 1];
+
           (_temporalAssertDefined(self, 'self') && self).library.year.push((_temporalAssertDefined(lastYear, 'lastYear') && lastYear) + 1);
         }
       }, false);
@@ -338,8 +329,7 @@ exports['default'] = {
       this.showDay(this.checked.currentMoment);
     },
     setMonth: function(month) {
-      var mo = _temporalUndefined;
-      mo = this.library.month.indexOf(month) + 1;
+      var mo = this.library.month.indexOf(month) + 1;
       if ((_temporalAssertDefined(mo, 'mo') && mo) < 10) {
         _temporalAssertDefined(_temporalAssertDefined(mo, 'mo') && mo, 'mo');
 
@@ -390,8 +380,7 @@ exports['default'] = {
       }
     },
     picked: function() {
-      var ctime = _temporalUndefined;
-      ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
+      var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
       this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime') && ctime, "YYYY-MM-DD HH:mm");
       this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
