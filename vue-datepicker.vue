@@ -61,7 +61,7 @@ exports['default'] = {
       }
     }
   },
-  data: function data() {
+  data: function() {
     function hours() {
       var list = _temporalUndefined;
       var hour = _temporalUndefined;
@@ -122,7 +122,7 @@ exports['default'] = {
     };
   },
   methods: {
-    nextMonth: function nextMonth(type) {
+    nextMonth: function(type) {
       var next = _temporalUndefined;
 
       next = null;
@@ -216,7 +216,7 @@ exports['default'] = {
 
       this.dayList = _temporalAssertDefined(days, 'days') && days;
     },
-    limitWeekDay: function limitWeekDay(limit, days) {
+    limitWeekDay: function(limit, days) {
       var _this = this;
 
       days.map(function (day) {
@@ -230,7 +230,7 @@ exports['default'] = {
       });
       return days;
     },
-    limitFromTo: function limitFromTo(limit, days) {
+    limitFromTo: function(limit, days) {
       var _this2 = this;
 
       days.map(function (day) {
@@ -240,7 +240,7 @@ exports['default'] = {
       });
       return days;
     },
-    checkDay: function checkDay(obj) {
+    checkDay: function(obj) {
       if (obj.unavailable) {
         return false;
       }
@@ -257,7 +257,7 @@ exports['default'] = {
       }
     },
 
-    showYear: function showYear() {
+    showYear: function() {
       var year = _temporalUndefined;
 
       var yearTmp = _temporalUndefined;
@@ -278,7 +278,7 @@ exports['default'] = {
         (_temporalAssertDefined(self, 'self') && self).addYear();
       });
     },
-    showOne: function showOne(type) {
+    showOne: function(type) {
       switch (type) {
         case 'year':
           this.showInfo.hour = false;
@@ -312,10 +312,10 @@ exports['default'] = {
 
       }
     },
-    showMonth: function showMonth() {
+    showMonth: function() {
       this.showOne('month');
     },
-    addYear: function addYear() {
+    addYear: function() {
       var self = _temporalUndefined;
       var listDom = _temporalUndefined;
       var tmp = _temporalUndefined;
@@ -333,11 +333,11 @@ exports['default'] = {
         }
       }, false);
     },
-    setYear: function setYear(year) {
+    setYear: function(year) {
       this.checked.currentMoment = (0, _moment2['default'])(year + '-' + this.checked.month + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
-    setMonth: function setMonth(month) {
+    setMonth: function(month) {
       var mo = _temporalUndefined;
       mo = this.library.month.indexOf(month) + 1;
       if ((_temporalAssertDefined(mo, 'mo') && mo) < 10) {
@@ -348,7 +348,7 @@ exports['default'] = {
       this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + (_temporalAssertDefined(mo, 'mo') && mo) + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
-    showCheck: function showCheck() {
+    showCheck: function() {
       if (this.time == '') {
         this.showDay();
       } else {
@@ -358,7 +358,7 @@ exports['default'] = {
 
       this.showInfo.check = true;
     },
-    setTime: function setTime(type, obj, list) {
+    setTime: function(type, obj, list) {
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
@@ -389,7 +389,7 @@ exports['default'] = {
         }
       }
     },
-    picked: function picked() {
+    picked: function() {
       var ctime = _temporalUndefined;
       ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
       this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime') && ctime, "YYYY-MM-DD HH:mm");
