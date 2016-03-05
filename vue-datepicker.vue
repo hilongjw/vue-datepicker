@@ -6,9 +6,17 @@ Object.defineProperty(exports, '__esModule', {
 });
 var _temporalUndefined = {};
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { 'default': obj };
+}
 
-function _temporalAssertDefined(val, name, undef) { if (val === undef) { throw new ReferenceError(name + ' is not defined - temporal dead zone'); } return true; }
+function _temporalAssertDefined(val, name) {
+  var undef = _temporalUndefined;
+  if (val === undef) {
+    throw new ReferenceError(name + ' is not defined - temporal dead zone');
+  }
+  return true;
+}
 
 var _moment = require('moment');
 
@@ -53,35 +61,35 @@ exports['default'] = {
       }
     }
   },
-  data: function data() {
+  data: function() {
     function hours() {
       var list = _temporalUndefined;
       var hour = _temporalUndefined;
       list = [];
       hour = 24;
-      while ((_temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour) > 0) {
-        _temporalAssertDefined(hour, 'hour', _temporalUndefined), hour--;
+      while ((_temporalAssertDefined(hour, 'hour') && hour) > 0) {
+        _temporalAssertDefined(hour, 'hour'), hour--;
 
-        (_temporalAssertDefined(list, 'list', _temporalUndefined) && list).push({
+        (_temporalAssertDefined(list, 'list') && list).push({
           checked: false,
-          value: (_temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour) < 10 ? '0' + (_temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour) : _temporalAssertDefined(hour, 'hour', _temporalUndefined) && hour
+          value: (_temporalAssertDefined(hour, 'hour') && hour) < 10 ? '0' + (_temporalAssertDefined(hour, 'hour') && hour) : _temporalAssertDefined(hour, 'hour') && hour
         });
       }
-      return _temporalAssertDefined(list, 'list', _temporalUndefined) && list;
+      return _temporalAssertDefined(list, 'list') && list;
     }
     function mins() {
       var list = _temporalUndefined;
       var min = _temporalUndefined;
       list = [];
       min = 60;
-      while ((_temporalAssertDefined(min, 'min', _temporalUndefined) && min) > 0) {
-        _temporalAssertDefined(min, 'min', _temporalUndefined), min--;
-        (_temporalAssertDefined(list, 'list', _temporalUndefined) && list).push({
+      while ((_temporalAssertDefined(min, 'min') && min) > 0) {
+        _temporalAssertDefined(min, 'min'), min--;
+        (_temporalAssertDefined(list, 'list') && list).push({
           checked: false,
-          value: (_temporalAssertDefined(min, 'min', _temporalUndefined) && min) < 10 ? '0' + (_temporalAssertDefined(min, 'min', _temporalUndefined) && min) : _temporalAssertDefined(min, 'min', _temporalUndefined) && min
+          value: (_temporalAssertDefined(min, 'min') && min) < 10 ? '0' + (_temporalAssertDefined(min, 'min') && min) : _temporalAssertDefined(min, 'min') && min
         });
       }
-      return _temporalAssertDefined(list, 'list', _temporalUndefined) && list;
+      return _temporalAssertDefined(list, 'list') && list;
     }
     return {
       hours: hours(),
@@ -114,13 +122,12 @@ exports['default'] = {
     };
   },
   methods: {
-    nextMonth: function nextMonth(type) {
-      var next = _temporalUndefined;
+    nextMonth: function(type) {
+      var next = null;
 
-      next = null;
-      type == 'next' ? (_temporalAssertDefined(next, 'next', _temporalUndefined), next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M')) : (_temporalAssertDefined(next, 'next', _temporalUndefined), next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M'));
+      type == 'next' ? (_temporalAssertDefined(next, 'next'), next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M')) : (_temporalAssertDefined(next, 'next'), next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M'));
 
-      this.showDay(_temporalAssertDefined(next, 'next', _temporalUndefined) && next);
+      this.showDay(_temporalAssertDefined(next, 'next') && next);
     },
     showDay: function showDay(time) {
 
@@ -137,29 +144,29 @@ exports['default'] = {
       }
       this.showOne('day');
 
-      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format("YYYY");
-      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format("MM");
-      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
+      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format('YYYY');
+      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format('MM');
+      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format('DD');
 
       this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];days = [];
       currentMoment = this.checked.currentMoment;
-      firstDay = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).date(1).day();
-      monthDays = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).daysInMonth();
+      firstDay = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).date(1).day();
+      monthDays = (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).daysInMonth();
       oldtime = this.checked.oldtime;
-      for (var i = 1; i <= (_temporalAssertDefined(monthDays, 'monthDays', _temporalUndefined) && monthDays); ++i) {
-        (_temporalAssertDefined(days, 'days', _temporalUndefined) && days).push({
-          value: _temporalAssertDefined(i, 'i', _temporalUndefined) && i,
+      for (var i = 1; i <= (_temporalAssertDefined(monthDays, 'monthDays') && monthDays); ++i) {
+        (_temporalAssertDefined(days, 'days') && days).push({
+          value: _temporalAssertDefined(i, 'i') && i,
           inMonth: true,
           unavailable: false,
           checked: false
         });
-        if ((_temporalAssertDefined(i, 'i', _temporalUndefined) && i) == Math.ceil((0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).format("D")) && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime', _temporalUndefined) && oldtime).year() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).year() && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime', _temporalUndefined) && oldtime).month() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment', _temporalUndefined) && currentMoment).month()) {
-          (_temporalAssertDefined(days, 'days', _temporalUndefined) && days)[(_temporalAssertDefined(i, 'i', _temporalUndefined) && i) - 1].checked = true;
+        if ((_temporalAssertDefined(i, 'i') && i) == Math.ceil((0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).format('D')) && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).year() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).year() && (0, _moment2['default'])(_temporalAssertDefined(oldtime, 'oldtime') && oldtime).month() == (0, _moment2['default'])(_temporalAssertDefined(currentMoment, 'currentMoment') && currentMoment).month()) {
+          (_temporalAssertDefined(days, 'days') && days)[(_temporalAssertDefined(i, 'i') && i) - 1].checked = true;
         }
       }
 
-      for (var i = 0; i < (_temporalAssertDefined(firstDay, 'firstDay', _temporalUndefined) && firstDay) - 1; i++) {
-        (_temporalAssertDefined(days, 'days', _temporalUndefined) && days).unshift({
+      for (var i = 0; i < (_temporalAssertDefined(firstDay, 'firstDay') && firstDay) - 1; i++) {
+        (_temporalAssertDefined(days, 'days') && days).unshift({
           value: '',
           inMonth: false
         });
@@ -172,20 +179,19 @@ exports['default'] = {
 
         try {
           for (var _iterator = this.limit[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var li = _temporalUndefined;
-            li = _step.value;
+            var li = _step.value;
 
-            switch ((_temporalAssertDefined(li, 'li', _temporalUndefined) && li).type) {
+            switch ((_temporalAssertDefined(li, 'li') && li).type) {
               case 'fromto':
-                _temporalAssertDefined(_temporalAssertDefined(days, 'days', _temporalUndefined) && days, 'days', _temporalUndefined);
+                _temporalAssertDefined(_temporalAssertDefined(days, 'days') && days, 'days');
 
-                days = this.limitFromTo(_temporalAssertDefined(li, 'li', _temporalUndefined) && li, _temporalAssertDefined(_temporalAssertDefined(days, 'days', _temporalUndefined) && days, 'days', _temporalUndefined) && _temporalAssertDefined(days, 'days', _temporalUndefined) && days);
+                days = this.limitFromTo(_temporalAssertDefined(li, 'li') && li, _temporalAssertDefined(_temporalAssertDefined(days, 'days') && days, 'days') && _temporalAssertDefined(days, 'days') && days);
 
                 break;
               case 'weekday':
-                _temporalAssertDefined(_temporalAssertDefined(days, 'days', _temporalUndefined) && days, 'days', _temporalUndefined);
+                _temporalAssertDefined(_temporalAssertDefined(days, 'days') && days, 'days');
 
-                days = this.limitWeekDay(_temporalAssertDefined(li, 'li', _temporalUndefined) && li, _temporalAssertDefined(_temporalAssertDefined(days, 'days', _temporalUndefined) && days, 'days', _temporalUndefined) && _temporalAssertDefined(days, 'days', _temporalUndefined) && days);
+                days = this.limitWeekDay(_temporalAssertDefined(li, 'li') && li, _temporalAssertDefined(_temporalAssertDefined(days, 'days') && days, 'days') && _temporalAssertDefined(days, 'days') && days);
 
                 break;
             }
@@ -206,23 +212,22 @@ exports['default'] = {
         }
       }
 
-      this.dayList = _temporalAssertDefined(days, 'days', _temporalUndefined) && days;
+      this.dayList = _temporalAssertDefined(days, 'days') && days;
     },
-    limitWeekDay: function limitWeekDay(limit, days) {
+    limitWeekDay: function(limit, days) {
       var _this = this;
 
       days.map(function (day) {
-        var tday = _temporalUndefined;
-        tday = undefined;
-        day.value < 10 ? (_temporalAssertDefined(tday, 'tday', _temporalUndefined), tday = '0' + day.value) : (_temporalAssertDefined(tday, 'tday', _temporalUndefined), tday = day.value);
+        var tday = undefined;
+        day.value < 10 ? (_temporalAssertDefined(tday, 'tday'), tday = '0' + day.value) : (_temporalAssertDefined(tday, 'tday'), tday = day.value);
 
-        if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + (_temporalAssertDefined(tday, 'tday', _temporalUndefined) && tday)).format('d'))) == -1) {
+        if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + (_temporalAssertDefined(tday, 'tday') && tday)).format('d'))) == -1) {
           day.unavailable = true;
         }
       });
       return days;
     },
-    limitFromTo: function limitFromTo(limit, days) {
+    limitFromTo: function(limit, days) {
       var _this2 = this;
 
       days.map(function (day) {
@@ -232,7 +237,7 @@ exports['default'] = {
       });
       return days;
     },
-    checkDay: function checkDay(obj) {
+    checkDay: function(obj) {
       if (obj.unavailable) {
         return false;
       }
@@ -249,28 +254,27 @@ exports['default'] = {
       }
     },
 
-    showYear: function showYear() {
-      var year = _temporalUndefined;
+    showYear: function() {
+      var year = (0, _moment2['default'])(this.checked.currentMoment).year();
 
-      var yearTmp = _temporalUndefined;
+      var yearTmp = [];
 
       var self = _temporalUndefined;
-      year = (0, _moment2['default'])(this.checked.currentMoment).year();
-      this.library.year = [];yearTmp = [];
-      for (var i = (_temporalAssertDefined(year, 'year', _temporalUndefined) && year) - 100; i < (_temporalAssertDefined(year, 'year', _temporalUndefined) && year) + 5; ++i) {
-        (_temporalAssertDefined(yearTmp, 'yearTmp', _temporalUndefined) && yearTmp).push(_temporalAssertDefined(i, 'i', _temporalUndefined) && i);
+
+      this.library.year = [];
+      for (var i = (_temporalAssertDefined(year, 'year') && year) - 100; i < (_temporalAssertDefined(year, 'year') && year) + 5; ++i) {
+        (_temporalAssertDefined(yearTmp, 'yearTmp') && yearTmp).push(_temporalAssertDefined(i, 'i') && i);
       }
-      this.library.year = _temporalAssertDefined(yearTmp, 'yearTmp', _temporalUndefined) && yearTmp;
+      this.library.year = _temporalAssertDefined(yearTmp, 'yearTmp') && yearTmp;
 
       this.showOne('year');self = this;
       this.$nextTick(function () {
-        var listDom = _temporalUndefined;
-        listDom = document.getElementById('yearList');
-        (_temporalAssertDefined(listDom, 'listDom', _temporalUndefined) && listDom).scrollTop = (_temporalAssertDefined(listDom, 'listDom', _temporalUndefined) && listDom).scrollHeight - 100;
-        (_temporalAssertDefined(self, 'self', _temporalUndefined) && self).addYear();
+        var listDom = document.getElementById('yearList');
+        (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollTop = (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollHeight - 100;
+        (_temporalAssertDefined(self, 'self') && self).addYear();
       });
     },
-    showOne: function showOne(type) {
+    showOne: function(type) {
       switch (type) {
         case 'year':
           this.showInfo.hour = false;
@@ -304,43 +308,37 @@ exports['default'] = {
 
       }
     },
-    showMonth: function showMonth() {
+    showMonth: function() {
       this.showOne('month');
     },
-    addYear: function addYear() {
-      var self = _temporalUndefined;
-      var listDom = _temporalUndefined;
-      var tmp = _temporalUndefined;
-      self = this;
-      listDom = document.getElementById('yearList');
-      tmp = 0;
-      (_temporalAssertDefined(listDom, 'listDom', _temporalUndefined) && listDom).addEventListener('scroll', function (e) {
+    addYear: function() {
+      var self = this;
+      var listDom = document.getElementById('yearList');
+      (_temporalAssertDefined(listDom, 'listDom') && listDom).addEventListener('scroll', function (e) {
 
-        if ((_temporalAssertDefined(listDom, 'listDom', _temporalUndefined) && listDom).scrollTop < (_temporalAssertDefined(listDom, 'listDom', _temporalUndefined) && listDom).scrollHeight - 100) {
-          var len = _temporalUndefined;
-          var lastYear = _temporalUndefined;
-          len = (_temporalAssertDefined(self, 'self', _temporalUndefined) && self).library.year.length;
-          lastYear = (_temporalAssertDefined(self, 'self', _temporalUndefined) && self).library.year[(_temporalAssertDefined(len, 'len', _temporalUndefined) && len) - 1];
-          (_temporalAssertDefined(self, 'self', _temporalUndefined) && self).library.year.push((_temporalAssertDefined(lastYear, 'lastYear', _temporalUndefined) && lastYear) + 1);
+        if ((_temporalAssertDefined(listDom, 'listDom') && listDom).scrollTop < (_temporalAssertDefined(listDom, 'listDom') && listDom).scrollHeight - 100) {
+          var len = (_temporalAssertDefined(self, 'self') && self).library.year.length;
+          var lastYear = (_temporalAssertDefined(self, 'self') && self).library.year[(_temporalAssertDefined(len, 'len') && len) - 1];
+
+          (_temporalAssertDefined(self, 'self') && self).library.year.push((_temporalAssertDefined(lastYear, 'lastYear') && lastYear) + 1);
         }
       }, false);
     },
-    setYear: function setYear(year) {
+    setYear: function(year) {
       this.checked.currentMoment = (0, _moment2['default'])(year + '-' + this.checked.month + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
-    setMonth: function setMonth(month) {
-      var mo = _temporalUndefined;
-      mo = this.library.month.indexOf(month) + 1;
-      if ((_temporalAssertDefined(mo, 'mo', _temporalUndefined) && mo) < 10) {
-        _temporalAssertDefined(_temporalAssertDefined(mo, 'mo', _temporalUndefined) && mo, 'mo', _temporalUndefined);
+    setMonth: function(month) {
+      var mo = this.library.month.indexOf(month) + 1;
+      if ((_temporalAssertDefined(mo, 'mo') && mo) < 10) {
+        _temporalAssertDefined(_temporalAssertDefined(mo, 'mo') && mo, 'mo');
 
-        mo = '0' + '' + (_temporalAssertDefined(_temporalAssertDefined(mo, 'mo', _temporalUndefined) && mo, 'mo', _temporalUndefined) && _temporalAssertDefined(mo, 'mo', _temporalUndefined) && mo);
+        mo = '0' + '' + (_temporalAssertDefined(_temporalAssertDefined(mo, 'mo') && mo, 'mo') && _temporalAssertDefined(mo, 'mo') && mo);
       }
-      this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + (_temporalAssertDefined(mo, 'mo', _temporalUndefined) && mo) + '-' + this.checked.day);
+      this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + (_temporalAssertDefined(mo, 'mo') && mo) + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
-    showCheck: function showCheck() {
+    showCheck: function() {
       if (this.time == '') {
         this.showDay();
       } else {
@@ -350,7 +348,7 @@ exports['default'] = {
 
       this.showInfo.check = true;
     },
-    setTime: function setTime(type, obj, list) {
+    setTime: function(type, obj, list) {
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
@@ -360,10 +358,10 @@ exports['default'] = {
           var item = _temporalUndefined;
           item = _step2.value;
 
-          (_temporalAssertDefined(item, 'item', _temporalUndefined) && item).checked = false;
-          if ((_temporalAssertDefined(item, 'item', _temporalUndefined) && item).value == obj.value) {
-            (_temporalAssertDefined(item, 'item', _temporalUndefined) && item).checked = true;
-            this.checked[type] = (_temporalAssertDefined(item, 'item', _temporalUndefined) && item).value;
+          (_temporalAssertDefined(item, 'item') && item).checked = false;
+          if ((_temporalAssertDefined(item, 'item') && item).value == obj.value) {
+            (_temporalAssertDefined(item, 'item') && item).checked = true;
+            this.checked[type] = (_temporalAssertDefined(item, 'item') && item).value;
           }
         }
       } catch (err) {
@@ -381,10 +379,9 @@ exports['default'] = {
         }
       }
     },
-    picked: function picked() {
-      var ctime = _temporalUndefined;
-      ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
-      this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime', _temporalUndefined) && ctime, "YYYY-MM-DD HH:mm");
+    picked: function() {
+      var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
+      this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime') && ctime, 'YYYY-MM-DD HH:mm');
       this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
     }
