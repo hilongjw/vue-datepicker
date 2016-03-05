@@ -51,7 +51,13 @@ export default {
           color: {
             header: '#ccc',
             headerText: '#f00'
-          }
+          },
+          buttons : {
+            ok : 'Ok',
+            cancel : 'Cancel'
+          },
+          overlayOpacity : 0.5, //0.5 as default
+          dismissible : true //as true as default
         },
         timeoption: {
           type: 'min',
