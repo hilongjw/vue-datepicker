@@ -42,7 +42,13 @@ exports['default'] = {
             'border-radius': '2px',
             'color': '#5F5F5F'
           },
-          placeholder: 'when?'
+          placeholder: 'when?',
+          buttons : {
+            ok : 'Ok',
+            cancel : 'Cancel'
+          },
+          overlayOpacity : 0.5,
+          dismissible : true
         };
       }
     },
@@ -387,6 +393,13 @@ exports['default'] = {
       this.checked.currentMoment = (0, _moment2['default'])(_temporalAssertDefined(ctime, 'ctime', _temporalUndefined) && ctime, "YYYY-MM-DD HH:mm");
       this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
+    },
+    dismiss: function(evt){
+      if(evt.target.className === 'datepicker-overlay'){
+        if(this.option.dismissible == undefined || this.option.dismissible){
+          this.showInfo.check = false;
+        }
+      }
     }
 
   }
@@ -394,6 +407,51 @@ exports['default'] = {
 module.exports = exports['default'];
 </script>
 <style scoped>
+.datepicker-overlay{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index:998;
+  top:0;
+  left: 0;
+  overflow: hidden;
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 0.5s; /* Firefox < 16 */
+        -ms-animation: fadein 0.5s; /* Internet Explorer */
+         -o-animation: fadein 0.5s; /* Opera < 12.1 */
+            animation: fadein 0.5s;
+}
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 .cov-date-body {
   display: inline-block;
   background: #3F51B5;
@@ -406,6 +464,7 @@ module.exports = exports['default'];
   display: block;
   width: 400px;
   max-width: 100%;
+  z-index: 999;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -694,74 +753,81 @@ table {
       @click="showCheck" 
       :style="option.inputStyle"/>
     </div>
-    <div 
-    class="cov-date-body" 
-    :style="{'background-color': option.color ? option.color.header : '#3f51b5'}"
-    v-if="showInfo.check">
-      <div class="cov-date-monthly">
-        <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-        <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-          <span @click="showYear"><small>{{checked.year}}</small></span>
-          <br>
-          <span @click="showMonth">{{displayInfo.month}}</span>
-        </div>
-        <div class="cov-date-next" @click="nextMonth('next')">»</div>
-      </div>
-      <div class="cov-date-box" v-if="showInfo.day">
-        <div class="cov-picker-box">
-          <div class="week">
-            <ul>
-              <li v-for="weekie in library.week">{{weekie}}</li>
-            </ul>
+    
+    <div class="datepicker-overlay"
+      v-if="showInfo.check"
+      @click="dismiss($event)"
+      v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
+      <div 
+      class="cov-date-body" 
+      :style="{'background-color': option.color ? option.color.header : '#3f51b5'}"
+      >
+        <div class="cov-date-monthly">
+          <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
+          <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
+            <span @click="showYear"><small>{{checked.year}}</small></span>
+            <br>
+            <span @click="showMonth">{{displayInfo.month}}</span>
           </div>
-          <div
-          class="day"
-          v-for="day in dayList"
-          track-by="$index"
-          @click="checkDay(day)"
-          :class="{'checked':day.checked,'unavailable':day.unavailable}"
-          >{{day.value}}</div>
+          <div class="cov-date-next" @click="nextMonth('next')">»</div>
         </div>
-      </div>
-      <div class="cov-date-box list-box" v-if="showInfo.year">
-        <div class="cov-picker-box date-list" id="yearList">
-          <div class="date-item" v-for="yearItem in library.year" track-by="$index" @click="setYear(yearItem)">{{yearItem}}</div>
-        </div>
-      </div>
-      <div class="cov-date-box list-box" v-if="showInfo.month">
-        <div class="cov-picker-box date-list">
-          <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
-        </div>
-      </div>
-      <div class="cov-date-box list-box" v-if="showInfo.hour">
-        <div class="cov-picker-box date-list">
-          <div class="watch-box">
-            <div class="hour-box">
-            <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
-            <ul>
-              <li 
-              class="hour-item" 
-              v-for="hitem in hours" 
-              @click="setTime('hour', hitem, hours)"
-              :class="{'active':hitem.checked}"
-              >{{hitem.value}}</li>
-            </ul>
+        <div class="cov-date-box" v-if="showInfo.day">
+          <div class="cov-picker-box">
+            <div class="week">
+              <ul>
+                <li v-for="weekie in library.week">{{weekie}}</li>
+              </ul>
             </div>
-            <div class="min-box">
-            <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
-              <div 
-              class="min-item" 
-              v-for="mitem in mins" 
-              @click="setTime('min',mitem, mins)"
-              :class="{'active':mitem.checked}"
-              >{{mitem.value}}</div>
-            </div>
+            <div
+            class="day"
+            v-for="day in dayList"
+            track-by="$index"
+            @click="checkDay(day)"
+            :class="{'checked':day.checked,'unavailable':day.unavailable}"
+            >{{day.value}}</div>
           </div>
         </div>
-      </div>
-      <div class="button-box">
-        <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-        <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+        <div class="cov-date-box list-box" v-if="showInfo.year">
+          <div class="cov-picker-box date-list" id="yearList">
+            <div class="date-item" v-for="yearItem in library.year" track-by="$index" @click="setYear(yearItem)">{{yearItem}}</div>
+          </div>
+        </div>
+        <div class="cov-date-box list-box" v-if="showInfo.month">
+          <div class="cov-picker-box date-list">
+            <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
+          </div>
+        </div>
+        <div class="cov-date-box list-box" v-if="showInfo.hour">
+          <div class="cov-picker-box date-list">
+            <div class="watch-box">
+              <div class="hour-box">
+              <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+              <ul>
+                <li 
+                class="hour-item" 
+                v-for="hitem in hours" 
+                @click="setTime('hour', hitem, hours)"
+                :class="{'active':hitem.checked}"
+                >{{hitem.value}}</li>
+              </ul>
+              </div>
+              <div class="min-box">
+              <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+                <div 
+                class="min-item" 
+                v-for="mitem in mins" 
+                @click="setTime('min',mitem, mins)"
+                :class="{'active':mitem.checked}"
+                >{{mitem.value}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-box">
+          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+        </div>
+
       </div>
     </div>
   </div>
