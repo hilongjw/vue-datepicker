@@ -1,5 +1,6 @@
 <script>
 import moment from 'moment'
+import _ from 'lodash'
 export default {
   props: {
     time: {
@@ -126,6 +127,17 @@ export default {
         let days = []
         let currentMoment = this.checked.currentMoment
         let firstDay = moment(currentMoment).date(1).day()
+
+
+        //gettting previous and next month
+
+        let currentMonth = _.cloneDeep(currentMoment);
+        let previousMonth = _.cloneDeep(currentMoment)
+        let nextMonth = _.cloneDeep(currentMoment)
+        nextMonth.add(1,'months');
+        previousMonth.subtract(1,'months');
+
+
         let monthDays = moment(currentMoment).daysInMonth()
         let oldtime = this.checked.oldtime;
         for (let i = 1; i <= monthDays; ++i) {
@@ -141,10 +153,12 @@ export default {
         }
 
         for (let i = 0; i < firstDay - 1; i++) {
-          days.unshift({
-            value: '',
-            inMonth: false
-          })
+            let passiveDay = {
+              value: previousMonth.daysInMonth() - (i),
+              inMonth: false,
+              action : 'previous',
+            }
+            days.unshift(passiveDay);
         }
 
         if (this.limit.length > 0) {
@@ -160,8 +174,16 @@ export default {
           }
         }
 
+        var passiveDaysAtFinal = 42 - days.length;
+        for (let i = 1; i <= passiveDaysAtFinal; i++) {
+            let passiveDay = {
+              value: i,
+              inMonth: false,
+              action : 'next',
+            }
+            days.push(passiveDay);
+        }
         this.dayList = days
-
       },
       limitWeekDay(limit, days) {
         days.map((day) => {
@@ -187,6 +209,11 @@ export default {
         if (obj.unavailable || obj.value == '') {
           return false
         }
+
+        if(!(obj.inMonth)){
+          this.nextMonth(obj.action)
+        }
+
         this.dayList.map(x => x.checked = false)
         obj.checked = true
         this.checked.day = obj.value
@@ -312,7 +339,8 @@ export default {
             this.showInfo.check = false;
           }
         }
-      }
+    }
+
 
   }
 }
@@ -448,6 +476,9 @@ table {
   font-weight: bold;
 }
 
+.passive-day{
+  color: #bbb;
+}
 .checked {
   background: #F50057;
   color: #FFF !important;
@@ -693,7 +724,7 @@ table {
             v-for="day in dayList"
             track-by="$index"
             @click="checkDay(day)"
-            :class="{'checked':day.checked,'unavailable':day.unavailable}"
+            :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
             >{{day.value}}</div>
           </div>
         </div>
