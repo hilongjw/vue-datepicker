@@ -142,6 +142,7 @@ exports.default = {
       var days = [];
       var currentMoment = this.checked.currentMoment;
       var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
+      console.log(firstDay);
 
       //gettting previous and next month
 
@@ -164,6 +165,8 @@ exports.default = {
           days[i - 1].checked = true;
         }
       }
+
+      if (firstDay == 0) firstDay = 7;
 
       for (var _i = 0; _i < firstDay - 1; _i++) {
         var passiveDay = {

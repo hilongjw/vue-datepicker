@@ -127,7 +127,7 @@ export default {
         let days = []
         let currentMoment = this.checked.currentMoment
         let firstDay = moment(currentMoment).date(1).day()
-
+        console.log(firstDay)
 
         //gettting previous and next month
 
@@ -136,6 +136,7 @@ export default {
         let nextMonth = _.cloneDeep(currentMoment)
         nextMonth.add(1,'months')
         previousMonth.subtract(1,'months')
+
 
         let monthDays = moment(currentMoment).daysInMonth()
         let oldtime = this.checked.oldtime;
@@ -150,6 +151,8 @@ export default {
             days[i - 1].checked = true
           }
         }
+
+        if (firstDay == 0) firstDay = 7
 
         for (let i = 0; i < firstDay - 1; i++) {
             let passiveDay = {
