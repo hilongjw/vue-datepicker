@@ -134,9 +134,8 @@ export default {
         let currentMonth = _.cloneDeep(currentMoment);
         let previousMonth = _.cloneDeep(currentMoment)
         let nextMonth = _.cloneDeep(currentMoment)
-        nextMonth.add(1,'months');
-        previousMonth.subtract(1,'months');
-
+        nextMonth.add(1,'months')
+        previousMonth.subtract(1,'months')
 
         let monthDays = moment(currentMoment).daysInMonth()
         let oldtime = this.checked.oldtime;

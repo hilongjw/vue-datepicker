@@ -1,11 +1,9 @@
 <script>
-    'use strict';
+'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _moment = require('moment');
 
@@ -15,7 +13,9 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-exports['default'] = {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
   props: {
     time: {
       type: String,
@@ -23,7 +23,7 @@ exports['default'] = {
     },
     option: {
       type: Object,
-      'default': function _default() {
+      default: function _default() {
         return {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -55,7 +55,7 @@ exports['default'] = {
     },
     limit: {
       type: Array,
-      'default': function _default() {
+      default: function _default() {
         return [];
       }
     }
@@ -116,41 +116,42 @@ exports['default'] = {
       dayList: []
     };
   },
+
   methods: {
     nextMonth: function nextMonth(type) {
       var next = null;
 
-      type == 'next' ? next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M');
+      type == 'next' ? next = (0, _moment2.default)(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2.default)(this.checked.currentMoment).add(-1, 'M');
 
       this.showDay(next);
     },
     showDay: function showDay(time) {
       if (time === undefined || !Date.parse(time)) {
-        this.checked.currentMoment = (0, _moment2['default'])();
+        this.checked.currentMoment = (0, _moment2.default)();
       } else {
-        this.checked.currentMoment = (0, _moment2['default'])(time, this.option.format);
+        this.checked.currentMoment = (0, _moment2.default)(time, this.option.format);
       }
       this.showOne('day');
 
-      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format("YYYY");
-      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format("MM");
-      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
+      this.checked.year = (0, _moment2.default)(this.checked.currentMoment).format("YYYY");
+      this.checked.month = (0, _moment2.default)(this.checked.currentMoment).format("MM");
+      this.checked.day = (0, _moment2.default)(this.checked.currentMoment).format("DD");
 
-      this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];
+      this.displayInfo.month = this.library.month[(0, _moment2.default)(this.checked.currentMoment).month()];
 
       var days = [];
       var currentMoment = this.checked.currentMoment;
-      var firstDay = (0, _moment2['default'])(currentMoment).date(1).day();
+      var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
 
       //gettting previous and next month
 
-      var currentMonth = _lodash2['default'].cloneDeep(currentMoment);
-      var previousMonth = _lodash2['default'].cloneDeep(currentMoment);
-      var nextMonth = _lodash2['default'].cloneDeep(currentMoment);
+      var currentMonth = _lodash2.default.cloneDeep(currentMoment);
+      var previousMonth = _lodash2.default.cloneDeep(currentMoment);
+      var nextMonth = _lodash2.default.cloneDeep(currentMoment);
       nextMonth.add(1, 'months');
       previousMonth.subtract(1, 'months');
 
-      var monthDays = (0, _moment2['default'])(currentMoment).daysInMonth();
+      var monthDays = (0, _moment2.default)(currentMoment).daysInMonth();
       var oldtime = this.checked.oldtime;
       for (var i = 1; i <= monthDays; ++i) {
         days.push({
@@ -159,14 +160,14 @@ exports['default'] = {
           unavailable: false,
           checked: false
         });
-        if (i == Math.ceil((0, _moment2['default'])(currentMoment).format("D")) && (0, _moment2['default'])(oldtime).year() == (0, _moment2['default'])(currentMoment).year() && (0, _moment2['default'])(oldtime).month() == (0, _moment2['default'])(currentMoment).month()) {
+        if (i == Math.ceil((0, _moment2.default)(currentMoment).format("D")) && (0, _moment2.default)(oldtime).year() == (0, _moment2.default)(currentMoment).year() && (0, _moment2.default)(oldtime).month() == (0, _moment2.default)(currentMoment).month()) {
           days[i - 1].checked = true;
         }
       }
 
-      for (var i = 0; i < firstDay - 1; i++) {
+      for (var _i = 0; _i < firstDay - 1; _i++) {
         var passiveDay = {
-          value: previousMonth.daysInMonth() - i,
+          value: previousMonth.daysInMonth() - _i,
           inMonth: false,
           action: 'previous'
         };
@@ -196,8 +197,8 @@ exports['default'] = {
           _iteratorError = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator['return']) {
-              _iterator['return']();
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
             }
           } finally {
             if (_didIteratorError) {
@@ -208,13 +209,13 @@ exports['default'] = {
       }
 
       var passiveDaysAtFinal = 42 - days.length;
-      for (var i = 1; i <= passiveDaysAtFinal; i++) {
-        var passiveDay = {
-          value: i,
+      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
+        var _passiveDay = {
+          value: _i2,
           inMonth: false,
           action: 'next'
         };
-        days.push(passiveDay);
+        days.push(_passiveDay);
       }
       this.dayList = days;
     },
@@ -222,10 +223,10 @@ exports['default'] = {
       var _this = this;
 
       days.map(function (day) {
-        var tday = undefined;
+        var tday = void 0;
         day.value < 10 ? tday = '0' + day.value : tday = day.value;
 
-        if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
+        if (limit.available.indexOf(Math.floor((0, _moment2.default)(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
           day.unavailable = true;
         }
       });
@@ -235,7 +236,7 @@ exports['default'] = {
       var _this2 = this;
 
       days.map(function (day) {
-        if (!(0, _moment2['default'])(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+        if (!(0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
           day.unavailable = true;
         }
       });
@@ -262,9 +263,8 @@ exports['default'] = {
         this.showOne('hour');
       }
     },
-
     showYear: function showYear() {
-      var year = (0, _moment2['default'])(this.checked.currentMoment).year();
+      var year = (0, _moment2.default)(this.checked.currentMoment).year();
       this.library.year = [];
       var yearTmp = [];
       for (var i = year - 100; i < year + 5; ++i) {
@@ -332,7 +332,7 @@ exports['default'] = {
       }, false);
     },
     setYear: function setYear(year) {
-      this.checked.currentMoment = (0, _moment2['default'])(year + '-' + this.checked.month + '-' + this.checked.day);
+      this.checked.currentMoment = (0, _moment2.default)(year + '-' + this.checked.month + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
     setMonth: function setMonth(month) {
@@ -340,7 +340,7 @@ exports['default'] = {
       if (mo < 10) {
         mo = '0' + '' + mo;
       }
-      this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + mo + '-' + this.checked.day);
+      this.checked.currentMoment = (0, _moment2.default)(this.checked.year + '-' + mo + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
     },
     showCheck: function showCheck() {
@@ -373,8 +373,8 @@ exports['default'] = {
         _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-            _iterator2['return']();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
           if (_didIteratorError2) {
@@ -385,8 +385,8 @@ exports['default'] = {
     },
     picked: function picked() {
       var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
-      this.checked.currentMoment = (0, _moment2['default'])(ctime, "YYYY-MM-DD HH:mm");
-      this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
+      this.checked.currentMoment = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
+      this.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
     },
     dismiss: function dismiss(evt) {
@@ -396,10 +396,8 @@ exports['default'] = {
         }
       }
     }
-
   }
 };
-module.exports = exports['default'];
 </script>
 <style scoped>
 .datepicker-overlay{
@@ -751,15 +749,14 @@ table {
       @click="showCheck" 
       :style="option.inputStyle"/>
     </div>
-    
+
     <div class="datepicker-overlay"
       v-if="showInfo.check"
       @click="dismiss($event)"
       v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div 
       class="cov-date-body" 
-      :style="{'background-color': option.color ? option.color.header : '#3f51b5'}"
-      >
+      :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
@@ -825,7 +822,6 @@ table {
           <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
           <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
-
       </div>
     </div>
   </div>
