@@ -12,8 +12,9 @@ The demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).
 - [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`
 - [moment](https://github.com/moment/moment) `^2.11.1`
 - [lodash](https://github.com/lodash/lodash) `^4.5.0`
+- [vue-touch](https://github.com/vuejs/vue-touch) `^1.0.2`
 
-# Instllation
+# Installation
 
 ## npm
 
@@ -35,6 +36,7 @@ export default {
         testTime: '',
         option: {
           type: 'day',
+          startsOnSunday: false,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format:'YYYY-MM-DD'
