@@ -1,11 +1,9 @@
 <script>
     'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _moment = require('moment');
 
@@ -15,7 +13,9 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-exports['default'] = {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
   props: {
     time: {
       type: String,
@@ -23,9 +23,10 @@ exports['default'] = {
     },
     option: {
       type: Object,
-      'default': function _default() {
+      default: function _default() {
         return {
           type: 'day',
+          startsOnSunday: false,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
@@ -55,7 +56,7 @@ exports['default'] = {
     },
     limit: {
       type: Array,
-      'default': function _default() {
+      default: function _default() {
         return [];
       }
     }
@@ -63,26 +64,26 @@ exports['default'] = {
   data: function data() {
     function hours() {
       var list = [];
-      var hour = 24;
-      while (hour > 0) {
-        hour--;
+      var hour = 0;
+      while (hour < 24) {
 
         list.push({
           checked: false,
           value: hour < 10 ? '0' + hour : hour
         });
+        hour++;
       }
       return list;
     }
     function mins() {
       var list = [];
-      var min = 60;
-      while (min > 0) {
-        min--;
+      var min = 0;
+      while (min < 60) {
         list.push({
           checked: false,
           value: min < 10 ? '0' + min : min
         });
+        min++;
       }
       return list;
     }
@@ -97,7 +98,8 @@ exports['default'] = {
         check: false
       },
       displayInfo: {
-        month: ''
+        month: '',
+        weekDay: ''
       },
       library: {
         week: this.option.week,
@@ -113,44 +115,53 @@ exports['default'] = {
         hour: '00',
         min: '00'
       },
-      dayList: []
+      dayList: [],
+      dayMonth: null,
+      is_sweeping: false
     };
   },
+
   methods: {
     nextMonth: function nextMonth(type) {
       var next = null;
+      this.is_sweeping = true;
+      setTimeout(function () {
+        this.is_sweeping = false;
+      }.bind(this), 50);
 
-      type == 'next' ? next = (0, _moment2['default'])(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2['default'])(this.checked.currentMoment).add(-1, 'M');
+      type == 'next' ? next = (0, _moment2.default)(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2.default)(this.checked.currentMoment).add(-1, 'M');
 
       this.showDay(next);
     },
     showDay: function showDay(time) {
       if (time === undefined || !Date.parse(time)) {
-        this.checked.currentMoment = (0, _moment2['default'])();
+        this.checked.currentMoment = (0, _moment2.default)();
       } else {
-        this.checked.currentMoment = (0, _moment2['default'])(time, this.option.format);
+        this.checked.currentMoment = (0, _moment2.default)(time, this.option.format);
       }
       this.showOne('day');
 
-      this.checked.year = (0, _moment2['default'])(this.checked.currentMoment).format("YYYY");
-      this.checked.month = (0, _moment2['default'])(this.checked.currentMoment).format("MM");
-      this.checked.day = (0, _moment2['default'])(this.checked.currentMoment).format("DD");
+      this.checked.year = (0, _moment2.default)(this.checked.currentMoment).format("YYYY");
+      this.checked.month = (0, _moment2.default)(this.checked.currentMoment).format("MM");
+      this.checked.day = (0, _moment2.default)(this.checked.currentMoment).format("DD");
 
-      this.displayInfo.month = this.library.month[(0, _moment2['default'])(this.checked.currentMoment).month()];
+      this.displayInfo.month = this.library.month[(0, _moment2.default)(this.checked.currentMoment).month()];
+
+      this.displayInfo.weekDay = this.library.week[(0, _moment2.default)(this.checked.currentMoment).day() - 1];
 
       var days = [];
       var currentMoment = this.checked.currentMoment;
-      var firstDay = (0, _moment2['default'])(currentMoment).date(1).day();
+      var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
 
       //gettting previous and next month
 
-      var currentMonth = _lodash2['default'].cloneDeep(currentMoment);
-      var previousMonth = _lodash2['default'].cloneDeep(currentMoment);
-      var nextMonth = _lodash2['default'].cloneDeep(currentMoment);
+      var currentMonth = _lodash2.default.cloneDeep(currentMoment);
+      var previousMonth = _lodash2.default.cloneDeep(currentMoment);
+      var nextMonth = _lodash2.default.cloneDeep(currentMoment);
       nextMonth.add(1, 'months');
       previousMonth.subtract(1, 'months');
 
-      var monthDays = (0, _moment2['default'])(currentMoment).daysInMonth();
+      var monthDays = (0, _moment2.default)(currentMoment).daysInMonth();
       var oldtime = this.checked.oldtime;
       for (var i = 1; i <= monthDays; ++i) {
         days.push({
@@ -159,18 +170,32 @@ exports['default'] = {
           unavailable: false,
           checked: false
         });
-        if (i == Math.ceil((0, _moment2['default'])(currentMoment).format("D")) && (0, _moment2['default'])(oldtime).year() == (0, _moment2['default'])(currentMoment).year() && (0, _moment2['default'])(oldtime).month() == (0, _moment2['default'])(currentMoment).month()) {
+        if (i == Math.ceil((0, _moment2.default)(currentMoment).format("D")) && (0, _moment2.default)(oldtime).year() == (0, _moment2.default)(currentMoment).year() && (0, _moment2.default)(oldtime).month() == (0, _moment2.default)(currentMoment).month()) {
           days[i - 1].checked = true;
         }
       }
 
-      for (var i = 0; i < firstDay - 1; i++) {
+      for (var _i = 0; _i < firstDay - (this.option.startsOnSunday ? 0 : 1); _i++) {
         var passiveDay = {
-          value: previousMonth.daysInMonth() - i,
+          value: previousMonth.daysInMonth() - _i,
           inMonth: false,
-          action: 'previous'
+          action: 'previous',
+          unavailable: false,
+          checked: false
         };
         days.unshift(passiveDay);
+      }
+
+      var passiveDaysAtFinal = 42 - days.length;
+      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
+        var _passiveDay = {
+          value: _i2,
+          inMonth: false,
+          action: 'next',
+          unavailable: false,
+          checked: false
+        };
+        days.push(_passiveDay);
       }
 
       if (this.limit.length > 0) {
@@ -196,8 +221,8 @@ exports['default'] = {
           _iteratorError = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator['return']) {
-              _iterator['return']();
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
             }
           } finally {
             if (_didIteratorError) {
@@ -207,25 +232,16 @@ exports['default'] = {
         }
       }
 
-      var passiveDaysAtFinal = 42 - days.length;
-      for (var i = 1; i <= passiveDaysAtFinal; i++) {
-        var passiveDay = {
-          value: i,
-          inMonth: false,
-          action: 'next'
-        };
-        days.push(passiveDay);
-      }
       this.dayList = days;
     },
     limitWeekDay: function limitWeekDay(limit, days) {
       var _this = this;
 
       days.map(function (day) {
-        var tday = undefined;
+        var tday = void 0;
         day.value < 10 ? tday = '0' + day.value : tday = day.value;
 
-        if (limit.available.indexOf(Math.floor((0, _moment2['default'])(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
+        if (limit.available.indexOf(Math.floor((0, _moment2.default)(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
           day.unavailable = true;
         }
       });
@@ -235,8 +251,27 @@ exports['default'] = {
       var _this2 = this;
 
       days.map(function (day) {
-        if (!(0, _moment2['default'])(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
-          day.unavailable = true;
+
+        day.value = day.value < 10 ? '0' + day.value : day.value;
+        if (day.inMonth) {
+          if (!(0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+            day.unavailable = true;
+          }
+        } else {
+          if (day.action === 'next') {
+            var _nm = parseInt(_this2.checked.month) + 1;
+            _nm = _nm < 10 ? '0' + _nm : _nm;
+
+            if (!(0, _moment2.default)(_this2.checked.year + '-' + _nm + '-' + day.value).isBetween(limit.from, limit.to)) {
+              day.unavailable = true;
+            }
+          } else {
+            var _pm = parseInt(_this2.checked.month) - 1;
+            _pm = _pm < 10 ? '0' + _pm : _pm;
+            if (!(0, _moment2.default)(_this2.checked.year + '-' + _pm + '-' + day.value).isBetween(limit.from, limit.to)) {
+              day.unavailable = true;
+            }
+          }
         }
       });
       return days;
@@ -260,11 +295,12 @@ exports['default'] = {
         this.picked();
       } else {
         this.showOne('hour');
+        var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
+        this.dayMonth = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
       }
     },
-
     showYear: function showYear() {
-      var year = (0, _moment2['default'])(this.checked.currentMoment).year();
+      var year = (0, _moment2.default)(this.checked.currentMoment).year();
       this.library.year = [];
       var yearTmp = [];
       for (var i = year - 100; i < year + 5; ++i) {
@@ -332,7 +368,9 @@ exports['default'] = {
       }, false);
     },
     setYear: function setYear(year) {
-      this.checked.currentMoment = (0, _moment2['default'])(year + '-' + this.checked.month + '-' + this.checked.day);
+      this.checked.currentMoment = (0, _moment2.default)(year + '-' + this.checked.month + '-' + this.checked.day);
+
+      this.dayMonth = this.checked.currentMoment;
       this.showDay(this.checked.currentMoment);
     },
     setMonth: function setMonth(month) {
@@ -340,17 +378,33 @@ exports['default'] = {
       if (mo < 10) {
         mo = '0' + '' + mo;
       }
-      this.checked.currentMoment = (0, _moment2['default'])(this.checked.year + '-' + mo + '-' + this.checked.day);
+      this.checked.currentMoment = (0, _moment2.default)(this.checked.year + '-' + mo + '-' + this.checked.day);
+
+      this.dayMonth = this.checked.currentMoment;
       this.showDay(this.checked.currentMoment);
     },
     showCheck: function showCheck() {
-      if (this.time == '') {
-        this.showDay();
+      //avoid to open keyboard in mobile devices
+      document.querySelector(".cov-datepicker").blur();
+
+      var currentDate = null;
+
+      if (this.time == '' || !this.time) {
+        var nd = new Date();
+        var year = nd.getFullYear();
+        var month = nd.getMonth() + 1 < 10 ? '0' + (nd.getMonth() + 1) : nd.getMonth() + 1;
+        var day = nd.getDate() < 10 ? '0' + nd.getDate() : nd.getDate();
+
+        currentDate = year + "-" + month + "-" + day + " 00:00";
+        this.dayMonth = currentDate;
+        this.checked.oldtime = currentDate;
       } else {
+        //If it has a defined date
+        this.dayMonth = this.time;
         this.checked.oldtime = this.time;
-        this.showDay(this.time);
       }
 
+      this.showDay(this.time);
       this.showInfo.check = true;
     },
     setTime: function setTime(type, obj, list) {
@@ -373,8 +427,8 @@ exports['default'] = {
         _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-            _iterator2['return']();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
           if (_didIteratorError2) {
@@ -385,8 +439,9 @@ exports['default'] = {
     },
     picked: function picked() {
       var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
-      this.checked.currentMoment = (0, _moment2['default'])(ctime, "YYYY-MM-DD HH:mm");
-      this.time = (0, _moment2['default'])(this.checked.currentMoment).format(this.option.format);
+      this.checked.currentMoment = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
+      this.dayMonth = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
+      this.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
       this.showInfo.check = false;
     },
     dismiss: function dismiss(evt) {
@@ -396,10 +451,35 @@ exports['default'] = {
         }
       }
     }
+  },
+  filters: {
+    getWeekdayMonth: function getWeekdayMonth(date) {
+      var weekday = null;
 
+      if (!this.option.startsOnSunday) {
+        weekday = this.option.week[(0, _moment2.default)(date).day() - 1];
+      } else {
+        weekday = this.option.week[(0, _moment2.default)(date).day()];
+      }
+
+      var month = this.option.month[(0, _moment2.default)(date).month()];
+      var day = (0, _moment2.default)(date).date();
+      return weekday + " " + day + ", " + month;
+    },
+    getOnlyYear: function getOnlyYear(date) {
+      return (0, _moment2.default)(date).year();
+    },
+    getChar: function getChar(string) {
+      if (string) {
+        return string.substring(0, 1);
+      }
+      return '';
+    },
+    removeZero: function removeZero(number) {
+      return parseInt(number);
+    }
   }
 };
-module.exports = exports['default'];
 </script>
 <style scoped>
 .datepicker-overlay{

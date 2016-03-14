@@ -12,6 +12,7 @@ export default {
       default() {
         return {
           type: 'day',
+          startsOnSunday : false,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
@@ -49,26 +50,26 @@ export default {
   data() {
     function hours() {
         let list = []
-        let hour = 24
-        while (hour > 0) {
-          hour--
+        let hour = 0
+        while (hour < 24) {
 
           list.push({
             checked: false,
             value: hour<10 ?  '0'+hour : hour
           })
+          hour++
         }
         return list
       }
       function mins() {
         let list = []
-        let min = 60
-        while (min > 0) {
-          min--
+        let min = 0
+        while (min < 60) {
           list.push({
             checked: false,
             value: min<10 ?  '0'+min : min
           })
+          min++
         }
         return list
       }
@@ -83,7 +84,8 @@ export default {
         check: false
       },
       displayInfo: {
-        month: ''
+        month: '',
+        weekDay : ''
       },
       library: {
         week: this.option.week,
@@ -99,16 +101,23 @@ export default {
         hour: '00',
         min: '00'
       },
-      dayList: []
+      dayList: [],
+      dayMonth : null,
+      is_sweeping : false,
     }
   },
   methods: {
     nextMonth(type) {
         let next = null;
+        this.is_sweeping = true;
+        setTimeout(function(){
+          this.is_sweeping = false;
+        }.bind(this),50)
 
         type == 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
 
         this.showDay(next)
+
       },
       showDay(time) {
         if (time === undefined||!Date.parse(time)) {
@@ -124,10 +133,11 @@ export default {
 
         this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
 
+        this.displayInfo.weekDay = this.library.week[moment(this.checked.currentMoment).day() - 1]
+
         let days = []
         let currentMoment = this.checked.currentMoment
         let firstDay = moment(currentMoment).date(1).day()
-
 
         //gettting previous and next month
 
@@ -152,13 +162,27 @@ export default {
           }
         }
 
-        for (let i = 0; i < firstDay - 1; i++) {
+        for (let i = 0; i < firstDay - (this.option.startsOnSunday? 0 : 1); i++) {
             let passiveDay = {
               value: previousMonth.daysInMonth() - (i),
               inMonth: false,
               action : 'previous',
+              unavailable : false,
+              checked : false
             }
             days.unshift(passiveDay);
+        }
+
+        var passiveDaysAtFinal = 42 - days.length;
+        for (let i = 1; i <= passiveDaysAtFinal; i++) {
+            let passiveDay = {
+              value: i,
+              inMonth: false,
+              action : 'next',
+              unavailable : false,
+              checked : false
+            }
+            days.push(passiveDay);
         }
 
         if (this.limit.length > 0) {
@@ -174,15 +198,6 @@ export default {
           }
         }
 
-        var passiveDaysAtFinal = 42 - days.length;
-        for (let i = 1; i <= passiveDaysAtFinal; i++) {
-            let passiveDay = {
-              value: i,
-              inMonth: false,
-              action : 'next',
-            }
-            days.push(passiveDay);
-        }
         this.dayList = days
       },
       limitWeekDay(limit, days) {
@@ -198,9 +213,29 @@ export default {
         return days
       },
       limitFromTo(limit, days) {
+
         days.map((day) => {
-          if (!moment(this.checked.year + '-' + this.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
-            day.unavailable = true
+
+          day.value = day.value <10? '0'+day.value : day.value;
+          if(day.inMonth){
+            if (!moment(this.checked.year + '-' + this.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+              day.unavailable = true
+            }
+          }else{
+            if(day.action === 'next'){
+              var _nm = parseInt(this.checked.month) + 1
+              _nm = _nm < 10? '0'+_nm : _nm;
+
+              if (!moment(this.checked.year + '-' + _nm + '-' + day.value).isBetween(limit.from, limit.to)) {
+                day.unavailable = true
+              }
+            }else{
+               var _pm = parseInt(this.checked.month) - 1
+              _pm = _pm < 10? '0'+_pm : _pm;
+              if (!moment(this.checked.year + '-' + _pm + '-' + day.value).isBetween(limit.from, limit.to)) {
+                day.unavailable = true
+              }
+            }
           }
         })
         return days
@@ -222,6 +257,8 @@ export default {
           this.picked()
         }else{
           this.showOne('hour')
+          let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day+' '+this.checked.hour+':'+this.checked.min
+          this.dayMonth = moment(ctime, "YYYY-MM-DD HH:mm");
         }
       },
 
@@ -298,6 +335,8 @@ export default {
       },
       setYear(year) {
         this.checked.currentMoment = moment(year + '-' + this.checked.month + '-' + this.checked.day)
+
+        this.dayMonth = this.checked.currentMoment;
         this.showDay(this.checked.currentMoment)
       },
       setMonth(month) {
@@ -306,16 +345,32 @@ export default {
           mo = '0' + '' + mo
         }
         this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
+
+        this.dayMonth = this.checked.currentMoment;
         this.showDay(this.checked.currentMoment)
       },
       showCheck() {
-        if (this.time == '') {
-          this.showDay()
-        } else {
+        //avoid to open keyboard in mobile devices
+        document.querySelector(".cov-datepicker").blur()
+
+        var currentDate = null;
+
+        if (this.time == '' || !(this.time)) {
+          var nd = new Date;
+          var year = nd.getFullYear();
+          var month = (nd.getMonth() + 1) < 10? '0'+(nd.getMonth() + 1) : (nd.getMonth() +1 ) ;
+          var day = (nd.getDate() < 10)? ('0'+nd.getDate()) : nd.getDate() ;
+
+          currentDate = year+"-"+month+"-"+day+" 00:00"
+          this.dayMonth = currentDate;
+          this.checked.oldtime = currentDate
+        }else{
+          //If it has a defined date
+          this.dayMonth = this.time;
           this.checked.oldtime = this.time
-          this.showDay(this.time)
         }
 
+        this.showDay(this.time)
         this.showInfo.check = true;
       },
       setTime(type, obj, list){
@@ -330,6 +385,7 @@ export default {
       picked(){
         let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day+' '+this.checked.hour+':'+this.checked.min
         this.checked.currentMoment = moment(ctime, "YYYY-MM-DD HH:mm")
+        this.dayMonth = moment(ctime, "YYYY-MM-DD HH:mm");
         this.time = moment(this.checked.currentMoment).format(this.option.format)
         this.showInfo.check=false
       },
@@ -342,6 +398,33 @@ export default {
     }
 
 
+  },
+  filters:{
+    getWeekdayMonth(date){
+      let weekday = null;
+
+      if(!(this.option.startsOnSunday)){
+        weekday = this.option.week[moment(date).day() -1 ]
+      }else{
+        weekday = this.option.week[moment(date).day()]
+      }
+
+      let month = this.option.month[moment(date).month()];
+      let day = moment(date).date()
+      return weekday+" "+day+", "+month;
+    },
+    getOnlyYear(date){
+      return moment(date).year();
+    },
+    getChar(string){
+      if(string){
+        return string.substring(0,1);
+      }
+      return '';
+    },
+    removeZero(number){
+      return parseInt(number)
+    }
   }
 }
 </script>
@@ -394,7 +477,7 @@ export default {
 .cov-date-body {
   display: inline-block;
   background: #3F51B5;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
   font-size: 16px;
   font-family: 'Roboto';
@@ -402,7 +485,7 @@ export default {
   position: fixed;
   display: block;
   width: 400px;
-  max-width: 100%;
+  max-width: 320px;
   z-index: 999;
   top: 50%;
   left: 50%;
@@ -416,15 +499,21 @@ export default {
   background: #fff;
   width: 100%;
   display: inline-block;
-  padding: 25px;
+  padding: 15px 11px;
   box-sizing: border-box !important;
   -moz-box-sizing: border-box !important;
   -webkit-box-sizing: border-box !important;
   -ms-box-sizing: border-box !important;
   width: 400px;
   max-width: 100%;
-  height: 280px;
+  max-height: 285px;
   text-align: start!important;
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 0.5s; /* Firefox < 16 */
+        -ms-animation: fadein 0.5s; /* Internet Explorer */
+         -o-animation: fadein 0.5s; /* Opera < 12.1 */
+            animation: fadein 0.5s;
+
 }
 
 .cov-picker-box td {
@@ -453,12 +542,32 @@ table {
   display: inline-block;
   text-align: center;
   cursor: pointer;
-  height: 34px;
+  height: 16.6666%;
   padding: 0;
-  line-height: 34px;
+  font-size: 13px;
+  line-height: 37px;
   color: #000;
   background: #fff;
-  vertical-align: middle;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;     
+}
+
+.non-selectable{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;       
+}
+
+.week{
+  //border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin: 0 -0.5em;
 }
 
 .week ul {
@@ -468,12 +577,15 @@ table {
 }
 
 .week ul li {
-  width: 14.2%;
+  width: 14.2857143%;
   display: inline-block;
   text-align: center;
+  font-size: 13px;
   background: transparent;
-  color: #000;
-  font-weight: bold;
+  background: #eee;
+  color: #aaa;
+  font-weight: 500;
+  padding:0.5em;
 }
 
 .passive-day{
@@ -482,7 +594,7 @@ table {
 .checked {
   background: #F50057;
   color: #FFF !important;
-  border-radius: 3px;
+  border-radius: 100%;
 }
 
 .unavailable {
@@ -491,7 +603,10 @@ table {
 }
 
 .cov-date-monthly {
-  height: 150px;
+  //height: 150px;
+  text-align: center;
+  position: relative;
+  background: white;
 }
 
 .cov-date-monthly > div {
@@ -499,40 +614,76 @@ table {
   padding: 0;
   margin: 0;
   vertical-align: middle;
-  color: #fff;
-  height: 150px;
-  float: left;
+  color: #555;
   text-align: center;
   cursor: pointer;
 }
 
-.cov-date-previous,
+.cov-date-previous{
+  position: absolute;
+  color: #fff!important;
+  display: none;
+  left: 1em;
+  top: 30%;
+  padding: 0 1em!important;
+}
+
 .cov-date-next {
-  position: relative;
-  width: 20% !important;
-  text-indent: -300px;
-  overflow: hidden;
-  color: #fff;
+  position: absolute;
+  color: #fff!important;
+  display: none;
+  font-size:1em;
+  right: 1em;
+  top: 30%;
+  padding: 0 1em!important;
+}
+
+.cov-date-labels{
+  padding: 14px 24px;
+  
+}
+
+.cov-date-box{
+  min-height: 285px;
+  background: white;
+  
+}
+
+.cov-date-labels .label-year{
+  color:#ccc;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cov-date-labels .label-month{
+  color:#fff;
+  font-size: 28px;
+  font-weight: 500;
+
 }
 
 .cov-date-caption {
-  width: 60%;
-  padding: 50px 0!important;
+  padding: 10px!important;
   box-sizing: border-box;
-  font-size: 24px;
+  font-size: 20px;
+  color:#444!important;
+  font-weight: 600;
 }
 
 .cov-date-caption span:hover {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .cov-date-previous:hover,
 .cov-date-next:hover {
-  background: rgba(255, 255, 255, 0.1);
+  //background: rgba(0, 0, 0, 0.8);
+  //padding:1em;
 }
 
 .day:hover {
   background: #EAEAEA;
+  border-radius: 100%;
+
 }
 
 .unavailable:hover {
@@ -541,18 +692,20 @@ table {
 
 .checked:hover {
   background: #FF4F8E;
+  border-radius: 100%;
+
 }
 
-.cov-date-next::before,
+.cov-date-next::before ,
 .cov-date-previous::before {
-  width: 20px;
+  width: 12px;
   height: 2px;
   text-align: center;
   position: absolute;
-  background: #fff;
+  background: #777;
   top: 50%;
   margin-top: -7px;
-  margin-left: -7px;
+  margin-left: -6px;
   left: 50%;
   line-height: 0;
   content: '';
@@ -563,13 +716,13 @@ table {
 
 .cov-date-next::after,
 .cov-date-previous::after {
-  width: 20px;
+  width: 12px;
   height: 2px;
   text-align: center;
   position: absolute;
-  background: #fff;
-  margin-top: 6px;
-  margin-left: -7px;
+  background: #777;
+  margin-top: 1px;
+  margin-left: -6px;
   top: 50%;
   left: 50%;
   line-height: 0;
@@ -600,6 +753,7 @@ table {
 
 .date-item:hover {
   background: #e0e0e0;
+  font-size: 24px;
 }
 
 .date-list {
@@ -639,9 +793,14 @@ table {
   padding: 10px 20px;
 }
 
+.button-box span:hover{
+  background: rgba(90,90,90,0.23);
+}
+
 .watch-box {
-  height: 100%;
-  overflow: hidden;
+  min-height: 285px;
+  max-height: 285px;
+  //overflow: hidden;
 }
 
 .hour-box,
@@ -649,7 +808,7 @@ table {
   display: inline-block;
   width: 50%;
   text-align: center;
-  height: 100%;
+  height: 285px;
   overflow: auto;
   float: left;
 }
@@ -687,45 +846,51 @@ table {
   <div class="cov-vue-date">
     <div class="datepickbox">
       <input 
-      type="text" 
+      type="text"
+
       title="input date" 
       class="cov-datepicker" 
       placeholder="{{option.placeholder}}" 
       v-model="time" 
       @click="showCheck" 
       :style="option.inputStyle"/>
-    </div>
 
     <div class="datepicker-overlay"
       v-if="showInfo.check"
       @click="dismiss($event)"
       v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
+
       <div 
-      class="cov-date-body" 
-      :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
+      class="cov-date-body non-selectable" 
+      >
+
+        <div class="cov-date-labels" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
+            <span class="label-year" @click="showYear"><small>{{ dayMonth | getOnlyYear}}</small></span>
+            <br>
+            <span class="label-month" @click="showMonth">{{ dayMonth | getWeekdayMonth}}</span>
+        </div>
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
+            <span @click="showMonth"><small>{{displayInfo.month}}</small></span>
             <span @click="showYear"><small>{{checked.year}}</small></span>
-            <br>
-            <span @click="showMonth">{{displayInfo.month}}</span>
           </div>
           <div class="cov-date-next" @click="nextMonth('next')">»</div>
         </div>
-        <div class="cov-date-box" v-if="showInfo.day">
-          <div class="cov-picker-box">
+        <div class="cov-date-box" v-if="showInfo.day"  v-touch:swipeleft="nextMonth('next')"  v-touch:swiperight="nextMonth('prev')">
+          <div class="cov-picker-box" v-if="!(is_sweeping)">
             <div class="week">
               <ul>
-                <li v-for="weekie in library.week">{{weekie}}</li>
+                <li track-by="$index" v-for="weekie in library.week">{{weekie | getChar}}</li>
               </ul>
             </div>
             <div
             class="day"
             v-for="day in dayList"
-            track-by="$index"
+            :track-by="$index"
             @click="checkDay(day)"
             :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
-            >{{day.value}}</div>
+            >{{day.value | removeZero}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -765,10 +930,11 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+          <span class="cal-buttons" @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span class="cal-buttons" @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
+
     </div>
   </div>
 </template>
