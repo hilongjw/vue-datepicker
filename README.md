@@ -37,7 +37,7 @@ export default {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format:'YYYY-MM-DD'
+          format:'YYYY-MM-DD',
           placeholder: 'when?',
           inputStyle: {
             'display': 'inline-block',
