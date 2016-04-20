@@ -239,7 +239,7 @@ exports.default = {
       var _this2 = this;
 
       days.map(function (day) {
-        if (!(0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+        if (!(0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + _this2.pad(day.value)).isBetween(limit.from, limit.to)) {
           day.unavailable = true;
         }
       });
@@ -398,6 +398,9 @@ exports.default = {
           this.showInfo.check = false;
         }
       }
+    },
+    pad:function pad(n){
+        return n<10 ? '0'+n : n;
     }
   }
 };
