@@ -13,7 +13,7 @@ The demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).
 - [moment](https://github.com/moment/moment) `^2.11.1`
 - [lodash](https://github.com/lodash/lodash) `^4.5.0`
 
-# Instllation
+# Installation
 
 ## npm
 
