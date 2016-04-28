@@ -3,6 +3,7 @@ import moment from 'moment'
 import _ from 'lodash'
 export default {
   props: {
+    required: false,
     time: {
       type: String,
       required: true
@@ -694,6 +695,7 @@ table {
       class="cov-datepicker" 
       placeholder="{{option.placeholder}}" 
       v-model="time" 
+      :required="required"
       @click="showCheck" 
       :style="option.inputStyle"/>
     </div>

@@ -17,6 +17,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   props: {
+    required: false,
     time: {
       type: String,
       required: true
@@ -749,6 +750,7 @@ table {
       class="cov-datepicker" 
       placeholder="{{option.placeholder}}" 
       v-model="time" 
+      :required="required"
       @click="showCheck" 
       :style="option.inputStyle"/>
     </div>
