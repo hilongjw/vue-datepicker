@@ -32,6 +32,7 @@ export default {
       starttime: '',
       endtime: '2016-01-19',
       testTime: '',
+      multiTime: '',
       option: {
         type: 'day',
         week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -64,6 +65,12 @@ export default {
         week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         format: 'YYYY-MM-DD HH:mm'
+      },
+      multiOption: {
+        type: 'multi-day',
+        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        format:"YYYY-MM-DD HH:mm"
       },
       limit: [{
         type: 'weekday',
@@ -107,10 +114,84 @@ export default {
 
 # API
 
+ - Option 
+
+ * type
+
+```
+  type: 'day' // 'min', 'multi-day'
+
+```
+
+ * format
+
+```
+format: 'YYYY-MM-DD HH:mm'
+```
+
+ * placeholder
+
+```
+placeholder: 'when?'
+```
+
+ * week
+
+```
+ week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+```
+
+ * month
+
+```
+  month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December']
+```
+
+* inputStyle
+
+```
+inputStyle: {
+  'display': 'inline-block',
+  'padding': '6px',
+  'line-height': '22px',
+  'font-size': '16px',
+  'border': '2px solid #fff',
+  'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+  'border-radius': '2px',
+  'color': '#5F5F5F'
+}
+```
+
+ * color
+
+```
+  color: {
+    header: '#ccc',
+    headerText: '#f00'
+  }
+```
+
+
+ * buttons
+
+```
+buttons: {
+  ok: 'OK',
+  cancel: 'Cancel'
+}
+```
+
+ * animate
+
+```
+  overlayOpacity: 0.5, // 0.5 as default
+  dismissible: true // as true as default
+```
+
 
  - limit
 
- * from sometime to sometime
+  * from sometime to sometime
 
 ```javascript
 
@@ -139,6 +220,7 @@ prop
 <date-picker :time.sync="starttime" :limit="limit"></date-picker>
 
 ```
+
 
 # License
 
