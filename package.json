@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/hilongjw/vue-datepicker#readme",
   "dependencies": {
-    "moment": "^2.11.1",
-    "lodash": "^4.5.0"
+    "moment": "^2.11.1"
   }
 }

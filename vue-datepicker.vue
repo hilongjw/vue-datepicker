@@ -9,10 +9,6 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -147,9 +143,9 @@ exports.default = {
       var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
 
       //gettting previous and next month
-      var currentMonth = _lodash2.default.cloneDeep(currentMoment);
-      var previousMonth = _lodash2.default.cloneDeep(currentMoment);
-      var nextMonth = _lodash2.default.cloneDeep(currentMoment);
+      var currentMonth = (0, _moment2.default)(currentMoment);
+      var previousMonth = (0, _moment2.default)(currentMoment);
+      var nextMonth = (0, _moment2.default)(currentMoment);
       nextMonth.add(1, 'months');
       previousMonth.subtract(1, 'months');
 

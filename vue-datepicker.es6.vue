@@ -1,6 +1,5 @@
 <script>
 import moment from 'moment'
-import _ from 'lodash'
 export default {
   props: {
     required: false,
@@ -10,7 +9,7 @@ export default {
     },
     option: {
       type: Object,
-      default() {
+      default () {
         return {
           type: 'day',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -132,9 +131,9 @@ export default {
       let firstDay = moment(currentMoment).date(1).day()
 
       //gettting previous and next month
-      let currentMonth = _.cloneDeep(currentMoment);
-      let previousMonth = _.cloneDeep(currentMoment)
-      let nextMonth = _.cloneDeep(currentMoment)
+      let currentMonth = moment(currentMoment)
+      let previousMonth = moment(currentMoment)
+      let nextMonth = moment(currentMoment)
       nextMonth.add(1,'months')
       previousMonth.subtract(1,'months')
 
