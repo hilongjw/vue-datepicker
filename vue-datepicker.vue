@@ -46,7 +46,7 @@ exports.default = {
           },
           placeholder: 'when?',
           buttons: {
-            ok: 'Ok',
+            ok: 'OK',
             cancel: 'Cancel'
           },
           overlayOpacity: 0.5,
@@ -114,16 +114,18 @@ exports.default = {
         hour: '00',
         min: '00'
       },
-      dayList: []
+      dayList: [],
+      selectedDays: []
     };
   },
 
   methods: {
+    pad: function pad(n) {
+      return n < 10 ? '0' + n : n;
+    },
     nextMonth: function nextMonth(type) {
       var next = null;
-
       type == 'next' ? next = (0, _moment2.default)(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2.default)(this.checked.currentMoment).add(-1, 'M');
-
       this.showDay(next);
     },
     showDay: function showDay(time) {
@@ -143,10 +145,8 @@ exports.default = {
       var days = [];
       var currentMoment = this.checked.currentMoment;
       var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
-      console.log(firstDay);
 
       //gettting previous and next month
-
       var currentMonth = _lodash2.default.cloneDeep(currentMoment);
       var previousMonth = _lodash2.default.cloneDeep(currentMoment);
       var nextMonth = _lodash2.default.cloneDeep(currentMoment);
@@ -165,6 +165,7 @@ exports.default = {
         if (i == Math.ceil((0, _moment2.default)(currentMoment).format("D")) && (0, _moment2.default)(oldtime).year() == (0, _moment2.default)(currentMoment).year() && (0, _moment2.default)(oldtime).month() == (0, _moment2.default)(currentMoment).month()) {
           days[i - 1].checked = true;
         }
+        this.checkBySelectDays(i, days);
       }
 
       if (firstDay == 0) firstDay = 7;
@@ -223,24 +224,33 @@ exports.default = {
       }
       this.dayList = days;
     },
-    limitWeekDay: function limitWeekDay(limit, days) {
+    checkBySelectDays: function checkBySelectDays(d, days) {
       var _this = this;
+
+      this.selectedDays.forEach(function (day) {
+        if (_this.checked.year === (0, _moment2.default)(day).format("YYYY") && _this.checked.month === (0, _moment2.default)(day).format("MM") && d === Math.ceil((0, _moment2.default)(day).format("D"))) {
+          days[d - 1].checked = true;
+        }
+      });
+    },
+    limitWeekDay: function limitWeekDay(limit, days) {
+      var _this2 = this;
 
       days.map(function (day) {
         var tday = void 0;
         day.value < 10 ? tday = '0' + day.value : tday = day.value;
 
-        if (limit.available.indexOf(Math.floor((0, _moment2.default)(_this.checked.year + '-' + _this.checked.month + '-' + tday).format('d'))) == -1) {
+        if (limit.available.indexOf(Math.floor((0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + tday).format('d'))) == -1) {
           day.unavailable = true;
         }
       });
       return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
-      var _this2 = this;
+      var _this3 = this;
 
       days.map(function (day) {
-        if (!(0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
+        if (!(0, _moment2.default)(_this3.checked.year + '-' + _this3.checked.month + '-' + _this3.pad(day.value)).isBetween(limit.from, limit.to)) {
           day.unavailable = true;
         }
       });
@@ -255,16 +265,31 @@ exports.default = {
         this.nextMonth(obj.action);
       }
 
-      this.dayList.map(function (x) {
-        return x.checked = false;
-      });
-      obj.checked = true;
-      this.checked.day = obj.value;
-      this.checked.day.length < 2 ? this.checked.day = '0' + this.checked.day : this.checked.day;
-      if (this.option.type == 'day') {
-        this.picked();
+      if (this.option.type === 'day' || this.option.type === 'min') {
+        this.dayList.map(function (x) {
+          return x.checked = false;
+        });
+        this.checked.day = this.pad(obj.value);
+        obj.checked = true;
       } else {
-        this.showOne('hour');
+        var day = this.pad(obj.value);
+        var ctime = this.checked.year + '-' + this.checked.month + '-' + day;
+        if (obj.checked === true) {
+          obj.checked = false;
+          this.selectedDays.$remove(ctime);
+        } else {
+          this.selectedDays.push(ctime);
+          obj.checked = true;
+        }
+      }
+
+      switch (this.option.type) {
+        case 'day':
+          this.picked();
+          break;
+        case 'min':
+          this.showOne('hour');
+          break;
       }
     },
     showYear: function showYear() {
@@ -316,7 +341,6 @@ exports.default = {
           this.showInfo.year = false;
           this.showInfo.month = false;
           this.showInfo.hour = false;
-
       }
     },
     showMonth: function showMonth() {
@@ -351,10 +375,20 @@ exports.default = {
       if (this.time == '') {
         this.showDay();
       } else {
-        this.checked.oldtime = this.time;
-        this.showDay(this.time);
+        if (this.option.type === 'day' || this.option.type === 'min') {
+          this.checked.oldtime = this.time;
+          console.log(this.time);
+          this.showDay(this.time);
+        } else {
+          this.selectedDays = JSON.parse(this.time);
+          if (this.selectedDays.length) {
+            this.checked.oldtime = this.selectedDays[0];
+            this.showDay(this.selectedDays[0]);
+          } else {
+            this.showDay();
+          }
+        }
       }
-
       this.showInfo.check = true;
     },
     setTime: function setTime(type, obj, list) {
@@ -388,9 +422,13 @@ exports.default = {
       }
     },
     picked: function picked() {
-      var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
-      this.checked.currentMoment = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
-      this.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
+      if (this.option.type === 'day' || this.option.type === 'min') {
+        var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
+        this.checked.currentMoment = (0, _moment2.default)(ctime, "YYYY-MM-DD HH:mm");
+        this.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
+      } else {
+        this.time = JSON.stringify(this.selectedDays);
+      }
       this.showInfo.check = false;
     },
     dismiss: function dismiss(evt) {

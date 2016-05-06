@@ -32,7 +32,7 @@ export default {
           },
           placeholder: 'when?',
           buttons : {
-            ok : 'Ok',
+            ok : 'OK',
             cancel : 'Cancel'
           },
           overlayOpacity : 0.5,
@@ -56,26 +56,26 @@ export default {
 
           list.push({
             checked: false,
-            value: hour<10 ?  '0'+hour : hour
+            value: hour < 10 ?  '0' + hour : hour
           })
         }
         return list
       }
-      function mins() {
-        let list = []
-        let min = 60
-        while (min > 0) {
-          min--
-          list.push({
-            checked: false,
-            value: min<10 ?  '0'+min : min
-          })
-        }
-        return list
+    function mins() {
+      let list = []
+      let min = 60
+      while (min > 0) {
+        min--
+        list.push({
+          checked: false,
+          value: min < 10 ?  '0' + min : min
+        })
       }
+      return list
+    }
     return {
       hours:hours(),
-        mins:mins(),
+      mins:mins(),
       showInfo: {
         hour: false,
         day: false,
@@ -100,251 +100,284 @@ export default {
         hour: '00',
         min: '00'
       },
-      dayList: []
+      dayList: [],
+      selectedDays: []
     }
   },
   methods: {
-    nextMonth(type) {
-        let next = null;
+    pad (n){
+      return n<10 ? '0'+ n : n
+    },
+    nextMonth (type) {
+      let next = null
+      type == 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
+      this.showDay(next)
+    },
+    showDay (time) {
+      if (time === undefined ||!Date.parse(time)) {
+        this.checked.currentMoment = moment()
+      } else {
+        this.checked.currentMoment = moment(time, this.option.format)
+      }
+      this.showOne('day')
 
-        type == 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
+      this.checked.year = moment(this.checked.currentMoment).format("YYYY")
+      this.checked.month = moment(this.checked.currentMoment).format("MM")
+      this.checked.day = moment(this.checked.currentMoment).format("DD")
 
-        this.showDay(next)
-      },
-      showDay(time) {
-        if (time === undefined||!Date.parse(time)) {
-          this.checked.currentMoment = moment()
-        } else {
-            this.checked.currentMoment = moment(time, this.option.format)
+      this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
+
+      let days = []
+      let currentMoment = this.checked.currentMoment
+      let firstDay = moment(currentMoment).date(1).day()
+
+      //gettting previous and next month
+      let currentMonth = _.cloneDeep(currentMoment);
+      let previousMonth = _.cloneDeep(currentMoment)
+      let nextMonth = _.cloneDeep(currentMoment)
+      nextMonth.add(1,'months')
+      previousMonth.subtract(1,'months')
+
+      let monthDays = moment(currentMoment).daysInMonth()
+      let oldtime = this.checked.oldtime;
+      for (let i = 1; i <= monthDays; ++i) {
+        days.push({
+          value: i,
+          inMonth: true,
+          unavailable: false,
+          checked: false
+        })
+        if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
+          days[i - 1].checked = true
         }
-        this.showOne('day')
+        this.checkBySelectDays(i, days)
+      }
 
-        this.checked.year = moment(this.checked.currentMoment).format("YYYY")
-        this.checked.month = moment(this.checked.currentMoment).format("MM")
-        this.checked.day = moment(this.checked.currentMoment).format("DD")
+      if (firstDay == 0) firstDay = 7
 
-        this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()];
+      for (let i = 0; i < firstDay - 1; i++) {
+          let passiveDay = {
+            value: previousMonth.daysInMonth() - (i),
+            inMonth: false,
+            action : 'previous',
+          }
+          days.unshift(passiveDay);
+      }
 
-        let days = []
-        let currentMoment = this.checked.currentMoment
-        let firstDay = moment(currentMoment).date(1).day()
-        console.log(firstDay)
+      if (this.limit.length > 0) {
+        for (let li of this.limit) {
+          switch (li.type) {
+            case 'fromto':
+              days = this.limitFromTo(li, days)
+              break;
+            case 'weekday':
+              days = this.limitWeekDay(li, days)
+              break;
+          }
+        }
+      }
 
-        //gettting previous and next month
-
-        let currentMonth = _.cloneDeep(currentMoment);
-        let previousMonth = _.cloneDeep(currentMoment)
-        let nextMonth = _.cloneDeep(currentMoment)
-        nextMonth.add(1,'months')
-        previousMonth.subtract(1,'months')
-
-
-        let monthDays = moment(currentMoment).daysInMonth()
-        let oldtime = this.checked.oldtime;
-        for (let i = 1; i <= monthDays; ++i) {
-          days.push({
+      var passiveDaysAtFinal = 42 - days.length;
+      for (let i = 1; i <= passiveDaysAtFinal; i++) {
+          let passiveDay = {
             value: i,
-            inMonth: true,
-            unavailable: false,
-            checked: false
-          })
-          if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
-            days[i - 1].checked = true
+            inMonth: false,
+            action : 'next',
           }
+          days.push(passiveDay);
+      }
+      this.dayList = days
+    },
+    checkBySelectDays (d, days) {
+      this.selectedDays.forEach(day => {
+        if (this.checked.year === moment(day).format("YYYY") && this.checked.month === moment(day).format("MM") && d === Math.ceil(moment(day).format("D"))) {
+            days[d - 1].checked = true
+        }
+      })
+    },
+    limitWeekDay (limit, days) {
+      days.map((day) => {
+        let tday
+        day.value < 10 ? tday = '0' + day.value : tday = day.value
+
+        if (limit.available.indexOf(Math.floor(moment(this.checked.year + '-' + this.checked.month + '-' + tday).format('d'))) == -1) {
+          day.unavailable = true
         }
 
-        if (firstDay == 0) firstDay = 7
-
-        for (let i = 0; i < firstDay - 1; i++) {
-            let passiveDay = {
-              value: previousMonth.daysInMonth() - (i),
-              inMonth: false,
-              action : 'previous',
-            }
-            days.unshift(passiveDay);
+      })
+      return days
+    },
+    limitFromTo (limit, days) {
+      days.map((day) => {
+        if (!moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to)) {
+          day.unavailable = true
         }
+      })
+      return days
+    },
+    checkDay (obj) {
+      if (obj.unavailable || obj.value == '') {
+        return false
+      }
 
-        if (this.limit.length > 0) {
-          for (let li of this.limit) {
-            switch (li.type) {
-              case 'fromto':
-                days = this.limitFromTo(li, days)
-                break;
-              case 'weekday':
-                days = this.limitWeekDay(li, days)
-                break;
-            }
-          }
-        }
+      if(!(obj.inMonth)){
+        this.nextMonth(obj.action)
+      }
 
-        var passiveDaysAtFinal = 42 - days.length;
-        for (let i = 1; i <= passiveDaysAtFinal; i++) {
-            let passiveDay = {
-              value: i,
-              inMonth: false,
-              action : 'next',
-            }
-            days.push(passiveDay);
-        }
-        this.dayList = days
-      },
-      limitWeekDay(limit, days) {
-        days.map((day) => {
-          let tday
-          day.value < 10 ? tday = '0' + day.value : tday = day.value
-
-          if (limit.available.indexOf(Math.floor(moment(this.checked.year + '-' + this.checked.month + '-' + tday).format('d'))) == -1) {
-            day.unavailable = true
-          }
-
-        })
-        return days
-      },
-      limitFromTo(limit, days) {
-        days.map((day) => {
-          if (!moment(this.checked.year + '-' + this.checked.month + '-' + day.value).isBetween(limit.from, limit.to)) {
-            day.unavailable = true
-          }
-        })
-        return days
-      },
-      checkDay(obj) {
-        if (obj.unavailable || obj.value == '') {
-          return false
-        }
-
-        if(!(obj.inMonth)){
-          this.nextMonth(obj.action)
-        }
-
+      if (this.option.type === 'day' || this.option.type === 'min') {
         this.dayList.map(x => x.checked = false)
+        this.checked.day = this.pad(obj.value)
         obj.checked = true
-        this.checked.day = obj.value
-        this.checked.day.length < 2 ? this.checked.day = '0' + this.checked.day : this.checked.day
-        if (this.option.type == 'day') {
-          this.picked()
-        }else{
-          this.showOne('hour')
-        }
-      },
-
-      showYear() {
-        let year = moment(this.checked.currentMoment).year()
-        this.library.year = []
-        let yearTmp = []
-        for (let i = year - 100; i < year + 5; ++i) {
-          yearTmp.push(i)
-        }
-        this.library.year = yearTmp
-
-        this.showOne('year')
-
-        let self = this
-        this.$nextTick(function() {
-          let listDom = document.getElementById('yearList');
-          listDom.scrollTop = (listDom.scrollHeight - 100)
-          self.addYear()
-        })
-      },
-      showOne(type) {
-        switch (type) {
-          case 'year':
-            this.showInfo.hour = false
-            this.showInfo.day = false
-            this.showInfo.year = true
-            this.showInfo.month = false
-            break;
-          case 'month':
-            this.showInfo.hour = false
-            this.showInfo.day = false
-            this.showInfo.year = false
-            this.showInfo.month = true
-            break;
-          case 'day':
-            this.showInfo.hour = false
-            this.showInfo.day = true
-            this.showInfo.year = false
-            this.showInfo.month = false
-            break;
-          case 'hour':
-            this.showInfo.hour = true
-            this.showInfo.day = false
-            this.showInfo.year = false
-            this.showInfo.month = false
-            break;
-          default:
-            this.showInfo.day = true
-            this.showInfo.year = false
-            this.showInfo.month = false
-            this.showInfo.hour = false
-
-
-        }
-      },
-      showMonth() {
-        this.showOne('month')
-      },
-      addYear() {
-        let self = this;
-        let listDom = document.getElementById('yearList');
-        let tmp = 0;
-        listDom.addEventListener('scroll', function(e) {
-
-          if (listDom.scrollTop < listDom.scrollHeight - 100) {
-            let len = self.library.year.length
-            let lastYear = self.library.year[len - 1]
-            self.library.year.push(lastYear + 1)
-          }
-
-
-        }, false)
-      },
-      setYear(year) {
-        this.checked.currentMoment = moment(year + '-' + this.checked.month + '-' + this.checked.day)
-        this.showDay(this.checked.currentMoment)
-      },
-      setMonth(month) {
-        let mo = (this.library.month.indexOf(month) + 1);
-        if (mo < 10) {
-          mo = '0' + '' + mo
-        }
-        this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
-        this.showDay(this.checked.currentMoment)
-      },
-      showCheck() {
-        if (this.time == '') {
-          this.showDay()
+      } else {
+        let day = this.pad(obj.value)
+        let ctime = this.checked.year + '-' + this.checked.month + '-' + day
+        if (obj.checked === true) {
+          obj.checked = false
+          this.selectedDays.$remove(ctime)
         } else {
-          this.checked.oldtime = this.time
-          this.showDay(this.time)
+          this.selectedDays.push(ctime)
+          obj.checked = true
+        }
+      }
+
+      switch (this.option.type) {
+        case 'day' :
+          this.picked()
+          break;
+        case 'min' :
+          this.showOne('hour')
+          break;
+      }
+    },
+
+    showYear () {
+      let year = moment(this.checked.currentMoment).year()
+      this.library.year = []
+      let yearTmp = []
+      for (let i = year - 100; i < year + 5; ++i) {
+        yearTmp.push(i)
+      }
+      this.library.year = yearTmp
+
+      this.showOne('year')
+
+      let self = this
+      this.$nextTick(function() {
+        let listDom = document.getElementById('yearList');
+        listDom.scrollTop = (listDom.scrollHeight - 100)
+        self.addYear()
+      })
+    },
+    showOne (type) {
+      switch (type) {
+        case 'year':
+          this.showInfo.hour = false
+          this.showInfo.day = false
+          this.showInfo.year = true
+          this.showInfo.month = false
+          break;
+        case 'month':
+          this.showInfo.hour = false
+          this.showInfo.day = false
+          this.showInfo.year = false
+          this.showInfo.month = true
+          break;
+        case 'day':
+          this.showInfo.hour = false
+          this.showInfo.day = true
+          this.showInfo.year = false
+          this.showInfo.month = false
+          break;
+        case 'hour':
+          this.showInfo.hour = true
+          this.showInfo.day = false
+          this.showInfo.year = false
+          this.showInfo.month = false
+          break;
+        default:
+          this.showInfo.day = true
+          this.showInfo.year = false
+          this.showInfo.month = false
+          this.showInfo.hour = false
+      }
+    },
+    showMonth () {
+      this.showOne('month')
+    },
+    addYear() {
+      let self = this;
+      let listDom = document.getElementById('yearList');
+      let tmp = 0;
+      listDom.addEventListener('scroll', function(e) {
+
+        if (listDom.scrollTop < listDom.scrollHeight - 100) {
+          let len = self.library.year.length
+          let lastYear = self.library.year[len - 1]
+          self.library.year.push(lastYear + 1)
         }
 
-        this.showInfo.check = true;
-      },
-      setTime(type, obj, list){
-        for(let item of list){
-          item.checked = false
-          if(item.value == obj.value){
-            item.checked = true
-            this.checked[type] = item.value
+
+      }, false)
+    },
+    setYear(year) {
+      this.checked.currentMoment = moment(year + '-' + this.checked.month + '-' + this.checked.day)
+      this.showDay(this.checked.currentMoment)
+    },
+    setMonth(month) {
+      let mo = (this.library.month.indexOf(month) + 1);
+      if (mo < 10) {
+        mo = '0' + '' + mo
+      }
+      this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
+      this.showDay(this.checked.currentMoment)
+    },
+    showCheck() {
+      if (this.time == '') {
+        this.showDay()
+      } else {
+        if (this.option.type === 'day' || this.option.type === 'min') {
+          this.checked.oldtime = this.time
+          console.log(this.time)
+          this.showDay(this.time)
+        } else {
+          this.selectedDays = JSON.parse(this.time)
+          if (this.selectedDays.length) {
+            this.checked.oldtime = this.selectedDays[0]
+            this.showDay(this.selectedDays[0])
+          } else {
+            this.showDay()
           }
         }
-      },
-      picked(){
+      }
+      this.showInfo.check = true;
+    },
+    setTime (type, obj, list) {
+      for (let item of list) {
+        item.checked = false
+        if (item.value == obj.value) {
+          item.checked = true
+          this.checked[type] = item.value
+        }
+      }
+    },
+    picked () {
+      if (this.option.type === 'day' || this.option.type === 'min') {
         let ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day+' '+this.checked.hour+':'+this.checked.min
         this.checked.currentMoment = moment(ctime, "YYYY-MM-DD HH:mm")
         this.time = moment(this.checked.currentMoment).format(this.option.format)
-        this.showInfo.check=false
-      },
-      dismiss(evt){
-        if(evt.target.className === 'datepicker-overlay'){
-          if(this.option.dismissible == undefined || this.option.dismissible){
-            this.showInfo.check = false;
-          }
+      } else {
+        this.time = JSON.stringify(this.selectedDays)
+      }
+      this.showInfo.check = false
+      
+    },
+    dismiss (evt) {
+      if(evt.target.className === 'datepicker-overlay'){
+        if(this.option.dismissible == undefined || this.option.dismissible){
+          this.showInfo.check = false;
         }
+      }
     }
-
-
   }
 }
 </script>
