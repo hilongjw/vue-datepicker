@@ -156,7 +156,8 @@ exports.default = {
           value: i,
           inMonth: true,
           unavailable: false,
-          checked: false
+          checked: false,
+          moment: (0, _moment2.default)(currentMoment).date(i)
         });
         if (i == Math.ceil((0, _moment2.default)(currentMoment).format("D")) && (0, _moment2.default)(oldtime).year() == (0, _moment2.default)(currentMoment).year() && (0, _moment2.default)(oldtime).month() == (0, _moment2.default)(currentMoment).month()) {
           days[i - 1].checked = true;
@@ -170,7 +171,8 @@ exports.default = {
         var passiveDay = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
-          action: 'previous'
+          action: 'previous',
+          moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i+1, 'days')
         };
         days.unshift(passiveDay);
       }
@@ -214,7 +216,8 @@ exports.default = {
         var _passiveDay = {
           value: _i2,
           inMonth: false,
-          action: 'next'
+          action: 'next',
+          moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
         };
         days.push(_passiveDay);
       }
@@ -230,23 +233,16 @@ exports.default = {
       });
     },
     limitWeekDay: function limitWeekDay(limit, days) {
-      var _this2 = this;
-
       days.map(function (day) {
-        var tday = void 0;
-        day.value < 10 ? tday = '0' + day.value : tday = day.value;
-
-        if (limit.available.indexOf(Math.floor((0, _moment2.default)(_this2.checked.year + '-' + _this2.checked.month + '-' + tday).format('d'))) == -1) {
+        if (limit.available.indexOf(day.moment.format('d')) == -1) {
           day.unavailable = true;
         }
       });
       return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
-      var _this3 = this;
-
       days.map(function (day) {
-        if (!(0, _moment2.default)(_this3.checked.year + '-' + _this3.checked.month + '-' + _this3.pad(day.value)).isBetween(limit.from, limit.to)) {
+        if (!day.moment.isBetween(limit.from, limit.to)) {
           day.unavailable = true;
         }
       });
