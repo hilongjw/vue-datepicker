@@ -141,10 +141,11 @@ export default {
       let oldtime = this.checked.oldtime;
       for (let i = 1; i <= monthDays; ++i) {
         days.push({
-          value: i < 10 ? '0' + 0 : i,
+          value: i,
           inMonth: true,
           unavailable: false,
-          checked: false
+          checked: false,
+          moment: moment(currentMoment).date(i)
         })
         if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
           days[i - 1].checked = true
@@ -155,11 +156,11 @@ export default {
       if (firstDay == 0) firstDay = 7
 
       for (let i = 0; i < firstDay - 1; i++) {
-          let tmp = previousMonth.daysInMonth() - (i);
           let passiveDay = {
-            value: tmp < 10 ? '0' + tmp: tmp,
+            value: previousMonth.daysInMonth() - (i),
             inMonth: false,
             action : 'previous',
+            moment: moment(currentMoment).date(1).subtract(i+1, 'days')
           }
           days.unshift(passiveDay);
       }
@@ -183,6 +184,7 @@ export default {
             value: i,
             inMonth: false,
             action : 'next',
+            moment: moment(currentMoment).add(1, 'months').date(i)
           }
           days.push(passiveDay);
       }
@@ -197,19 +199,15 @@ export default {
     },
     limitWeekDay (limit, days) {
       days.map((day) => {
-        let tday
-        day.value < 10 ? tday = '0' + day.value : tday = day.value
-
-        if (limit.available.indexOf(Math.floor(moment(this.checked.year + '-' + this.checked.month + '-' + tday).format('d'))) == -1) {
+        if (limit.available.indexOf(day.moment.format('d')) == -1) {
           day.unavailable = true
         }
-
       })
       return days
     },
     limitFromTo (limit, days) {
       days.map((day) => {
-        if (!moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to)) {
+        if (!day.moment.isBetween(limit.from, limit.to)) {
           day.unavailable = true
         }
       })
