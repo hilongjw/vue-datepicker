@@ -141,7 +141,7 @@ export default {
       let oldtime = this.checked.oldtime;
       for (let i = 1; i <= monthDays; ++i) {
         days.push({
-          value: i,
+          value: i < 10 ? '0' + 0 : i,
           inMonth: true,
           unavailable: false,
           checked: false
@@ -155,8 +155,9 @@ export default {
       if (firstDay == 0) firstDay = 7
 
       for (let i = 0; i < firstDay - 1; i++) {
+          let tmp = previousMonth.daysInMonth() - (i);
           let passiveDay = {
-            value: previousMonth.daysInMonth() - (i),
+            value: tmp < 10 ? '0' + tmp: tmp,
             inMonth: false,
             action : 'previous',
           }
