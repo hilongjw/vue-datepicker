@@ -147,7 +147,7 @@ export default {
           checked: false,
           moment: moment(currentMoment).date(i)
         })
-        if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime).year() == moment(currentMoment).year() && moment(oldtime).month() == moment(currentMoment).month()) {
+        if (i == Math.ceil(moment(currentMoment).format("D")) && moment(oldtime, this.option.format).year() == moment(currentMoment).year() && moment(oldtime, this.option.format).month() == moment(currentMoment).month()) {
           days[i - 1].checked = true
         }
         this.checkBySelectDays(i, days)
@@ -367,7 +367,7 @@ export default {
         this.time = JSON.stringify(this.selectedDays)
       }
       this.showInfo.check = false
-      
+
     },
     dismiss (evt) {
       if(evt.target.className === 'datepicker-overlay'){
@@ -720,14 +720,14 @@ table {
 <template>
   <div class="cov-vue-date">
     <div class="datepickbox">
-      <input 
-      type="text" 
-      title="input date" 
-      class="cov-datepicker" 
-      placeholder="{{option.placeholder}}" 
-      v-model="time" 
+      <input
+      type="text"
+      title="input date"
+      class="cov-datepicker"
+      placeholder="{{option.placeholder}}"
+      v-model="time"
       :required="required"
-      @click="showCheck" 
+      @click="showCheck"
       :style="option.inputStyle"/>
     </div>
 
@@ -735,8 +735,8 @@ table {
       v-if="showInfo.check"
       @click="dismiss($event)"
       v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
-      <div 
-      class="cov-date-body" 
+      <div
+      class="cov-date-body"
       :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
@@ -779,9 +779,9 @@ table {
               <div class="hour-box">
               <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
               <ul>
-                <li 
-                class="hour-item" 
-                v-for="hitem in hours" 
+                <li
+                class="hour-item"
+                v-for="hitem in hours"
                 @click="setTime('hour', hitem, hours)"
                 :class="{'active':hitem.checked}"
                 >{{hitem.value}}</li>
@@ -789,9 +789,9 @@ table {
               </div>
               <div class="min-box">
               <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
-                <div 
-                class="min-item" 
-                v-for="mitem in mins" 
+                <div
+                class="min-item"
+                v-for="mitem in mins"
                 @click="setTime('min',mitem, mins)"
                 :class="{'active':mitem.checked}"
                 >{{mitem.value}}</div>
