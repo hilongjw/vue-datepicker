@@ -335,7 +335,6 @@ export default {
       } else {
         if (this.option.type === 'day' || this.option.type === 'min') {
           this.checked.oldtime = this.time
-          console.log(this.time)
           this.showDay(this.time)
         } else {
           this.selectedDays = JSON.parse(this.time)
