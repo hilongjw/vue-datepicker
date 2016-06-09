@@ -484,7 +484,6 @@ exports.default = {
   overflow: hidden;
   position: relative;
   font-size: 16px;
-  font-family: 'Roboto';
   font-weight: 400;
   position: fixed;
   display: block;
@@ -703,7 +702,6 @@ table {
   border: 2px solid #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
   border-radius: 2px;
-  font-family: 'Roboto';
   color: #5F5F5F;
 }
 
