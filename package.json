@@ -23,5 +23,20 @@
   "homepage": "https://github.com/hilongjw/vue-datepicker#readme",
   "dependencies": {
     "moment": "^2.11.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ],
+      [
+        "vueify"
+      ]
+    ]
   }
 }
