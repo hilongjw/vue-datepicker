@@ -16,8 +16,9 @@ export default {
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
+            checkedDay: '#F50057',
             header: '#3f51b5',
-            headerText: '#fff'
+            headerText: '#fff',
           },
           inputStyle: {
             'display': 'inline-block',
@@ -759,6 +760,7 @@ table {
             track-by="$index"
             @click="checkDay(day)"
             :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
+            :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}"
             >{{day.value}}</div>
           </div>
         </div>
