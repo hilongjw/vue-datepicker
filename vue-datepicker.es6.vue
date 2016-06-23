@@ -642,18 +642,6 @@ table {
   padding: 0;
 }
 
-.cov-datepicker {
-  display: inline-block;
-  padding: 6px;
-  line-height: 22px;
-  font-size: 16px;
-  border: 2px solid #fff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
-  font-family: 'Roboto';
-  color: #5F5F5F;
-}
-
 .cov-vue-date {
   display: inline-block;
   color: #5D5D5D;
