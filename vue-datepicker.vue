@@ -47,7 +47,8 @@ exports.default = {
           placeholder: 'when?',
           buttons: {
             ok: 'Ok',
-            cancel: 'Cancel'
+            cancel : 'Cancel',
+            erase: 'Erase',
           },
           overlayOpacity: 0.5,
           dismissible: true
@@ -125,6 +126,10 @@ exports.default = {
       type == 'next' ? next = (0, _moment2.default)(this.checked.currentMoment).add(1, 'M') : next = (0, _moment2.default)(this.checked.currentMoment).add(-1, 'M');
 
       this.showDay(next);
+    },
+    erase () {
+      this.time = '';
+      this.showInfo.check = false;
     },
     showDay: function showDay(time) {
       if (time === undefined || !Date.parse(time)) {
@@ -697,6 +702,12 @@ table {
   padding: 10px 20px;
 }
 
+.button-box .button-erase:hover {
+  background: #F50057;
+  color: white;
+}
+
+
 .watch-box {
   height: 100%;
   overflow: hidden;
@@ -824,6 +835,7 @@ table {
           </div>
         </div>
         <div class="button-box">
+          <span class="button-erase" @click="erase">{{option.buttons? option.buttons.erase : 'Erase' }}</span>
           <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
           <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
