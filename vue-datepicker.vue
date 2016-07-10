@@ -758,8 +758,8 @@ table {
       <input 
       type="text" 
       title="input date" 
-      class="cov-datepicker" 
-      placeholder="{{option.placeholder}}" 
+      class="cov-datepicker"
+      v-bind:placeholder="option.placeholder"
       v-model="time" 
       :required="required"
       @click="showCheck" 
