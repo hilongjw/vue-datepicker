@@ -712,10 +712,12 @@ table {
       type="text"
       title="input date"
       class="cov-datepicker"
+      readonly="readonly"
       placeholder="{{option.placeholder}}"
       v-model="time"
       :required="required"
       @click="showCheck"
+      @foucus="showCheck"
       :style="option.inputStyle"/>
     </div>
 
