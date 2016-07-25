@@ -190,7 +190,7 @@ buttons: {
 
  - limit
 
-  * from sometime to sometime
+  * from sometime to sometime(when from/to is empty, days before/after end/start time will be available)
 
 ```javascript
 
