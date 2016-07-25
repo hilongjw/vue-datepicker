@@ -199,7 +199,7 @@ export default {
       })
     },
     limitWeekDay (limit, days) {
-      days.map((day) => {
+      days.map((day) => { 
         if (limit.available.indexOf(day.moment.format('d')) == -1) {
           day.unavailable = true
         }
@@ -207,12 +207,23 @@ export default {
       return days
     },
     limitFromTo (limit, days) {
-      days.map((day) => {
-        if (!day.moment.isBetween(limit.from, limit.to)) {
-          day.unavailable = true
-        }
-      })
+      if(limit.from || limit.to) {
+        days.map((day) => {
+          if (this.getLimitCondition(limit, day)) {
+            day.unavailable = true
+          }
+        })
+      }
       return days
+    },
+    getLimitCondition(limit, day) {
+      if(limit.from && !limit.to) {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isAfter(limit.from)
+      }else if(!limit.from && limit.to) {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBefore(limit.to)
+      }else {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to)
+      }
     },
     checkDay (obj) {
       if (obj.unavailable || obj.value == '') {

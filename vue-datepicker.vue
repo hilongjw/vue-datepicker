@@ -241,12 +241,25 @@ exports.default = {
       return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
-      days.map(function (day) {
-        if (!day.moment.isBetween(limit.from, limit.to)) {
-          day.unavailable = true;
-        }
-      });
+      var _this = this;
+
+      if(limit.from || limit.to) {
+        days.map(function (day) {
+          if (_this.getFilterCondition(limit, day)) {
+            day.unavailable = true;
+          }
+        })
+      }
       return days;
+    },
+    getFilterCondition: function getFilterCondition(limit, day) {
+      if(limit.from && !limit.to) {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isAfter(limit.from);
+      }else if(!limit.from && limit.to) {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBefore(limit.to);
+      }else {
+        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to);
+      }
     },
     checkDay: function checkDay(obj) {
       if (obj.unavailable || obj.value == '') {
