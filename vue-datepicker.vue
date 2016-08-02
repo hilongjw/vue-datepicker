@@ -254,11 +254,11 @@ exports.default = {
     },
     getFilterCondition: function getFilterCondition(limit, day) {
       if(limit.from && !limit.to) {
-        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isAfter(limit.from);
+        return !_moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isAfter(limit.from);
       }else if(!limit.from && limit.to) {
-        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBefore(limit.to);
+        return !_moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBefore(limit.to);
       }else {
-        return !moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to);
+        return !_moment(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to);
       }
     },
     checkDay: function checkDay(obj) {
@@ -836,7 +836,7 @@ table {
               <ul>
                 <li
                 class="hour-item"
-                v-for="hitem in hours"
+                v-for="hitem in hours | orderBy 'value' 1"
                 @click="setTime('hour', hitem, hours)"
                 :class="{'active':hitem.checked}"
                 >{{hitem.value}}</li>
@@ -846,7 +846,7 @@ table {
               <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
                 <div
                 class="min-item"
-                v-for="mitem in mins"
+                v-for="mitem in mins | orderBy 'value' 1"
                 @click="setTime('min',mitem, mins)"
                 :class="{'active':mitem.checked}"
                 >{{mitem.value}}</div>
