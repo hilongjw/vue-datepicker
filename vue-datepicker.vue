@@ -118,6 +118,7 @@ exports.default = {
 
   methods: {
     pad: function pad(n) {
+      n = Math.floor(n);
       return n < 10 ? '0' + n : n;
     },
     nextMonth: function nextMonth(type) {
@@ -173,9 +174,24 @@ exports.default = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
           action: 'previous',
+          unavailable: false,
+          checked: false,
           moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i + 1, 'days')
         };
         days.unshift(passiveDay);
+      }
+
+      var passiveDaysAtFinal = 42 - days.length;
+      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
+        var _passiveDay = {
+          value: _i2,
+          inMonth: false,
+          action: 'next',
+          unavailable: false,
+          checked: false,
+          moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
+        };
+        days.push(_passiveDay);
       }
 
       if (this.limit.length > 0) {
@@ -212,16 +228,6 @@ exports.default = {
         }
       }
 
-      var passiveDaysAtFinal = 42 - days.length;
-      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
-        var _passiveDay = {
-          value: _i2,
-          inMonth: false,
-          action: 'next',
-          moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
-        };
-        days.push(_passiveDay);
-      }
       this.dayList = days;
     },
     checkBySelectDays: function checkBySelectDays(d, days) {
@@ -234,12 +240,12 @@ exports.default = {
       });
     },
     limitWeekDay: function limitWeekDay(limit, days) {
-      days.map(function (day) {
-        if (limit.available.indexOf(day.moment.format('d')) === -1) {
+      return days.map(function (day) {
+        if (limit.available.indexOf(Math.floor(day.moment.format('d'))) === -1) {
           day.unavailable = true;
         }
+        return day;
       });
-      return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
       var _this2 = this;
@@ -254,12 +260,13 @@ exports.default = {
       return days;
     },
     getLimitCondition: function getLimitCondition(limit, day) {
+      var tmpMoment = (0, _moment2.default)(this.checked.year + '-' + this.pad(this.checked.month) + '-' + this.pad(day.value));
       if (limit.from && !limit.to) {
-        return !(0, _moment2.default)(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isAfter(limit.from);
+        return !tmpMoment.isAfter(limit.from);
       } else if (!limit.from && limit.to) {
-        return !(0, _moment2.default)(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBefore(limit.to);
+        return !tmpMoment.isBefore(limit.to);
       } else {
-        return !(0, _moment2.default)(this.checked.year + '-' + this.checked.month + '-' + this.pad(day.value)).isBetween(limit.from, limit.to);
+        return !tmpMoment.isBetween(limit.from, limit.to);
       }
     },
     checkDay: function checkDay(obj) {
@@ -500,6 +507,7 @@ exports.default = {
   overflow: hidden;
   position: relative;
   font-size: 16px;
+  font-family: 'Roboto';
   font-weight: 400;
   position: fixed;
   display: block;
@@ -785,20 +793,27 @@ table {
       v-model="time"
       :required="required"
       @click="showCheck"
-      @focus="showCheck"
+      @foucus="showCheck"
       :style="option.inputStyle"/>
     </div>
 
     <div class="datepicker-overlay"
       v-if="showInfo.check"
       @click="dismiss($event)"
-      v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
+      :style="{
+        'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'
+      }">
       <div
       class="cov-date-body"
-      :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
+      :style="{
+        'background-color': option.color ? option.color.header : '#3f51b5'
+      }">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-          <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
+          <div 
+            class="cov-date-caption"
+            :style="{'color': option.color ? option.color.headerText : '#fff'}"
+          >
             <span @click="showYear"><small>{{checked.year}}</small></span>
             <br>
             <span @click="showMonth">{{displayInfo.month}}</span>
@@ -817,7 +832,12 @@ table {
             v-for="day in dayList"
             track-by="$index"
             @click="checkDay(day)"
-            :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
+            :class="{
+              'checked':day.checked,
+              'unavailable':day.unavailable,
+              'passive-day': !(day.inMonth)
+            }"
+            :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}"
             >{{day.value}}</div>
           </div>
         </div>
@@ -858,10 +878,8 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <slot name="buttons">
-            <span @click="showInfo.check = false">{{ option.buttons ? option.buttons.cancel : 'Cancel' }}</span>
-            <span @click="picked">{{ option.buttons ? option.buttons.ok : 'Ok'}}</span>
-          </slot>
+          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
     </div>
