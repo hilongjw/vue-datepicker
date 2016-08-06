@@ -1,0 +1,107 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@3.9.3
+3 info using node@v6.2.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/longyi/Desktop/code/github/vue-datepicker',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/longyi/.npm/vue-datepicker/1.2.1/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+10 info lifecycle vue-datepicker@1.2.1~prepublish: vue-datepicker@1.2.1
+11 silly lifecycle vue-datepicker@1.2.1~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/longyi/.npm/vue-datepicker/1.2.1/package.tgz',
+12 verbose tar pack   '/Users/longyi/Desktop/code/github/vue-datepicker' ]
+13 verbose tarball /Users/longyi/.npm/vue-datepicker/1.2.1/package.tgz
+14 verbose folder /Users/longyi/Desktop/code/github/vue-datepicker
+15 verbose addLocalTarball adding from inside cache /Users/longyi/.npm/vue-datepicker/1.2.1/package.tgz
+16 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd vue-datepicker@1.2.1
+18 verbose afterAdd /Users/longyi/.npm/vue-datepicker/1.2.1/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/longyi/.npm/vue-datepicker/1.2.1/package/package.json written
+21 silly publish { name: 'vue-datepicker',
+21 silly publish   version: '1.2.1',
+21 silly publish   description: 'calendar and datepicker component with material design for Vue.js ',
+21 silly publish   main: 'vue-datepicker.vue',
+21 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/hilongjw/vue-datepicker.git' },
+21 silly publish   keywords: [ 'vue', 'datepicker', 'vue-datepicker' ],
+21 silly publish   author: { name: 'Awe' },
+21 silly publish   license: 'MIT',
+21 silly publish   bugs: { url: 'https://github.com/hilongjw/vue-datepicker/issues' },
+21 silly publish   homepage: 'https://github.com/hilongjw/vue-datepicker#readme',
+21 silly publish   dependencies: { moment: '^2.11.1' },
+21 silly publish   browserify: { transform: [ [Object], [Object] ] },
+21 silly publish   readme: '# vue-datepicker\ncalendar and datepicker component with material design for Vue.js\n\n# Demo\n\nThe demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).\n\n![Screenshot](screenshot.png)\n\n# Requirements\n\n- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`\n- [moment](https://github.com/moment/moment) `^2.11.1`\n\n# Instllation\n\n## npm\n\n```shell\n$ npm install vue-datepicker\n```\n\n# Usage\n\n```html\n<script>\nimport myDatepicker from \'vue-datepicker\'\nexport default {\n  data () {\n    return {\n      starttime: \'\',\n      endtime: \'2016-01-19\',\n      testTime: \'\',\n      multiTime: \'\',\n      option: {\n        type: \'day\',\n        week: [\'Mo\', \'Tu\', \'We\', \'Th\', \'Fr\', \'Sa\', \'Su\'],\n        month: [\'January\', \'February\', \'March\', \'April\', \'May\', \'June\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\'],\n        format: \'YYYY-MM-DD\',\n        placeholder: \'when?\',\n        inputStyle: {\n          \'display\': \'inline-block\',\n          \'padding\': \'6px\',\n          \'line-height\': \'22px\',\n          \'font-size\': \'16px\',\n          \'border\': \'2px solid #fff\',\n          \'box-shadow\': \'0 1px 3px 0 rgba(0, 0, 0, 0.2)\',\n          \'border-radius\': \'2px\',\n          \'color\': \'#5F5F5F\'\n        },\n        color: {\n          header: \'#ccc\',\n          headerText: \'#f00\'\n        },\n        buttons: {\n          ok: \'Ok\',\n          cancel: \'Cancel\'\n        },\n        overlayOpacity: 0.5, // 0.5 as default\n        dismissible: true // as true as default\n      },\n      timeoption: {\n        type: \'min\',\n        week: [\'Mo\', \'Tu\', \'We\', \'Th\', \'Fr\', \'Sa\', \'Su\'],\n        month: [\'January\', \'February\', \'March\', \'April\', \'May\', \'June\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\'],\n        format: \'YYYY-MM-DD HH:mm\'\n      },\n      multiOption: {\n        type: \'multi-day\',\n        week: [\'Mo\', \'Tu\', \'We\', \'Th\', \'Fr\', \'Sa\', \'Su\'],\n        month: [\'January\', \'February\', \'March\', \'April\', \'May\', \'June\', \'July\', \'August\', \'September\', \'October\', \'November\', \'December\'],\n        format:"YYYY-MM-DD HH:mm"\n      },\n      limit: [{\n        type: \'weekday\',\n        available: [1, 2, 3, 4, 5]\n      },\n      {\n        type: \'fromto\',\n        from: \'2016-02-01\',\n        to: \'2016-02-20\'\n      }]\n    }\n  },\n  components: {\n    \'date-picker\': myDatepicker\n  }\n}\n</script>\n<template>\n  <div class="card">\n    <div class="row">\n      <span>Departure Date：</span>\n      <date-picker :time.sync="starttime" :option="option" :limit="limit"></date-picker>\n    </div>\n    <div class="row">\n      <span>Return Date：</span>\n      <date-picker :time.sync="endtime" :option="option"></date-picker>\n    </div>\n    <div class="row">\n      <span>time：</span>\n      <date-picker :time.sync="testTime" :option="timeoption"></date-picker>\n    </div>\n  </div>\n  <div class="test">\n    Departure Date:{{starttime}}\n    <br> Return Date：{{endtime}}\n    <br> test Date：{{testTime}}\n  </div>\n  <input type="time">\n</template>\n```\n\n# API\n\n - Option \n\n * type\n\n```\n  type: \'day\' // \'min\', \'multi-day\'\n\n```\n\n * format\n\n```\nformat: \'YYYY-MM-DD HH:mm\'\n```\n\n * placeholder\n\n```\nplaceholder: \'when?\'\n```\n\n * week\n\n```\n week: [\'Mo\', \'Tu\', \'We\', \'Th\', \'Fr\', \'Sa\', \'Su\']\n```\n\n * month\n\n```\n  month: [\'January\', \'February\', \'March\', \'April\', \'May\', \'June\', \'July\', \'August\',\'September\', \'October\', \'November\', \'December\']\n```\n\n* inputStyle\n\n```\ninputStyle: {\n  \'display\': \'inline-block\',\n  \'padding\': \'6px\',\n  \'line-height\': \'22px\',\n  \'font-size\': \'16px\',\n  \'border\': \'2px solid #fff\',\n  \'box-shadow\': \'0 1px 3px 0 rgba(0, 0, 0, 0.2)\',\n  \'border-radius\': \'2px\',\n  \'color\': \'#5F5F5F\'\n}\n```\n\n * color\n\n```\n  color: {\n    header: \'#ccc\',\n    headerText: \'#f00\'\n  }\n```\n\n\n * buttons\n\n```\nbuttons: {\n  ok: \'OK\',\n  cancel: \'Cancel\'\n}\n```\n\n * animate\n\n```\n  overlayOpacity: 0.5, // 0.5 as default\n  dismissible: true // as true as default\n```\n\n\n - limit\n\n  * from sometime to sometime(when from/to is empty, days before/after end/start time will be available)\n\n```javascript\n\nlimit: {\n  type:\'fromto\',\n  from:\'2016-01-10\',\n  to:\'2016-01-30\'\n}\n\n```\n * weekdays\n\n```javascript\n\nlimit:{\n  type: \'weekday\',\n  available: [1, 2, 3, 4, 5] \n}\n\n```\n\nprop\n\n```html\n\n<date-picker :time.sync="starttime" :limit="limit"></date-picker>\n\n```\n\n\n# License\n\n[The MIT License](http://opensource.org/licenses/MIT)\n\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: 'abc2365961f54cab5c9054a2a10d9b3b5943dde2',
+21 silly publish   _id: 'vue-datepicker@1.2.1',
+21 silly publish   _shasum: 'cbfb58b34b2991c9c3d70246ae838ccd54324bb2',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name vue-datepicker
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'vue-datepicker',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   name: 'vue-datepicker',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/vue-datepicker
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/longyi/.npm/vue-datepicker/1.2.1/package.tgz
+30 verbose request uri https://registry.npmjs.org/vue-datepicker
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 13:02:36
+33 verbose request using bearer token for auth
+34 verbose request id 6abf16bd20fcfb1a
+35 http request PUT https://registry.npmjs.org/vue-datepicker
+36 http 403 https://registry.npmjs.org/vue-datepicker
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Sat, 06 Aug 2016 05:02:45 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-sea1921-SEA',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1470459763.751189,VS0,VE2145',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /Users/longyi/.npm/registry.npmjs.org/vue-datepicker on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 1.2.1." : vue-datepicker
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:200:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+40 verbose stack     at emitOne (events.js:101:20)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:988:12)
+41 verbose statusCode 403
+42 verbose pkgid vue-datepicker
+43 verbose cwd /Users/longyi/Desktop/code/github/vue-datepicker
+44 error Darwin 15.2.0
+45 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v6.2.1
+47 error npm  v3.9.3
+48 error code E403
+49 error "You cannot publish over the previously published version 1.2.1." : vue-datepicker
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
