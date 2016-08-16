@@ -23,11 +23,12 @@ exports.default = {
       default: function _default() {
         return {
           type: 'day',
+          SundayFirst: false,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
-            checkedDay: '#F50057',
+            checked: '#F50057',
             header: '#3f51b5',
             headerText: '#fff'
           },
@@ -169,7 +170,7 @@ exports.default = {
 
       if (firstDay === 0) firstDay = 7;
 
-      for (var _i = 0; _i < firstDay - 1; _i++) {
+      for (var _i = 0; _i < firstDay - (this.option.SundayFirst ? 0: 1); _i++) {
         var passiveDay = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
@@ -810,7 +811,7 @@ table {
       }">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-          <div 
+          <div
             class="cov-date-caption"
             :style="{'color': option.color ? option.color.headerText : '#fff'}"
           >
@@ -837,7 +838,7 @@ table {
               'unavailable':day.unavailable,
               'passive-day': !(day.inMonth)
             }"
-            :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}"
+            :style="day.checked ? (option.color && option.color.checked ? { background: option.color.checked } : { background: '#F50057' }) : {}"
             >{{day.value}}</div>
           </div>
         </div>
@@ -862,6 +863,7 @@ table {
                 v-for="hitem in hours"
                 @click="setTime('hour', hitem, hours)"
                 :class="{'active':hitem.checked}"
+                :style="{background:hitem.checked ? option.color.checked : 'inherit'}"
                 >{{hitem.value}}</li>
               </ul>
               </div>
@@ -872,6 +874,7 @@ table {
                 v-for="mitem in mins"
                 @click="setTime('min',mitem, mins)"
                 :class="{'active':mitem.checked}"
+                :style="{background:mitem.checked ? option.color.checked : 'inherit'}"
                 >{{mitem.value}}</div>
               </div>
             </div>
