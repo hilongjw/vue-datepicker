@@ -303,8 +303,20 @@ exports.default = {
           break;
         case 'min':
           this.showOne('hour');
+          // shift activated time items to visible position.
+          this.shiftActTime();
           break;
       }
+    },
+    shiftActTime: function shiftActTime(){
+      // shift activated time items to visible position.
+      this.$nextTick(function () {
+        if (!document.querySelector('.hour-item.active')){
+          return false;
+        }
+        document.querySelector('.hour-box').scrollTop = (document.querySelector('.hour-item.active').offsetTop || 0 ) - 250;
+        document.querySelector('.min-box').scrollTop = (document.querySelector('.min-item.active').offsetTop || 0 ) - 250;
+      });
     },
     showYear: function showYear() {
       var year = (0, _moment2.default)(this.checked.currentMoment).year();
