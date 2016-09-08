@@ -43,6 +43,7 @@ exports.default = {
             'color': '#5F5F5F'
           },
           placeholder: 'when?',
+          inputClass: 'cov-datepicker',
           buttons: {
             ok: 'OK',
             cancel: 'Cancel'
@@ -788,7 +789,7 @@ table {
       <input
       type="text"
       title="input date"
-      class="cov-datepicker"
+      class="{{option.inputClass}}"
       readonly="readonly"
       placeholder="{{option.placeholder}}"
       v-model="time"
