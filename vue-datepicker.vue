@@ -1,47 +1,78 @@
 <style scoped>
-.datepicker-overlay{
+.datepicker-overlay {
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index:998;
-  top:0;
+  z-index: 998;
+  top: 0;
   left: 0;
   overflow: hidden;
-  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
-       -moz-animation: fadein 0.5s; /* Firefox < 16 */
-        -ms-animation: fadein 0.5s; /* Internet Explorer */
-         -o-animation: fadein 0.5s; /* Opera < 12.1 */
-            animation: fadein 0.5s;
+  -webkit-animation: fadein 0.5s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 0.5s;
+  /* Firefox < 16 */
+  -ms-animation: fadein 0.5s;
+  /* Internet Explorer */
+  -o-animation: fadein 0.5s;
+  /* Opera < 12.1 */
+  animation: fadein 0.5s;
 }
-
 
 @keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
 
 /* Firefox < 16 */
+
 @-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
 
 /* Safari, Chrome and Opera > 12.1 */
+
 @-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
 
 /* Internet Explorer */
+
 @-ms-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
+
 /* Opera < 12.1 */
+
 @-o-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .cov-date-body {
@@ -129,9 +160,10 @@ table {
   font-weight: bold;
 }
 
-.passive-day{
+.passive-day {
   color: #bbb;
 }
+
 .checked {
   background: #F50057;
   color: #FFF !important;
@@ -294,70 +326,60 @@ table {
   overflow: auto;
   float: left;
 }
+
 .hour-box ul,
-.min-box ul{
+.min-box ul {
   list-style: none;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-.hour-item, .min-item {
+.hour-item,
+.min-item {
   padding: 10px;
   font-size: 36px;
   cursor: pointer;
 }
-.hour-item:hover, .min-item:hover{
+
+.hour-item:hover,
+.min-item:hover {
   background: #E3E3E3;
 }
-.hour-box .active, .min-box .active{
+
+.hour-box .active,
+.min-box .active {
   background: #F50057;
   color: #FFF !important;
 }
+
 ::-webkit-scrollbar {
-    width: 2px;
+  width: 2px;
 }
+
 ::-webkit-scrollbar-track {
-    background: #E3E3E3;
+  background: #E3E3E3;
 }
+
 ::-webkit-scrollbar-thumb {
-    background: #C1C1C1;
-    border-radius: 2px;
+  background: #C1C1C1;
+  border-radius: 2px;
 }
 </style>
-
 <template>
   <div class="cov-vue-date">
     <div class="datepickbox">
-      <input
-      type="text"
-      title="input date"
-      readonly="readonly"
-      class="cov-datepicker"
-      :placeholder="option.placeholder"
-      v-model="time"
-      :required="required"
-      @click="showCheck"
-      @focus="showCheck"
-      :style="option.inputStyle"/>
+      <input 
+        type="text" 
+        title="input date" 
+        :class="option.inputClass" 
+        readonly="readonly" 
+        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle" />
     </div>
-
-    <div class="datepicker-overlay"
-      v-if="showInfo.check"
-      @click="dismiss($event)"
-      :style="{
-        'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'
-      }">
-      <div
-      class="cov-date-body"
-      :style="{
-        'background-color': option.color ? option.color.header : '#3f51b5'
-      }">
+    <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
+      <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
-          <div
-            class="cov-date-caption"
-            :style="{'color': option.color ? option.color.headerText : '#fff'}"
-          >
+          <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
             <span @click="showYear"><small>{{checked.year}}</small></span>
             <br>
             <span @click="showMonth">{{displayInfo.month}}</span>
@@ -371,18 +393,7 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div
-            class="day"
-            v-for="day in dayList"
-            track-by="$index"
-            @click="checkDay(day)"
-            :class="{
-              'checked':day.checked,
-              'unavailable':day.unavailable,
-              'passive-day': !(day.inMonth)
-            }"
-            :style="day.checked ? (option.color && option.color.checked ? { background: option.color.checked } : { background: '#F50057' }) : {}"
-            >{{day.value}}</div>
+            <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -399,26 +410,14 @@ table {
           <div class="cov-picker-box date-list">
             <div class="watch-box">
               <div class="hour-box">
-              <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
-              <ul>
-                <li
-                class="hour-item"
-                v-for="hitem in hours"
-                @click="setTime('hour', hitem, hours)"
-                :class="{'active':hitem.checked}"
-                :style="{background:hitem.checked ? option.color.checked : 'inherit'}"
-                >{{hitem.value}}</li>
-              </ul>
+                <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+                <ul>
+                  <li class="hour-item" v-for="hitem in hours" @click="setTime('hour', hitem, hours)" :class="{'active':hitem.checked}">{{hitem.value}}</li>
+                </ul>
               </div>
               <div class="min-box">
-              <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
-                <div
-                class="min-item"
-                v-for="mitem in mins"
-                @click="setTime('min',mitem, mins)"
-                :class="{'active':mitem.checked}"
-                :style="{background:mitem.checked ? option.color.checked : 'inherit'}"
-                >{{mitem.value}}</div>
+                <div class="mui-pciker-rule mui-pciker-rule-ft"></div>
+                <div class="min-item" v-for="mitem in mins" @click="setTime('min',mitem, mins)" :class="{'active':mitem.checked}">{{mitem.value}}</div>
               </div>
             </div>
           </div>
@@ -431,7 +430,6 @@ table {
     </div>
   </div>
 </template>
-
 <script>
 'use strict';
 
@@ -476,6 +474,7 @@ exports.default = {
             'border-radius': '2px',
             'color': '#5F5F5F'
           },
+          inputClass: 'cov-datepicker',
           placeholder: 'when?',
           buttons: {
             ok: 'OK',
@@ -499,7 +498,6 @@ exports.default = {
       var hour = 24;
       while (hour > 0) {
         hour--;
-
         list.push({
           checked: false,
           value: hour < 10 ? '0' + hour : hour
@@ -507,6 +505,7 @@ exports.default = {
       }
       return list;
     }
+
     function mins() {
       var list = [];
       var min = 60;
@@ -568,24 +567,19 @@ exports.default = {
         this.checked.currentMoment = (0, _moment2.default)(time, this.option.format);
       }
       this.showOne('day');
-
       this.checked.year = (0, _moment2.default)(this.checked.currentMoment).format('YYYY');
       this.checked.month = (0, _moment2.default)(this.checked.currentMoment).format('MM');
       this.checked.day = (0, _moment2.default)(this.checked.currentMoment).format('DD');
-
       this.displayInfo.month = this.library.month[(0, _moment2.default)(this.checked.currentMoment).month()];
-
       var days = [];
       var currentMoment = this.checked.currentMoment;
       var firstDay = (0, _moment2.default)(currentMoment).date(1).day();
-
       // gettting previous and next month
       // let currentMonth = moment(currentMoment)
       var previousMonth = (0, _moment2.default)(currentMoment);
       var nextMonth = (0, _moment2.default)(currentMoment);
       nextMonth.add(1, 'months');
       previousMonth.subtract(1, 'months');
-
       var monthDays = (0, _moment2.default)(currentMoment).daysInMonth();
       var oldtime = this.checked.oldtime;
       for (var i = 1; i <= monthDays; ++i) {
@@ -601,9 +595,7 @@ exports.default = {
         }
         this.checkBySelectDays(i, days);
       }
-
       if (firstDay === 0) firstDay = 7;
-
       for (var _i = 0; _i < firstDay - (this.option.SundayFirst ? 0 : 1); _i++) {
         var passiveDay = {
           value: previousMonth.daysInMonth() - _i,
@@ -615,20 +607,6 @@ exports.default = {
         };
         days.unshift(passiveDay);
       }
-
-      var passiveDaysAtFinal = 42 - days.length;
-      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
-        var _passiveDay = {
-          value: _i2,
-          inMonth: false,
-          action: 'next',
-          unavailable: false,
-          checked: false,
-          moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
-        };
-        days.push(_passiveDay);
-      }
-
       if (this.limit.length > 0) {
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
@@ -662,7 +640,18 @@ exports.default = {
           }
         }
       }
-
+      var passiveDaysAtFinal = 42 - days.length;
+      for (var _i2 = 1; _i2 <= passiveDaysAtFinal; _i2++) {
+        var _passiveDay = {
+          value: _i2,
+          inMonth: false,
+          action: 'next',
+          unavailable: false,
+          checked: false,
+          moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
+        };
+        days.push(_passiveDay);
+      }
       this.dayList = days;
     },
     checkBySelectDays: function checkBySelectDays(d, days) {
@@ -675,12 +664,12 @@ exports.default = {
       });
     },
     limitWeekDay: function limitWeekDay(limit, days) {
-      return days.map(function (day) {
+      days.map(function (day) {
         if (limit.available.indexOf(Math.floor(day.moment.format('d'))) === -1) {
           day.unavailable = true;
         }
-        return day;
       });
+      return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
       var _this2 = this;
@@ -708,13 +697,11 @@ exports.default = {
       if (obj.unavailable || obj.value === '') {
         return false;
       }
-
       if (!obj.inMonth) {
         this.nextMonth(obj.action);
       }
-
       if (this.option.type === 'day' || this.option.type === 'min') {
-        this.dayList.map(function (x) {
+        this.dayList.forEach(function (x) {
           x.checked = false;
         });
         this.checked.day = this.pad(obj.value);
@@ -730,7 +717,6 @@ exports.default = {
           obj.checked = true;
         }
       }
-
       switch (this.option.type) {
         case 'day':
           this.picked();
@@ -742,17 +728,9 @@ exports.default = {
           break;
       }
     },
-    shiftActTime: function shiftActTime(){
-      // shift activated time items to visible position.
-      this.$nextTick(function () {
-        if (!document.querySelector('.hour-item.active')){
-          return false;
-        }
-        document.querySelector('.hour-box').scrollTop = (document.querySelector('.hour-item.active').offsetTop || 0 ) - 250;
-        document.querySelector('.min-box').scrollTop = (document.querySelector('.min-item.active').offsetTop || 0 ) - 250;
-      });
-    },
     showYear: function showYear() {
+      var _this3 = this;
+
       var year = (0, _moment2.default)(this.checked.currentMoment).year();
       this.library.year = [];
       var yearTmp = [];
@@ -760,14 +738,11 @@ exports.default = {
         yearTmp.push(i);
       }
       this.library.year = yearTmp;
-
       this.showOne('year');
-
-      var self = this;
       this.$nextTick(function () {
         var listDom = document.getElementById('yearList');
         listDom.scrollTop = listDom.scrollHeight - 100;
-        self.addYear();
+        _this3.addYear();
       });
     },
     showOne: function showOne(type) {
@@ -807,15 +782,14 @@ exports.default = {
       this.showOne('month');
     },
     addYear: function addYear() {
-      var _this3 = this;
+      var _this4 = this;
 
       var listDom = document.getElementById('yearList');
-      // let tmp = 0
       listDom.addEventListener('scroll', function (e) {
         if (listDom.scrollTop < listDom.scrollHeight - 100) {
-          var len = _this3.library.year.length;
-          var lastYear = _this3.library.year[len - 1];
-          _this3.library.year.push(lastYear + 1);
+          var len = _this4.library.year.length;
+          var lastYear = _this4.library.year[len - 1];
+          _this4.library.year.push(lastYear + 1);
         }
       }, false);
     },
@@ -898,6 +872,16 @@ exports.default = {
           this.$emit('cancel');
         }
       }
+    },
+    shiftActTime: function shiftActTime() {
+      // shift activated time items to visible position.
+      this.$nextTick(function () {
+        if (!document.querySelector('.hour-item.active')) {
+          return false;
+        }
+        document.querySelector('.hour-box').scrollTop = (document.querySelector('.hour-item.active').offsetTop || 0) - 250;
+        document.querySelector('.min-box').scrollTop = (document.querySelector('.min-item.active').offsetTop || 0) - 250;
+      });
     }
   }
 };
