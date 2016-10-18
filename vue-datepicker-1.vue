@@ -17,6 +17,7 @@
   /* Opera < 12.1 */
   animation: fadein 0.5s;
 }
+
 @keyframes fadein {
   from {
     opacity: 0;
@@ -25,7 +26,10 @@
     opacity: 1;
   }
 }
+
+
 /* Firefox < 16 */
+
 @-moz-keyframes fadein {
   from {
     opacity: 0;
@@ -34,7 +38,10 @@
     opacity: 1;
   }
 }
+
+
 /* Safari, Chrome and Opera > 12.1 */
+
 @-webkit-keyframes fadein {
   from {
     opacity: 0;
@@ -43,7 +50,10 @@
     opacity: 1;
   }
 }
+
+
 /* Internet Explorer */
+
 @-ms-keyframes fadein {
   from {
     opacity: 0;
@@ -52,7 +62,10 @@
     opacity: 1;
   }
 }
+
+
 /* Opera < 12.1 */
+
 @-o-keyframes fadein {
   from {
     opacity: 0;
@@ -61,6 +74,7 @@
     opacity: 1;
   }
 }
+
 .cov-date-body {
   display: inline-block;
   background: #3F51B5;
@@ -81,6 +95,7 @@
   transform: translate(-50%, -50%);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
+
 .cov-picker-box {
   background: #fff;
   width: 100%;
@@ -95,6 +110,7 @@
   height: 280px;
   text-align: start!important;
 }
+
 .cov-picker-box td {
   height: 34px;
   width: 34px;
@@ -105,14 +121,17 @@
   text-align: center;
   cursor: pointer;
 }
+
 .cov-picker-box td:hover {
   background: #E6E6E6;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
 }
+
 .day {
   width: 14.2857143%;
   display: inline-block;
@@ -125,11 +144,13 @@ table {
   background: #fff;
   vertical-align: middle;
 }
+
 .week ul {
   margin: 0 0 8px;
   padding: 0;
   list-style: none;
 }
+
 .week ul li {
   width: 14.2%;
   display: inline-block;
@@ -138,21 +159,26 @@ table {
   color: #000;
   font-weight: bold;
 }
+
 .passive-day {
   color: #bbb;
 }
+
 .checked {
   background: #F50057;
   color: #FFF !important;
   border-radius: 3px;
 }
+
 .unavailable {
   color: #ccc;
   cursor: not-allowed;
 }
+
 .cov-date-monthly {
   height: 150px;
 }
+
 .cov-date-monthly > div {
   display: inline-block;
   padding: 0;
@@ -164,6 +190,7 @@ table {
   text-align: center;
   cursor: pointer;
 }
+
 .cov-date-previous,
 .cov-date-next {
   position: relative;
@@ -172,28 +199,35 @@ table {
   overflow: hidden;
   color: #fff;
 }
+
 .cov-date-caption {
   width: 60%;
   padding: 50px 0!important;
   box-sizing: border-box;
   font-size: 24px;
 }
+
 .cov-date-caption span:hover {
   color: rgba(255, 255, 255, 0.7);
 }
+
 .cov-date-previous:hover,
 .cov-date-next:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
 .day:hover {
   background: #EAEAEA;
 }
+
 .unavailable:hover {
   background: none;
 }
+
 .checked:hover {
   background: #FF4F8E;
 }
+
 .cov-date-next::before,
 .cov-date-previous::before {
   width: 20px;
@@ -211,6 +245,7 @@ table {
   -moz-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
 .cov-date-next::after,
 .cov-date-previous::after {
   width: 20px;
@@ -228,34 +263,41 @@ table {
   -moz-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
+
 .cov-date-previous::after {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
 .cov-date-previous::before {
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
+
 .date-item {
   text-align: center;
   font-size: 20px;
   padding: 10px 0;
   cursor: pointer;
 }
+
 .date-item:hover {
   background: #e0e0e0;
 }
+
 .date-list {
   overflow: auto;
   vertical-align: top;
   padding: 0;
 }
+
 .cov-vue-date {
   display: inline-block;
   color: #5D5D5D;
 }
+
 .button-box {
   background: #fff;
   vertical-align: top;
@@ -264,14 +306,17 @@ table {
   text-align: right;
   padding-right: 20px;
 }
+
 .button-box span {
   cursor: pointer;
   padding: 10px 20px;
 }
+
 .watch-box {
   height: 100%;
   overflow: hidden;
 }
+
 .hour-box,
 .min-box {
   display: inline-block;
@@ -281,33 +326,40 @@ table {
   overflow: auto;
   float: left;
 }
+
 .hour-box ul,
 .min-box ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .hour-item,
 .min-item {
   padding: 10px;
   font-size: 36px;
   cursor: pointer;
 }
+
 .hour-item:hover,
 .min-item:hover {
   background: #E3E3E3;
 }
+
 .hour-box .active,
 .min-box .active {
   background: #F50057;
   color: #FFF !important;
 }
+
 ::-webkit-scrollbar {
   width: 2px;
 }
+
 ::-webkit-scrollbar-track {
   background: #E3E3E3;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #C1C1C1;
   border-radius: 2px;
@@ -316,7 +368,12 @@ table {
 <template>
   <div class="cov-vue-date">
     <div class="datepickbox">
-      <input type="text" title="input date" class="cov-datepicker" readonly="readonly" :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle ? option.inputStyle : {}" />
+      <input 
+        type="text" 
+        title="input date" 
+        :class="option.inputClass" 
+        readonly="readonly" 
+        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
@@ -389,8 +446,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
   props: {
     required: false,
-    date: {
-      type: Object,
+    time: {
+      type: String,
       required: true
     },
     option: {
@@ -417,6 +474,7 @@ exports.default = {
             'border-radius': '2px',
             'color': '#5F5F5F'
           },
+          inputClass: 'cov-datepicker',
           placeholder: 'when?',
           buttons: {
             ok: 'OK',
@@ -447,6 +505,7 @@ exports.default = {
       }
       return list;
     }
+
     function mins() {
       var list = [];
       var min = 60;
@@ -747,14 +806,14 @@ exports.default = {
       this.showDay(this.checked.currentMoment);
     },
     showCheck: function showCheck() {
-      if (this.date.time === '') {
+      if (this.time === '') {
         this.showDay();
       } else {
         if (this.option.type === 'day' || this.option.type === 'min') {
-          this.checked.oldtime = this.date.time;
-          this.showDay(this.date.time);
+          this.checked.oldtime = this.time;
+          this.showDay(this.time);
         } else {
-          this.selectedDays = JSON.parse(this.date.time);
+          this.selectedDays = JSON.parse(this.time);
           if (this.selectedDays.length) {
             this.checked.oldtime = this.selectedDays[0];
             this.showDay(this.selectedDays[0]);
@@ -799,12 +858,12 @@ exports.default = {
       if (this.option.type === 'day' || this.option.type === 'min') {
         var ctime = this.checked.year + '-' + this.checked.month + '-' + this.checked.day + ' ' + this.checked.hour + ':' + this.checked.min;
         this.checked.currentMoment = (0, _moment2.default)(ctime, 'YYYY-MM-DD HH:mm');
-        this.date.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
+        this.time = (0, _moment2.default)(this.checked.currentMoment).format(this.option.format);
       } else {
-        this.date.time = JSON.stringify(this.selectedDays);
+        this.time = JSON.stringify(this.selectedDays);
       }
       this.showInfo.check = false;
-      this.$emit('change', this.date.time);
+      this.$emit('change', this.time);
     },
     dismiss: function dismiss(evt) {
       if (evt.target.className === 'datepicker-overlay') {

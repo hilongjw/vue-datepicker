@@ -9,7 +9,7 @@ The demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).
 
 # Requirements
 
-- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`
+- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0` & `^2.0.0`
 - [moment](https://github.com/moment/moment) `^2.11.1`
 
 # Instllation
@@ -24,14 +24,29 @@ $ npm install vue-datepicker
 
 ```html
 <script>
+// for Vue 1.0
+import myDatepicker from 'vue-datepicker/vue-datepicker-1.vue'
+
+// for Vue 2.0
 import myDatepicker from 'vue-datepicker'
+
 export default {
   data () {
     return {
+      // for Vue 1.0
       starttime: '',
       endtime: '2016-01-19',
       testTime: '',
       multiTime: '',
+
+      // for Vue 2.0
+      startTime: {
+        time: ''
+      },
+      endtime: {
+        time: ''
+      }
+
       option: {
         type: 'day',
         week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -89,25 +104,20 @@ export default {
 </script>
 <template>
   <div class="card">
+
+    <!-- for Vue 1.0 -->
     <div class="row">
       <span>Departure Date：</span>
       <date-picker :time.sync="starttime" :option="option" :limit="limit"></date-picker>
     </div>
+
+    <!-- for Vue 2.0 -->
     <div class="row">
-      <span>Return Date：</span>
-      <date-picker :time.sync="endtime" :option="option"></date-picker>
+      <span>Departure Date：</span>
+      <date-picker :date="startTime" :option="option" :limit="limit"></date-picker>
     </div>
-    <div class="row">
-      <span>time：</span>
-      <date-picker :time.sync="testTime" :option="timeoption"></date-picker>
-    </div>
+
   </div>
-  <div class="test">
-    Departure Date:{{starttime}}
-    <br> Return Date：{{endtime}}
-    <br> test Date：{{testTime}}
-  </div>
-  <input type="time">
 </template>
 ```
 
@@ -212,11 +222,33 @@ limit:{
 
 ```
 
-prop
+### prop
+
+* Vue 1.0
+
+```javascript
+
+time: '' // string
+
+```
 
 ```html
 
-<date-picker :time.sync="starttime" :limit="limit"></date-picker>
+<date-picker :time.sync="time" :limit="limit"></date-picker>
+
+```
+
+* Vue 2.0
+
+```javascript
+date: {
+  time: '' // string
+}
+```
+
+```html
+
+<date-picker :date="date" :limit="limit"></date-picker>
 
 ```
 
