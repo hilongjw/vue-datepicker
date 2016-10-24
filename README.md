@@ -12,7 +12,7 @@ The demo page is [HERE](http://hilongjw.github.io/vue-datepicker/demo.html).
 - [Vue.js](https://github.com/yyx990803/vue) `^1.0.0` & `^2.0.0`
 - [moment](https://github.com/moment/moment) `^2.11.1`
 
-# Instllation
+# Installation
 
 ## npm
 
