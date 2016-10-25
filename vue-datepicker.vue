@@ -502,7 +502,7 @@ exports.default = {
       this.showDay(next);
     },
     showDay: function showDay(time) {
-      if (time === undefined || !Date.parse(time)) {
+      if (time === undefined || !(0, _moment2.default)(time, this.option.format).isValid()) {
         this.checked.currentMoment = (0, _moment2.default)();
       } else {
         this.checked.currentMoment = (0, _moment2.default)(time, this.option.format);
