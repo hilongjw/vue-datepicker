@@ -336,17 +336,17 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
+            <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
           <div class="cov-picker-box date-list" id="yearList">
-            <div class="date-item" v-for="yearItem in library.year" track-by="$index" @click="setYear(yearItem)">{{yearItem}}</div>
+            <div class="date-item" v-for="yearItem,index in library.year" :key="index" @click="setYear(yearItem)">{{yearItem}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.month">
           <div class="cov-picker-box date-list">
-            <div class="date-item" v-for="monthItem in library.month" track-by="$index" @click="setMonth(monthItem)">{{monthItem}}</div>
+            <div class="date-item" v-for="monthItem,index in library.month" :key="index" @click="setMonth(monthItem)">{{monthItem}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.hour">
