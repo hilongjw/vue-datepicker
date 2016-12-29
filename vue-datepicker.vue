@@ -432,6 +432,9 @@ exports.default = {
       default: function _default() {
         return [];
       }
+    },
+    defaultDate: {
+      type: String
     }
   },
   data: function data() {
@@ -503,7 +506,7 @@ exports.default = {
     },
     showDay: function showDay(time) {
       if (time === undefined || !Date.parse(time)) {
-        this.checked.currentMoment = (0, _moment2.default)();
+        this.checked.currentMoment = (0, _moment2.default)(this.defaultDate);
       } else {
         this.checked.currentMoment = (0, _moment2.default)(time, this.option.format);
       }
