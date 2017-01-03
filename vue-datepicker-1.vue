@@ -366,13 +366,13 @@ table {
 }
 </style>
 <template>
-  <div class="cov-vue-date">
+  <div :class="option.wrapperClass">
     <div class="datepickbox">
-      <input 
-        type="text" 
-        title="input date" 
-        :class="option.inputClass" 
-        readonly="readonly" 
+      <input
+        type="text"
+        title="input date"
+        :class="option.inputClass"
+        readonly="readonly"
         :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
@@ -474,6 +474,7 @@ exports.default = {
             'border-radius': '2px',
             'color': '#5F5F5F'
           },
+          wrapperClass: 'cov-vue-date',
           inputClass: 'cov-datepicker',
           placeholder: 'when?',
           buttons: {
