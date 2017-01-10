@@ -79,7 +79,6 @@
   display: inline-block;
   background: #3F51B5;
   overflow: hidden;
-  position: relative;
   font-size: 16px;
   font-family: 'Roboto';
   font-weight: 400;
