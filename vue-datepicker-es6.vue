@@ -316,7 +316,7 @@ table {
 <template>
   <div class="cov-vue-date" :class="option.wrapperClass ? option.wrapperClass : {}">
     <div class="datepickbox">
-      <input type="text" title="input date" class="cov-datepicker" readonly="readonly" :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle ? option.inputStyle : {}" :class="option.inputClass ? option.inputClass : {}" />
+      <input type="text" title="input date" class="cov-datepicker" readonly="readonly" :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck" @focus="showCheck" :style="option.inputStyle ? option.inputStyle : {}" :class="option.inputClass ? option.inputClass : {}" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">

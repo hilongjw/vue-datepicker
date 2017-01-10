@@ -373,7 +373,7 @@ table {
         title="input date"
         :class="option.inputClass"
         readonly="readonly"
-        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle" />
+        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @focus="showCheck" :style="option.inputStyle" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
