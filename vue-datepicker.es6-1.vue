@@ -76,7 +76,6 @@
 }
 
 .cov-date-body {
-  display: inline-block;
   background: #3F51B5;
   overflow: hidden;
   font-size: 16px;
