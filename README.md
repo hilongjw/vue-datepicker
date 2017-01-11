@@ -123,7 +123,7 @@ export default {
 
 # API
 
- - Option 
+ - Option
 
  * type
 
@@ -228,8 +228,18 @@ limit: {
 
 limit:{
   type: 'weekday',
-  available: [1, 2, 3, 4, 5] 
+  available: [1, 2, 3, 4, 5]
 }
+
+```
+
+- defaultDate
+
+  * if you need to set up a default date other than today, you can pass it on with the `default-date` prop
+
+```javascript
+
+defaultDate: '1970-01-01'
 
 ```
 
@@ -259,7 +269,7 @@ date: {
 
 ```html
 
-<date-picker :date="date" :limit="limit"></date-picker>
+<date-picker :date="date" :limit="limit" :default-date="defaultDate"></date-picker>
 
 ```
 
@@ -267,4 +277,3 @@ date: {
 # License
 
 [The MIT License](http://opensource.org/licenses/MIT)
-
