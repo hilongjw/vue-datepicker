@@ -76,10 +76,8 @@
 }
 
 .cov-date-body {
-  display: inline-block;
   background: #3F51B5;
   overflow: hidden;
-  position: relative;
   font-size: 16px;
   font-family: 'Roboto';
   font-weight: 400;
@@ -373,7 +371,7 @@ table {
         title="input date"
         :class="option.inputClass"
         readonly="readonly"
-        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @foucus="showCheck" :style="option.inputStyle" />
+        :placeholder="option.placeholder" v-model="time" :required="required" @click="showCheck" @focus="showCheck" :style="option.inputStyle" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
