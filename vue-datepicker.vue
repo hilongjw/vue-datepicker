@@ -374,6 +374,8 @@ table {
 <script>
 'use strict';
 
+var exports = {};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
