@@ -438,6 +438,7 @@ export default {
         return {
           type: 'day',
           SundayFirst: false,
+          locale: 'en',
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
@@ -815,6 +816,9 @@ export default {
         document.querySelector('.min-box').scrollTop = (document.querySelector('.min-item.active').offsetTop || 0) - 250
       })
     }
+  },
+  created() {
+    moment.locale(this.option.locale);
   }
 }
 </script>
