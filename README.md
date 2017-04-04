@@ -191,6 +191,13 @@ inputStyle: {
   }
 ```
 
+ * ScrollTo
+```
+scrollTo: {
+  hour: 0    //Values : 0-23
+  min: 0    //Values : 0-59
+}
+```
 
  * buttons
 
