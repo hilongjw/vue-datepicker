@@ -819,7 +819,11 @@ exports.default = {
       // shift activated time items to visible position.
       this.$nextTick(function () {
         if (!document.querySelector('.hour-item.active')) {
-          return false;
+          var indexH = this.option.scrollTo.hour || 0;
+          var indexM = this.option.scrollTo.min || 0;
+          document.querySelector('.hour-box').scrollTop = (document.querySelectorAll('.hour-item')[indexH].offsetTop || 0) - 250;
+          document.querySelector('.min-box').scrollTop = (document.querySelectorAll('.min-item')[indexM].offsetTop || 0) - 250;
+          // return false;
         }
         document.querySelector('.hour-box').scrollTop = (document.querySelector('.hour-item.active').offsetTop || 0) - 250;
         document.querySelector('.min-box').scrollTop = (document.querySelector('.min-item.active').offsetTop || 0) - 250;
