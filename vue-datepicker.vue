@@ -738,6 +738,7 @@ exports.default = {
     setYear: function setYear(year) {
       this.checked.currentMoment = (0, _moment2.default)(year + '-' + this.checked.month + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
+      this.$emit('yearSet');
     },
     setMonth: function setMonth(month) {
       var mo = this.library.month.indexOf(month) + 1;
@@ -746,6 +747,7 @@ exports.default = {
       }
       this.checked.currentMoment = (0, _moment2.default)(this.checked.year + '-' + mo + '-' + this.checked.day);
       this.showDay(this.checked.currentMoment);
+      this.$emit('monthSet');
     },
     showCheck: function showCheck() {
       if (this.date.time === '') {
@@ -795,6 +797,7 @@ exports.default = {
           }
         }
       }
+      this.$emit('timeSet');
     },
     picked: function picked() {
       if (this.option.type === 'day' || this.option.type === 'min') {
