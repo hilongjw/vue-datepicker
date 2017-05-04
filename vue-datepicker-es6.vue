@@ -516,6 +516,7 @@ export default {
           value: i,
           inMonth: true,
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: moment(currentMoment).date(i)
         })
@@ -531,6 +532,7 @@ export default {
           inMonth: false,
           action: 'previous',
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: moment(currentMoment).date(1).subtract(i + 1, 'days')
         }
@@ -543,6 +545,7 @@ export default {
           inMonth: false,
           action: 'next',
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: moment(currentMoment).add(1, 'months').date(i)
         }
@@ -580,8 +583,12 @@ export default {
     limitFromTo (limit, days) {
       if (limit.from || limit.to) {
         days.map((day) => {
-          if (this.getLimitCondition(limit, day)) {
+          if (this.getLimitCondition(limit, day) && day.inlimit === false) {
             day.unavailable = true
+          }
+          else {
+            day.unavailable = false
+            day.inlimit = true
           }
         })
       }
