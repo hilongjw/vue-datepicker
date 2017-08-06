@@ -364,6 +364,7 @@ table {
           </div>
         </div>
         <div class="button-box">
+          <span v-if="false !== option.showClearButton" @click="clear">{{ null != option.buttons && null != option.buttons.clear ? option.buttons.clear : 'Clear' }}</span>
           <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
           <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
@@ -420,10 +421,12 @@ exports.default = {
           placeholder: 'when?',
           buttons: {
             ok: 'OK',
-            cancel: 'Cancel'
+            cancel: 'Cancel',
+            clear: 'Clear'
           },
           overlayOpacity: 0.5,
-          dismissible: true
+          dismissible: true,
+          showClearButton: true
         };
       }
     },
@@ -814,6 +817,14 @@ exports.default = {
           this.$emit('cancel');
         }
       }
+    },
+    clear: function clear() {
+      this.date.time = '';
+      if (this.option.type !== 'day' && this.option.type !== 'min') {
+        this.selectedDays = [];
+      }
+      this.showInfo.check = false;
+      this.$emit('change', this.date.time);
     },
     shiftActTime: function shiftActTime() {
       // shift activated time items to visible position.
