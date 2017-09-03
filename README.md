@@ -1,3 +1,5 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 # vue-datepicker
 calendar and datepicker component with material design for Vue.js
 
