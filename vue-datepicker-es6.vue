@@ -364,8 +364,8 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+          <span v-if="option.cancelAction ? option.cancelAction : true" @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span v-if="option.successAction ? option.successAction : true" @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
     </div>
@@ -411,6 +411,8 @@ export default {
             ok: 'OK',
             cancel: 'Cancel'
           },
+          successAction: true,
+          cancelAction: true,
           overlayOpacity: 0.5,
           dismissible: true
         }
