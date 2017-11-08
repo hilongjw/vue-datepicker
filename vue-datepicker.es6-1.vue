@@ -416,8 +416,8 @@ table {
           </div>
         </div>
         <div class="button-box">
-            <span v-if="option.cancelAction ? option.cancelAction : true" @click="showInfo.check=false" :style="option.buttonCancelStyle ? option.buttonCancelStyle : {}">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-            <span v-if="option.successAction ? option.successAction : true" @click="picked" :style="option.buttonSuccessStyle ? option.buttonSuccessStyle : {}">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+            <span v-if="option.cancelAction ? option.cancelAction : false" @click="showInfo.check=false" :style="option.buttonCancelStyle ? option.buttonCancelStyle : {}">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span v-if="option.successAction ? option.successAction : false" @click="picked" :style="option.buttonSuccessStyle ? option.buttonSuccessStyle : {}">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
     </div>
