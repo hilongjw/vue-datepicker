@@ -416,8 +416,8 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <span v-if="option.cancelAction ? option.cancelAction : true" @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span v-if="option.successAction ? option.successAction : true" @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+            <span v-if="option.cancelAction ? option.cancelAction : true" @click="showInfo.check=false" :style="option.buttonCancelStyle ? option.buttonCancelStyle : {}">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+            <span v-if="option.successAction ? option.successAction : true" @click="picked" :style="option.buttonCancelStyle ? option.buttonCancelStyle : {}">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
     </div>
@@ -457,6 +457,15 @@ export default {
             'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
             'border-radius': '2px',
             'color': '#5F5F5F'
+          },
+          buttonCancelStyle: {
+            'color': '#d9534f'
+          },
+          buttonSuccessStyle: {
+            'color': '#fff',
+            'background-color': '#226b32',
+            'padding': '4px 25px',
+            'border-radius': '10px'
           },
           placeholder: 'when?',
           buttons: {
