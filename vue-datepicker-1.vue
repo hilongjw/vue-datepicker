@@ -391,7 +391,13 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
+            <div class="day"
+                v-for="day in dayList"
+                track-by="$index"
+                @click="checkDay(day)"
+                :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
+                :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}
+            </div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -491,7 +497,7 @@ exports.default = {
           successAction: true,
           cancelAction: true,
           overlayOpacity: 0.5,
-          dismissible: true
+          dismissible: true,
         };
       }
     },
@@ -500,6 +506,10 @@ exports.default = {
       default: function _default() {
         return [];
       }
+  },
+    enabledDays: {
+        type: Array,
+        default: []
     }
   },
   data: function data() {
@@ -611,7 +621,7 @@ exports.default = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
           action: 'previous',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i + 1, 'days')
         };
@@ -632,6 +642,9 @@ exports.default = {
                 break;
               case 'weekday':
                 days = this.limitWeekDay(li, days);
+                break;
+              case 'day':
+                days = this.limitDay(li, days);
                 break;
             }
           }
@@ -656,7 +669,7 @@ exports.default = {
           value: _i2,
           inMonth: false,
           action: 'next',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
         };
@@ -679,6 +692,14 @@ exports.default = {
           day.unavailable = true;
         }
       });
+      return days;
+    },
+    limitDay: function limitDay(limit, days) {
+      days.forEach((v) => {
+        if(limit.available.indexOf(v.moment.format('Y-MM-DD')) == -1) {
+          v.unavailable = true
+        }
+      })
       return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
