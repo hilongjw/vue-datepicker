@@ -626,7 +626,7 @@ exports.default = {
       });
       return days;
     },
-    limitWeekDay: function limitWeekDay(limit, days) {
+    limitDay: function limitWeekDay(limit, days) {
         days.forEach((v) => {
           if(limit.available.indexOf(v.moment.format('Y-MM-DD')) == -1) {
             v.unavailable = true
