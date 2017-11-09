@@ -506,10 +506,6 @@ exports.default = {
       default: function _default() {
         return [];
       }
-  },
-    enabledDays: {
-        type: Array,
-        default: []
     }
   },
   data: function data() {
