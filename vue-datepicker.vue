@@ -553,7 +553,7 @@ exports.default = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
           action: 'previous',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i + 1, 'days')
         };
@@ -574,6 +574,9 @@ exports.default = {
                 break;
               case 'weekday':
                 days = this.limitWeekDay(li, days);
+                break;
+              case 'day':
+                days = this.limitDay(li, days);
                 break;
             }
           }
@@ -598,7 +601,7 @@ exports.default = {
           value: _i2,
           inMonth: false,
           action: 'next',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
         };
@@ -622,6 +625,14 @@ exports.default = {
         }
       });
       return days;
+    },
+    limitWeekDay: function limitWeekDay(limit, days) {
+        days.forEach((v) => {
+          if(limit.available.indexOf(v.moment.format('Y-MM-DD')) == -1) {
+            v.unavailable = true
+          }
+        })
+        return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
       var _this2 = this;
