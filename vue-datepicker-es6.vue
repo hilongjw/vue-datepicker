@@ -541,7 +541,7 @@ export default {
           value: previousMonth.daysInMonth() - (i),
           inMonth: false,
           action: 'previous',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: moment(currentMoment).date(1).subtract(i + 1, 'days')
         }
@@ -553,7 +553,7 @@ export default {
           value: i,
           inMonth: false,
           action: 'next',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: moment(currentMoment).add(1, 'months').date(i)
         }
@@ -567,6 +567,9 @@ export default {
               break
             case 'weekday':
               days = this.limitWeekDay(li, days)
+              break
+            case 'day':
+              days = this.limitDay(li, days)
               break
           }
         }
@@ -587,6 +590,14 @@ export default {
         }
       })
       return days
+    },
+    limitDay: function limitDay(limit, days) {
+        days.forEach((v) => {
+          if(limit.available.indexOf(v.moment.format('Y-MM-DD')) == -1) {
+            v.unavailable = true
+          }
+        })
+        return days;
     },
     limitFromTo (limit, days) {
       if (limit.from || limit.to) {
