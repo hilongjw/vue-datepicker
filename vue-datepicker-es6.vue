@@ -139,6 +139,11 @@ table {
 .passive-day {
   color: #bbb;
 }
+.highlighted {
+  background: #f5bb00;
+  color: #FFF !important;
+  border-radius: 3px;
+}
 .checked {
   background: #F50057;
   color: #FFF !important;
@@ -334,7 +339,7 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
+            <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'highlighted':day.highlighted,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -416,6 +421,7 @@ export default {
         }
       }
     },
+    highlighted: Object,
     limit: {
       type: Array,
       default () {
@@ -479,6 +485,14 @@ export default {
       selectedDays: []
     }
   },
+  watch: {
+    'highlighted': {
+      handler (newOption, oldOption) {
+        this.showDay(this.checked.currentMoment)
+      },
+      deep: true
+    }
+  },
   methods: {
     pad (n) {
       n = Math.floor(n)
@@ -488,6 +502,7 @@ export default {
       let next = null
       type === 'next' ? next = moment(this.checked.currentMoment).add(1, 'M') : next = moment(this.checked.currentMoment).add(-1, 'M')
       this.showDay(next)
+      this.$emit('change-month', next)
     },
     showDay (time) {
       if (time === undefined || !Date.parse(time)) {
@@ -500,6 +515,7 @@ export default {
       this.checked.month = moment(this.checked.currentMoment).format('MM')
       this.checked.day = moment(this.checked.currentMoment).format('DD')
       this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()]
+      let day = []
       let days = []
       let currentMoment = this.checked.currentMoment
       let firstDay = moment(currentMoment).date(1).day()
@@ -512,12 +528,14 @@ export default {
       let monthDays = moment(currentMoment).daysInMonth()
       let oldtime = this.checked.oldtime
       for (let i = 1; i <= monthDays; ++i) {
+        day = moment(currentMoment).date(i)
         days.push({
           value: i,
           inMonth: true,
           unavailable: false,
           checked: false,
-          moment: moment(currentMoment).date(i)
+          highlighted: this.isHighlightedDate(day),
+          moment: day
         })
         if (i === Math.ceil(moment(currentMoment).format('D')) && moment(oldtime, this.option.format).year() === moment(currentMoment).year() && moment(oldtime, this.option.format).month() === moment(currentMoment).month()) {
           days[i - 1].checked = true
@@ -561,6 +579,13 @@ export default {
         }
       }
       this.dayList = days
+    },
+    isHighlightedDate (date) {
+      if (this.highlighted === undefined || this.highlighted.dates === undefined) return false
+      for (let d of this.highlighted.dates) {
+        if (date.isSame(d)) return true
+      }
+      return false
     },
     checkBySelectDays (d, days) {
       this.selectedDays.forEach(day => {
@@ -696,6 +721,7 @@ export default {
     setYear (year) {
       this.checked.currentMoment = moment(year + '-' + this.checked.month + '-' + this.checked.day)
       this.showDay(this.checked.currentMoment)
+      this.$emit('set-year', this.checked.currentMoment)
     },
     setMonth (month) {
       let mo = (this.library.month.indexOf(month) + 1)
@@ -704,6 +730,7 @@ export default {
       }
       this.checked.currentMoment = moment(this.checked.year + '-' + mo + '-' + this.checked.day)
       this.showDay(this.checked.currentMoment)
+      this.$emit('set-month', this.checked.currentMoment)
     },
     showCheck () {
       if (this.date.time === '') {
