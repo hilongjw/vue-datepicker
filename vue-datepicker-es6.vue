@@ -515,7 +515,7 @@ export default {
       this.checked.month = moment(this.checked.currentMoment).format('MM')
       this.checked.day = moment(this.checked.currentMoment).format('DD')
       this.displayInfo.month = this.library.month[moment(this.checked.currentMoment).month()]
-      let day = []
+      let day
       let days = []
       let currentMoment = this.checked.currentMoment
       let firstDay = moment(currentMoment).date(1).day()
@@ -528,13 +528,13 @@ export default {
       let monthDays = moment(currentMoment).daysInMonth()
       let oldtime = this.checked.oldtime
       for (let i = 1; i <= monthDays; ++i) {
-        day = moment(currentMoment).date(i)
+        day = moment(currentMoment.startOf('day')).date(i)
         days.push({
           value: i,
           inMonth: true,
           unavailable: false,
           checked: false,
-          highlighted: this.isHighlightedDate(day),
+          highlighted: this.isHighlightedDate(day.startOf('day')),
           moment: day
         })
         if (i === Math.ceil(moment(currentMoment).format('D')) && moment(oldtime, this.option.format).year() === moment(currentMoment).year() && moment(oldtime, this.option.format).month() === moment(currentMoment).month()) {
