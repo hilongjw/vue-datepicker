@@ -1,4 +1,4 @@
-# vue-datepicker
+# vue-datepicker [DEPRECATED]
 calendar and datepicker component with material design for Vue.js
 
 # Demo
