@@ -490,7 +490,7 @@ export default {
       this.showDay(next)
     },
     showDay (time) {
-      if (time === undefined || !Date.parse(time)) {
+      if (time === undefined || !moment(time, this.option.format).isValid()) {
         this.checked.currentMoment = moment()
       } else {
         this.checked.currentMoment = moment(time, this.option.format)
