@@ -586,6 +586,7 @@ exports.default = {
           value: i,
           inMonth: true,
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).date(i)
         });
@@ -601,6 +602,7 @@ exports.default = {
           inMonth: false,
           action: 'previous',
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i + 1, 'days')
         };
@@ -646,6 +648,7 @@ exports.default = {
           inMonth: false,
           action: 'next',
           unavailable: false,
+          inlimit: false,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
         };
@@ -675,8 +678,12 @@ exports.default = {
 
       if (limit.from || limit.to) {
         days.map(function (day) {
-          if (_this2.getLimitCondition(limit, day)) {
+          if (_this2.getLimitCondition(limit, day) && day.inlimit === false) {
             day.unavailable = true;
+          }
+          else {
+            day.unavailable = false
+            day.inlimit = true
           }
         });
       }
