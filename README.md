@@ -49,6 +49,7 @@ export default {
 
       option: {
         type: 'day',
+        locale: 'en',
         week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         format: 'YYYY-MM-DD',
@@ -123,7 +124,7 @@ export default {
 
 # API
 
- - Option 
+ - Option
 
  * type
 
@@ -136,6 +137,12 @@ export default {
 
 ```
 format: 'YYYY-MM-DD HH:mm'
+```
+
+ * locale
+
+```
+locale: 'en'
 ```
 
  * placeholder
@@ -228,7 +235,7 @@ limit: {
 
 limit:{
   type: 'weekday',
-  available: [1, 2, 3, 4, 5] 
+  available: [1, 2, 3, 4, 5]
 }
 
 ```
@@ -267,4 +274,3 @@ date: {
 # License
 
 [The MIT License](http://opensource.org/licenses/MIT)
-
