@@ -172,7 +172,7 @@ table {
 }
 .cov-date-caption {
   width: 60%;
-  padding: 50px 0!important;
+  padding: 50px 0;
   box-sizing: border-box;
   font-size: 24px;
 }
@@ -298,7 +298,7 @@ table {
 .hour-box .active,
 .min-box .active {
   background: #F50057;
-  color: #FFF !important;
+  color: #FFF;
 }
 ::-webkit-scrollbar {
   width: 2px;
