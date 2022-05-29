@@ -391,7 +391,13 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div class="day" v-for="day in dayList" track-by="$index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
+            <div class="day"
+                v-for="day in dayList"
+                track-by="$index"
+                @click="checkDay(day)"
+                :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}"
+                :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}
+            </div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -421,8 +427,8 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
+            <span v-if="option.cancelAction ? option.cancelAction : false" @click="showInfo.check=false" :style="option.buttonCancelStyle ? option.buttonCancelStyle : {}">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span v-if="option.successAction ? option.successAction : false" @click="picked" :style="option.buttonSuccessStyle ? option.buttonSuccessStyle : {}">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
     </div>
@@ -472,6 +478,15 @@ exports.default = {
             'border-radius': '2px',
             'color': '#5F5F5F'
           },
+          buttonCancelStyle: {
+            'color': '#d9534f'
+          },
+          buttonSuccessStyle: {
+            'color': '#fff',
+            'background-color': '#226b32',
+            'padding': '4px 25px',
+            'border-radius': '10px'
+          },
           wrapperClass: 'cov-vue-date',
           inputClass: 'cov-datepicker',
           placeholder: 'when?',
@@ -479,8 +494,10 @@ exports.default = {
             ok: 'OK',
             cancel: 'Cancel'
           },
+          successAction: true,
+          cancelAction: true,
           overlayOpacity: 0.5,
-          dismissible: true
+          dismissible: true,
         };
       }
     },
@@ -600,7 +617,7 @@ exports.default = {
           value: previousMonth.daysInMonth() - _i,
           inMonth: false,
           action: 'previous',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).date(1).subtract(_i + 1, 'days')
         };
@@ -621,6 +638,9 @@ exports.default = {
                 break;
               case 'weekday':
                 days = this.limitWeekDay(li, days);
+                break;
+              case 'day':
+                days = this.limitDay(li, days);
                 break;
             }
           }
@@ -645,7 +665,7 @@ exports.default = {
           value: _i2,
           inMonth: false,
           action: 'next',
-          unavailable: false,
+          unavailable: true,
           checked: false,
           moment: (0, _moment2.default)(currentMoment).add(1, 'months').date(_i2)
         };
@@ -668,6 +688,14 @@ exports.default = {
           day.unavailable = true;
         }
       });
+      return days;
+    },
+    limitDay: function limitDay(limit, days) {
+      days.forEach((v) => {
+        if(limit.available.indexOf(v.moment.format('Y-MM-DD')) == -1) {
+          v.unavailable = true
+        }
+      })
       return days;
     },
     limitFromTo: function limitFromTo(limit, days) {
